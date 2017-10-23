@@ -4,22 +4,16 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const logger = require("morgan");
 
-const PORT = process.env.PORT || 8081;
+const PORT = process.env.PORT || 3001;
 const app = express();
 
-// bring in the models
-var db = require("./models");
-
-// Import routes and give server access
-
-var routes = require("./controllers/battles_controller.js");
-
-app.use("/", routes);
-app.use("/update", routes);
-app.use("/create", routes);
-
 // grabbing our test model
-const Test = require("./models/test");
+const sdb = require("./models");
+sdb.sequelize.sync().then(function() {
+    console.log("Sequelize Connected!");
+}).catch(function(err) {
+    console.error("Something went wrong with Sequelize: ", err);
+});
 
 // logging for request to the console
 app.use(logger("dev"));
@@ -32,43 +26,54 @@ app.use(bodyParser.json());
 mongoose.Promise = global.Promise;
 // Connect to the Mongo DB
 mongoose.connect(
-    process.env.MONGODB_URI || "mongodb://localhost/myDatabase", {
-        useMongoClient: true
-    }
+  process.env.MONGODB_URI || "mongodb://localhost/battleboard",
+  {
+    useMongoClient: true
+  }
 );
+
+let mdb = mongoose.connection;
+
+mdb.on("error", function(error) {
+    console.log("mongoose Error: ", error);
+});
+
+mdb.once("open", function() {
+    console.log("Mongoose connection successful");
+});
 
 // Serve up static assets (usually on heroku)
 if (process.env.NODE_ENV === "production") {
-    app.use(express.static("client/build"));
+  app.use(express.static("client/build"));
 }
 
 // just a dummy GET route on our Test model
-app.get("/data", (req, res) => {
-    Test.find((err, data) => {
-        if (err) throw err;
-        res.json(data);
-    });
+app.get("/data", (req,res) => {
+  Test.find((err, data) => { 
+    if(err) throw err; 
+    res.json(data);
+  });
 });
 
 // just a post on our Test model
 app.post("/new", (req, res) => {
-    const test = new Test(req.body);
-    test.save(req.body, (err, data) => {
-        if (err) throw err;
-        res.json(data);
-    });
+  const test = new Test(req.body);
+  test.save(req.body, (err, data) => {
+    if(err) throw err;    
+    res.json(data);
+  });
 });
 
 // Send every request to the React app
 // Define any API routes before this runs
 app.get("*", (req, res) => {
-    if (process.env.NODE_ENV === "production") {
-        res.sendFile(__dirname + "./client/build/index.html");
-    } else {
-        res.sendFile(__dirname + "./client/public/index.html");
-    }
+  if ( process.env.NODE_ENV === "production" ) {
+    res.sendFile(__dirname + "./client/build/index.html");
+  } else {
+    res.sendFile(__dirname + "./client/public/index.html");
+  }
 });
 
 app.listen(PORT, () => {
-    console.log(`🌎 ==> Server now on port ${PORT}!`);
+  console.log(`🌎 ==> Server now on port ${PORT}!`);
 });
