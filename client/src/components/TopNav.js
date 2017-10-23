@@ -16,6 +16,8 @@ const TopNav = () => (
 				<div className="col-sm-6 text-right">
 					<Link to='/'><a>Home</a></Link>
 		 			&nbsp; | &nbsp;
+					<Link to='/create'><a>New Game</a></Link>
+					&nbsp; | &nbsp;
 		 			<Link to="/board"><a>Board</a></Link>
 				</div>
 			</div>
