@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import "./Board.css";
 import TopNav from "../TopNav/TopNavLoggedIn";
 import Character from "../Character/Character.js";
+import TopNav from "../TopNav";
 
 class Board extends Component {
 
@@ -36,7 +37,7 @@ class Board extends Component {
 	render() {
 		return (
 			<div>
-				<TopNav />			
+				<TopNav/>
 				<div className="Board">
 					<div className="container">
 						<div className = "row">

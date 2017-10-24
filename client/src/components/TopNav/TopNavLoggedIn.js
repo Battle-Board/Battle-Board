@@ -24,6 +24,8 @@ const TopNav = () => (
 		 			&nbsp; | &nbsp;
 >>>>>>> e68013a4fd5bf51ec7d218b2742c4ee9f17957f2:client/src/components/TopNav/TopNavLoggedIn.js
 		 			<Link to="/board"><a>Board</a></Link>
+					&nbsp; | &nbsp;
+					<Link to="/LogReg"><a>Log/Register</a></Link>
 				</div>
 			</div>
 		</div>
