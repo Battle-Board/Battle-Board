@@ -1,24 +1,28 @@
-// User model
-
-module.exports = function(sequelize, DataTypes) {
-    var User = sequelize.define("User", {
-        username: {
-            type: DataTypes.STRING,
+module.exports = function(sequelize, Sequelize) {
+    const User = sequelize.define("User", {
+        email: { // Email could be required or not needed depending on requirements
+            type: Sequelize.STRING,
             allowNull: false,
             validate: {
-                len: [1, 32]
+                isEmail: true,
+                notEmpty: true
             }
         },
-        password: {
-            type: DataTypes.STRING,
-            allowNull: false
+        username: {
+            type: Sequelize.STRING,
+            allowNull: false,
+            validate: {
+                notEmpty: true
+            },
+            unique: true
         },
-    }, {
-        classMethods: {
-            associate: function(models) {
-                // associations can be defined here
+        password: {
+            type: Sequelize.STRING,
+            allowNull: false,
+            validate: {
+                notEmpty: true
             }
         }
     });
     return User;
-};
+}

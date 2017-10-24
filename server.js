@@ -3,6 +3,8 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const logger = require("morgan");
+const passport = require("passport");
+const session = require("express-session");
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -18,9 +20,28 @@ sdb.sequelize.sync().then(function() {
 // logging for request to the console
 app.use(logger("dev"));
 
-// Configure body parser for AJAX requests
+// Configure body parser for AJAX (AXIOS) requests
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+// Passport Sessions
+app.use(session({secret: "somevaluablesecrets", resave: true, saveUninitialized: true}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Passport Middleware to have a global variable for userName (res.locals.user)
+app.use(function(req, res, next) {
+  res.locals.user = req.user;
+  if(!req.user){
+      next();
+  }else {
+      next();
+  }
+});
+
+// Passports Requirements for Functionality
+require("./app/routes/auth.js")(app, passport);
+require("./app/config/passport/passport.js")(passport, sdb.user);
 
 // Set up promises with mongoose
 mongoose.Promise = global.Promise;

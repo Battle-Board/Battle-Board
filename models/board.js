@@ -1,25 +1,26 @@
-// Board model
+// character_id, user_id, character_name, avatar, dexterity, initiative_bonus, hitpoints, conditions
 
-module.exports = function(sequelize, DataTypes) {
-    var Board = sequelize.define("Board", {
-        game_id: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
+module.exports = function(sequelize, Sequelize) {
+    const Board = sequelize.define("Board", {
+        game_name: {
+            type: Sequelize.STRING
+        }, 
+        character_name: {
+            type: Sequelize.STRING
         },
-        character_id: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
+        username: {
+            type: Sequelize.STRING
         },
-        user_id: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-        },
-    }, {
-        classMethods: {
-            associate: function(models) {
-                // associations can be defined here
-            }
-        }
     });
+
+    // Associate so that if user deletes we can simply destroy all records
+    Board.associate = function(models) {
+        Board.belongsTo(models.User, {
+            foreignKey: {
+                allowNull: false
+            }
+        });
+    }
+
     return Board;
-};
+}
