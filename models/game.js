@@ -1,21 +1,20 @@
-// Game model
+// game_id (default unique identifier auto created by sequelize), game_name
 
-module.exports = function(sequelize, DataTypes) {
-    var Game = sequelize.define("Game", {
-        game_id: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-        },
+module.exports = function(sequelize, Sequelize) {
+    const Game = sequelize.define("Game", {
         game_name: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-    }, {
-        classMethods: {
-            associate: function(models) {
-                // associations can be defined here
-            }
+            type: Sequelize.STRING,
+            unique: true
         }
     });
+
+    Game.associate = function(models) {
+        Game.belongsTo(models.User, {
+            foreignKey: {
+                allowNull: false
+            }
+        });
+    }
+
     return Game;
-};
+}
