@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import './TopNav.css';
-import logo from '../Battle-Board.png';
+import logo from '../../Battle-Board.png';
 
 // The Header creates links that can be used to navigate
 // between routes.
@@ -16,27 +16,12 @@ const TopNav = () => (
 				<div className="col-sm-6 text-right">
 					<Link to='/'><a>Home</a></Link>
 		 			&nbsp; | &nbsp;
-					<Link to='/create'><a>New Game</a></Link>
-					&nbsp; | &nbsp;
-		 			<Link to="/board"><a>Board</a></Link>
+		 			<Link to="/game"><a>Game</a></Link>
 				</div>
 			</div>
 		</div>
 	</div>
 
-
-	
-	// <div className = "TopNav">
-	// <nav className="navbar navbar-default navbar-fixed-top">
-	// 	<div className="container-fluid">
-	// 		<div className="nav navbar-nav">
-	// 			<Link to='/'><a>Home</a></Link>
-	// 			&nbsp; | &nbsp;
-	// 			<Link to="/board"><a>Board</a></Link>
-	// 		</div>
-	// 	</div>
-	// </nav>
-	// </div>
 )
 
 export default TopNav

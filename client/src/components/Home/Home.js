@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import logo from '../../Battle-Board.png';
 import '../../App.css';
-import TopNav from "../TopNav";
+import TopNav from "../TopNav/TopNav";
 
 class Home extends Component {
 	render() {

@@ -1,11 +1,11 @@
 // This Schema is to set game state into a document and then able to to return to the game with that state.
 // Game_ID, Order_Array, Turn_Index
 
-const mongoose = require("mongoose");
+var mongoose = require("mongoose");
 
-const Schema = mongoose.Schema;
+var Schema = mongoose.Schema;
 
-const GameStateSchema = new Schema({
+var GameStateSchema = new Schema({
     game_id: {
         type: String,// Add a required: true after we know it's working
     },
@@ -20,6 +20,6 @@ const GameStateSchema = new Schema({
     }
 });
 
-const GameState = mongoose.model("GameState", GameStateSchema);
+var GameState = mongoose.model("GameState", GameStateSchema);
 
 module.exports = GameState;

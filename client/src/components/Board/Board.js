@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import "./Board.css";
-import TopNav from "../TopNav";
+import TopNav from "../TopNav/TopNavLoggedIn";
 import Character from "../Character/Character.js";
 
 class Board extends Component {

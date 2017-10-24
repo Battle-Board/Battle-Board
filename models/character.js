@@ -1,45 +1,51 @@
-// Character model
+// character_id (created by sequelize), user_id, character_name, avatar, dexterity, initiative_bonus, hitpoints, conditions
 
-module.exports = function(sequelize, DataTypes) {
-    var Character = sequelize.define("Character", {
+module.exports = function(sequelize, Sequelize) {
+    const Character = sequelize.define("Character", {
         character_id: {
-            type: DataTypes.INTEGER,
-            allowNull: false
+            type: Sequelize.INTEGER,
+            allowNull: false,
+            primaryKey: true,
+            autoIncrement: true
         },
-        user_id: {
-            type: DataTypes.INTEGER,
-            allowNull: false
-        },
-        character_id: {
-            type: DataTypes.STRING,
-            allowNull: false
+        character_name: {
+            type: Sequelize.STRING,
+            unique: true
         },
         avatar: {
-            type: DataTypes.INTEGER,
-            allowNull: true
+            type: Sequelize.STRING,
+            defaultValue: "1.jpg"
         },
         dexterity: {
-            type: DataTypes.INTEGER,
+            type: Sequelize.DOUBLE,
             allowNull: false
         },
         initiative_bonus: {
-            type: DataTypes.INTEGER,
+            type: Sequelize.DOUBLE,
             allowNull: false
         },
-        hp: {
-            type: DataTypes.INTEGER,
+        hitpoints: {
+            type: Sequelize.DOUBLE,
             allowNull: false
         },
         conditions: {
-            type: DataTypes.STRING,
+            type: Sequelize.STRING,
             allowNull: true
         },
-    }, {
-        classMethods: {
-            associate: function(models) {
-                // associations can be defined here
-            }
+        isCharacter: {
+            type: Sequelize.BOOLEAN,
+            allowNull: false,
+            defaultValue: true
         }
     });
+
+    Character.associate = function(models) {
+        Character.belongsTo(models.User, {
+            foreignKey: {
+                allowNull: false
+            }
+        });
+    }
+
     return Character;
-};
+}
