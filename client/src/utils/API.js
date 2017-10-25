@@ -13,6 +13,12 @@ export default {
 		return axios.post("/saveGame", gameName).then((games) => {
 			return games;
 		});
+	},
+
+	createCharacter: function(charName, initBonus, dexterity, hitPoints, conditions) {
+		return axios.post("/characters/create", charName, initBonus, dexterity, hitPoints, conditions).then((data) => {
+			return data;
+		});
 	}
 
 	// search: function(query, start_date, end_date) {

@@ -14,7 +14,7 @@ const TopNav = () => (
 					<img src={logo} alt="Battle Board Logo"/>
 				</div>
 				<div className="col-sm-6 text-right">
-					<Link to='/'><a>Home</a></Link>
+					<Link to='/'>Home</Link>
 		 			&nbsp; | &nbsp;
 		 			<Link to="/LogReg"><a>Login</a></Link>
 				</div>

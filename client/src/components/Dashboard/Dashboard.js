@@ -21,6 +21,11 @@ class Game extends Component {
 	// componentDidMount() {
 	// 	this.searchGames();
 	// }
+
+	createCharacter(event) {
+		event.preventDefault();
+		window.location ="/createCharacter";
+	}
   
     handleChange(event) {
 		this.setState({value: event.target.value});
@@ -75,7 +80,7 @@ class Game extends Component {
 				</div>
 				<div className="row">
 					<div className = "col-sm-12 col-md-4 col-md-offset-1">
-						<button className="btn btn-primary center-block" type="submit" value="CreateCharacter"><span className="buttonText">Create New Character</span></button>
+						<button className="btn btn-primary center-block" onClick={this.createCharacter} type="submit" value="CreateCharacter"><span className="buttonText">Create New Character</span></button>
 					</div>
 					<div className = "col-sm12 col-md-4 col-md-offset-2">
 						<button className="btn btn-primary center-block" type="submit" value="CreateGame"><span className="buttonText">Create New Game</span></button>
