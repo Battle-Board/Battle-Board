@@ -19,8 +19,19 @@ export default {
 		return axios.post("/characters/create", charName, initBonus, dexterity, hitPoints, conditions).then((data) => {
 			return data;
 		});
-	}
+	},
 
+	getCharacters: function() {
+		return axios.get("/characters/all").then((characters) => {
+			return characters;
+		});
+	},
+
+	getGames: function() {
+		return axios.get("/games/all").then((games) => {
+			return games;
+		});
+	},
 	// search: function(query, start_date, end_date) {
 	//   let fullQuery = query;
 	//   if (start_date) {
