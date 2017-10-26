@@ -16,8 +16,24 @@ exports.create = function(req,res) {
         });
 };
 
-exports.all =  function(req, res) {
-    sdb.Character.findAll({})
+exports.user = function(req, res) {
+    sdb.Character.findAll({
+        where: {
+            user_id: req.body.userID
+        },
+        order: [["character_name"]]
+    })
+        .then(function(data) {
+            res.json(data);
+        }).catch(function(err) {
+            res.json(err);
+        })
+};
+
+exports.all = function(req, res) {
+    sdb.Character.findAll({
+        order: [["character_name"]]
+    })
         .then(function(data) {
             res.json(data);
         }).catch(function(err) {

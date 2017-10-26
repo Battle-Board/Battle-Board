@@ -10,6 +10,7 @@ exports.create = function(req, res) {
         // pass the result of our call
         .then(function(data) {
             // log the result to our terminal/bash window
+            console.log("after insertion into games, the returned gameID is", data.dataValues.game_id);
             res.json(data);
         }).catch(function(err) {
             res.json(err);
@@ -17,7 +18,9 @@ exports.create = function(req, res) {
 };
 
 exports.all = function(req, res) {
-    sdb.Game.findAll({})
+    db.Game.findAll({
+        order: [["game_name"]]
+    })
         .then(function(data) {
             res.json(data);
         }).catch(function(err) {

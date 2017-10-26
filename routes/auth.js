@@ -10,6 +10,7 @@ module.exports = function(app, passport) {
 
     // Character Routes
     app.post("/characters/create", charactersController.create);
+    app.get("/characters/user", charactersController.user);
     app.get("/characters/all", charactersController.all);
 
     // Game Routes
