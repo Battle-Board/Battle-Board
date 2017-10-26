@@ -11,7 +11,7 @@ const Button = withRouter(({history}) => (
 			history.push('/');
 		}}
 	>
-		<span className = "buttonText">Click Me!</span>
+		{/* <span className = "buttonText">Click Me!</span> */}
 	</button>
   ));
 

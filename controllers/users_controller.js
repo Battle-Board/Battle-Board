@@ -8,7 +8,7 @@ var db = require("../models");
 
 // Post route to insert a user into the user table
 // POST to /users/create
-router.post("/create", function(req, res) {
+router.post("/users", function(req, res) {
     // add item to users table
     db.User.create(req.body)
         // pass the result of our call
@@ -20,7 +20,7 @@ router.post("/create", function(req, res) {
         });
 });
 
-router.get("/all", function(req, res) {
+router.get("/users", function(req, res) {
     db.User.findAll({})
         .then(function(data) {
             res.json(data);

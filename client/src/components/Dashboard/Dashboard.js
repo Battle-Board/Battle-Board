@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import "./Dashboard.css";
 import TopNav from "../TopNav/TopNavLoggedIn";
 import API from "../../utils/API.js";
+import helpers from "../../utils/helpers.js"
+import Character from "../Character/Character.js"
 
 
 class Game extends Component {
@@ -28,6 +30,11 @@ class Game extends Component {
 		event.preventDefault();
 		window.location="/game";
 	}
+
+	savedGame(event) {
+		event.preventDefault();
+		window.location="/api/games"
+	}
   
     handleChange(event) {
 		this.setState({value: event.target.value});
@@ -35,11 +42,13 @@ class Game extends Component {
   
     handleBuild(event) {
 		event.preventDefault();
+		window.location="/dashboard"
 		console.log('Name submitted: ' + this.state.value);
 	}
 	
 	handleBattle(event) {
 		event.preventDefault();
+		window.location="/board"
 		console.log("Battle for", this.state.value);
 	}
   
@@ -68,14 +77,14 @@ class Game extends Component {
 					<div className = "col-sm-12 col-md-4 col-md-offset-1">
 						<div className="panel panel-default">
 							<div className="panel-body text-center">
-								Insert Character List Here
+								{/* {Character.props.children} */}
 							</div>
 						</div>
 					</div>
 					<div className = "col-sm12 col-md-4 col-md-offset-2">
 						<div className = "panel panel-default">
 							<div className = "panel-body text-center">
-								Insert Game List Here
+								{Game.children}
 							</div>
 						</div>
 					</div>

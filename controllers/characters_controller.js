@@ -8,7 +8,7 @@ var db = require("../models");
 
 // Post route to insert a character into the Character table
 // POST to /characters/create
-router.post("/create", function(req, res) {
+router.post("/characters", function(req, res) {
     // add item to character table
     db.Character.create(req.body)
         // pass the result of our call
@@ -20,7 +20,7 @@ router.post("/create", function(req, res) {
         });
 });
 
-router.get("/all", function(req, res) {
+router.get("/characters", function(req, res) {
     db.Character.findAll({})
         .then(function(data) {
             res.json(data);

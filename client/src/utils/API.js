@@ -10,7 +10,7 @@ export default {
 	},
 
 	createGame: function(gameName) {
-		return axios.post("/saveGame", gameName).then((games) => {
+		return axios.post("/games", gameName).then((games) => {
 			return games;
 		});
 	},
