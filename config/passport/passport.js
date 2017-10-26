@@ -5,11 +5,13 @@ module.exports = function(passport, user) {
     var LocalStrategy = require("passport-local").Strategy;
 
     passport.serializeUser(function(user,done) {
+        console.log("serial");
         done(null, user);
     });
 
-    passport.deserializeUser(function(user_id, done) {
-        User.findById(user_id).then(function(user) {
+    passport.deserializeUser(function(id, done) {
+        console.log("deserial", id);
+        User.findById(id.id).then(function(user) {
             if(user) {
                 done(null, user.get());
             } else {
@@ -48,6 +50,7 @@ module.exports = function(passport, user) {
                         if(!newUser) {
                             return done(null, false);
                         }else if(newUser) {
+                            console.log("NewUser: ",newUser.dataValues);
                             return done(null, newUser);
                         }
                     })

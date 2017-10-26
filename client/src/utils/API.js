@@ -24,6 +24,14 @@ export default {
 	createUser: function(data) {
 		console.log("In create user!");
 		return axios.post("/signup", data);
+	},
+
+	userLoggedIn: function() {
+		console.log("userLoggedIn right before axios call");
+		return axios.get("/auth/userid").then((user) => {
+			console.log("Inside API userId: ",user.data.id," and username: ",user.data.username);
+			return user;
+		}).catch(err => console.log("Error in userLoggedIn: ",err));
 	}
 };
 

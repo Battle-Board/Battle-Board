@@ -34,9 +34,9 @@ app.use(passport.session());
 
 // Passport Middleware to have a global variable for userName (res.locals.user.user_name)
 app.use(function(req, res, next) {
-    console.log("middleware test:",req.user);
-    console.log("middleware body test: ",req.body.username);
     res.locals.user = req.user;
+    app.locals.user = req.user;
+    console.log("middleware body test: ",req.body.username, " ", res.locals.user);
     if(!req.user){
         next();
     }else {

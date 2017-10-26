@@ -21,12 +21,16 @@ module.exports = function(app, passport) {
     app.get("/boards/all", boardsController.all);
 
     // Passport Routes
-    app.post("/signup", passport.authenticate("local-signup"));
+    app.post("/signup", passport.authenticate('local-signup'), function(req, res) {
+        console.log("In function after passport!",req.user.dataValues.username);
+        res.json(req.user.dataValues.username);
+    });
+
     app.get("/signup", usersController.all);
 
     // AuthController Routes
-    app.get("/logout", authController.logout);
-    app.get("/userid", authController.user);
+    app.get("/auth/logout", authController.logout);
+    app.get("/auth/userid", authController.user);
 
     // Send every request to the React app
     // Define any API routes before this runs
@@ -41,6 +45,6 @@ module.exports = function(app, passport) {
 
     function isLoggedIn(req, res, next) {
         if(req.isAuthenticated()) return next();
-        res.redirect("/signup");
+        res.json(req.user.dataValues.username);
     }
 }

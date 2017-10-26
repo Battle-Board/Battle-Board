@@ -18,13 +18,14 @@ class Game extends Component {
 		this.handleBattle = this.handleBattle.bind(this);
 	}
 	
-	// componentDidMount() {
-	// 	this.searchGames();
-	// }
+	componentDidMount() {
+		console.log("In the mounting!");
+		API.userLoggedIn().then(res => console.log("got response from api",res)).catch(err => console.log("error in api",err));
+	}
 
 	createCharacter(event) {
 		event.preventDefault();
-		window.location ="/createCharacter";
+		// window.location ="/createCharacter";
 	}
   
     handleChange(event) {

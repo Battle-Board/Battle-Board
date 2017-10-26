@@ -3,13 +3,14 @@ import TopNav from "../TopNav/TopNav.js";
 import API from "../../utils/API.js";
 import ReactDOM from 'react-dom';
 import './LogReg.scss';
-import { Switch, Route, Link} from 'react-router-dom';
+import {BrowserRouter as Router,Route,Link,Redirect,withRouter} from 'react-router-dom';
 
 class LogReg extends Component{
     state = {
         username: "",
         password: "",
-        email: ""
+        email: "",
+        redirect: false
     }
     
     handleInputChange = event => {
@@ -26,10 +27,19 @@ class LogReg extends Component{
             username: this.state.username,
             password: this.state.password,
             email: this.state.email
-        }).then(res => {console.log("Created User!",res);}).catch((err) => {console.log("Res anything?: ","Some Error: ",err);});
+        })
+        .then(res => {
+            console.log("Created User!",res.data);
+            this.setState({redirect: true});
+        })
+        .catch((err) => {console.log("Some Error (from API): ",err);});
     }
     
     render(){
+        const { redirect } = this.state;
+        if(redirect) {
+            return <Redirect to="/dashboard"/>;
+        }
         return(
             <div>
                 <TopNav/>
