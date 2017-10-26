@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import "./Game.css";
 import TopNav from "../TopNav/TopNavLoggedIn";
 import API from "../../utils/API.js";
-import Button from "./Button.js";
 import {sockets} from "../../utils/sockets";
 
 class Game extends Component {
@@ -11,7 +10,8 @@ class Game extends Component {
     	this.state = {
 			gameName: '',
 			charList: [],
-			foundChars: true
+			foundChars: true,
+			chosenList: []
 		};
 		
       this.handleChange = this.handleChange.bind(this);
@@ -51,22 +51,66 @@ class Game extends Component {
   
     handleBuild(event) {
 		event.preventDefault();
-		let gameInfo =  {
-			game_name: this.state.gameName,
+		let gameName =  {
+			game_name: this.state.gameName
 		};
+
+		if ((gameName.game_name !== "") && (this.state.chosenList.length > 0)) {
+			API.createGame(gameName).then(res => {
+				console.log("Back from the insert with game_id of ", res.data.game_id);
+				let boardInfo = {
+					gameID: res.data.game_id,
+					charInfo: this.state.chosenList
+				}
+				// API.creeteBoard(boardInfo);
+				sockets.sendGameList(res.data);
+				// window.location = "/board";			
+
+			});	
+		}
 		
-		API.createGame(gameInfo).then(res => {
-			alert("Back from the insert");
-			console.log(res.data);
-			sockets.sendGameList(res.data);
-			window.location = "/dashboard";			
-		});
 
 	}
 	
 	handleBattle(event) {
+		console.log("Battle for", this.state.gameName);
 		event.preventDefault();
-		console.log("Battle for", this.state.value);
+		let gameName = {
+			game_name: this.state.gameName
+		};
+
+		if ((gameName.game_name !== "") && (this.state.chosenList.length > 0)) {
+			API.createGame(gameName).then(res => {
+				console.log("back from the insert with game_id of", res.data.game_id);
+				let boardInfo = {
+					gameID: res.data.game_id,
+					charInfo: this.state.chosenList
+				}
+				sockets.sendGameList(res.data);
+				// window.location = "/board";			
+			})
+		}
+	}
+
+	chooseMe(info) {
+		let inArray = false;
+		let charIndex = 0;
+		for (let i = 0; i < this.state.chosenList.length; i++) {
+			if (this.state.chosenList[i].character_id === info.character_id) {
+				inArray = true;
+				charIndex = i;
+			}
+		}
+		if (!inArray) {
+			let newArray = this.state.chosenList;
+			newArray.push(info);
+			this.setState({chosenList: newArray});
+		}
+			else {
+				let newArray = this.state.chosenList;
+				newArray.splice(charIndex, 1);
+				this.setState({chosenList: newArray});
+			}
 	}
   
     render() {
@@ -79,19 +123,33 @@ class Game extends Component {
 						<div className="panel panel-default">
 							<div className="panel-body">
 								<form className="form-horizontal">
-									<label>
+									<label className="text-center">
 										Create New Game:
 										<input width="100%" type="text" value={this.state.value} onChange={this.handleChange} />
 									</label>
 									<div className="row">
 										<div className="panel panel-default">
+											<div className="text-center">
+												Chosen Characters
+											</div>
+											<div className = "panel-body">
+												<div className = "row">
+													{this.state.chosenList.map(info => (
+														<div className = "col-sm-4 text-center">
+															{info.character_name}
+														</div>
+													))}
+												</div>
+											</div>
+										</div>
+									</div>
+									<div className="row">
+										<div className="panel panel-default">
 											<div className="panel-body">
 												{this.state.charList.map(info => (
 													<div className = "row">
-														<div className = "col-sm-12 checkbox">
-															<label for={info.user_id}>
-																<input id={info.user_id} type="checkbox" name="character" onChange={this.checkChange} value={info.user_id} />{info.character_name}
-															</label>
+														<div className = "col-sm-12 text-center">
+															<button className="btn btn-primary" onClick={(event) => {event.preventDefault(); this.chooseMe(info)}}><span className="buttonText">{info.character_name}</span></button>
 														</div>
 													</div>
 												))}
