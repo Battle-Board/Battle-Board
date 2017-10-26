@@ -41,7 +41,7 @@ class Game extends Component {
 
 		this.getCharacters(userID);
 		this.getGames();
-
+		API.userLoggedIn().then(res => console.log("got response from api",res)).catch(err => console.log("error in api",err));
 	}
 
 	getCharacters(userID) {

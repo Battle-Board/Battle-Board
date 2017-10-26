@@ -1,18 +1,12 @@
 // Battles Controller
-
-var express = require("express");
-
-var router = express.Router();
-
-var db = require("../models");
-
-// const io = require("socket.io");
+var sdb = require("../models");
+var exports = module.exports = {};
 
 // Post route to insert a character into the Character table
 // POST to /characters/create
-router.post("/create", function(req, res) {
+exports.create = function(req,res) {
     // add item to character table
-    db.Character.create(req.body)
+    sdb.Character.create(req.body)
         // pass the result of our call
         .then(function(data) {
             // log the result to our terminal/bash window
@@ -20,10 +14,10 @@ router.post("/create", function(req, res) {
         }).catch(function(err) {
             res.json(err);
         });
-});
+};
 
-router.post("/user", function(req, res) {
-    db.Character.findAll({
+exports.user = function(req, res) {
+    sdb.Character.findAll({
         where: {
             user_id: req.body.userID
         },
@@ -34,10 +28,10 @@ router.post("/user", function(req, res) {
         }).catch(function(err) {
             res.json(err);
         })
-});
+};
 
-router.get("/all", function(req, res) {
-    db.Character.findAll({
+exports.all = function(req, res) {
+    sdb.Character.findAll({
         order: [["character_name"]]
     })
         .then(function(data) {
@@ -45,6 +39,4 @@ router.get("/all", function(req, res) {
         }).catch(function(err) {
             res.json(err);
         })
-});
-
-module.exports = router;
+};

@@ -19,11 +19,9 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: false
         },
-    }, {
-        classMethods: {
-            associate: function(models) {
-                // associations can be defined here
-            }
+        email: {
+            type: DataTypes.STRING,
+            allowNull: false
         }
     });
     return User;

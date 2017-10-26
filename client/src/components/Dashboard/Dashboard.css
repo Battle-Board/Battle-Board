@@ -11,9 +11,13 @@ input {
     width: 100%; /* force to expand to container's width */  
     padding: 0 10px;
     margin: 0 -17px; /* negative margin = border-width + horizontal padding */ 
+<<<<<<< HEAD
+}  
+=======
 }
 
 .fixed-panel {
 	max-height: 500px;
 	overflow-y: auto;
 }
+>>>>>>> master
