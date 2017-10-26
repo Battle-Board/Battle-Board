@@ -3,7 +3,18 @@ import logo from '../../Battle-Board.png';
 import '../../App.css';
 import TopNav from "../TopNav/TopNav";
 
+
 class Home extends Component {
+	componentDidMount() {
+		if (typeof(Storage) !== "undefined") {
+			// Store
+			localStorage.setItem("userID", "1");
+			// Retrieve
+		} else {
+			alert("Sorry, your browser does not support Web Storage...");
+		}
+	}
+
 	render() {
 		return (
 			<div>

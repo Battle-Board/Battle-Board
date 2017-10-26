@@ -14,7 +14,7 @@ class Game extends Component {
 			foundGames: false,
 			charList: [],
 			foundChars: false,
-			userID: 1,
+			userID: localStorage.getItem("userID"),
 			sentMessage: ''
 		};
 
@@ -38,30 +38,33 @@ class Game extends Component {
 		let userID = {
 			userID: this.state.userID
 		};
-		API.getUserCharacters(userID)
-			.then(res => {
-				if (res.data.length !== 0) {
-					this.setState({
-						charList: res.data,
-						foundChars: true
-					});					
-				}
-					else {
-						let noChars = [{
-							character_name: "No characters found"
-						}];
-						this.setState({
-							charList: noChars,
-							foundChars: false
-						});
-					}
-			})
-			.catch(err => console.log(err));
 
-			this.getGames();
+		this.getCharacters(userID);
+		this.getGames();
 
 	}
 
+	getCharacters(userID) {
+		API.getUserCharacters(userID)
+		.then(res => {
+			if (res.data.length !== 0) {
+				this.setState({
+					charList: res.data,
+					foundChars: true
+				});					
+			}
+				else {
+					let noChars = [{
+						character_name: "No characters found"
+					}];
+					this.setState({
+						charList: noChars,
+						foundChars: false
+					});
+				}
+		})
+		.catch(err => console.log(err));
+	}
 	getGames() {
 		API.getGames()
 		.then(res => {
