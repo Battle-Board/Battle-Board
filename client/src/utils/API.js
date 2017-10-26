@@ -9,7 +9,11 @@ export default {
 	},
 
 	createGame: function(gameName) {
+<<<<<<< HEAD
+		return axios.post("/games", gameName).then((games) => {
+=======
 		return axios.post("/games/create", gameName).then((games) => {
+>>>>>>> 38e54629358206c709a2c83901602eafd5ec2462
 			return games;
 		});
 	},

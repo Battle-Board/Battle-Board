@@ -15,12 +15,43 @@ class CharacterInfo extends Component {
 		conditions: ""
 	}
 
+<<<<<<< HEAD
 	
 	// componentDidMount() {
 	// 	this.searchGames();
 	// }
 
+		// Do a search for articles based on subject, start date, and end date
+	createCharacter = (charName, initBonus, dexterity, hitPoints, conditions) => {
+		API.createCharacter(charName, initBonus, dexterity, hitPoints, conditions)
+			.then(res => {
+				// If articles were found, set the state and set the foundArticles to true
+				if (res.data.response.docs.length !== 0) {
+					this.setState({
+						articles: res.data.response.docs,
+						foundArticles: true
+					});					
+				}
+					// Otherwise, create a dummy entry for the articles and set the foundArticles to false
+					else {
+						let noArticles = [{
+							web_url: "",
+							snippet: "No articles found matching search terms",
+							headline: {
+								main: "No Articles Found"
+							}
+						}];
+						this.setState({
+							articles: noArticles,
+							foundArticles: false
+						});
+					}
+			})
+			.catch(err => console.log(err));
+	};
 
+=======
+>>>>>>> 38e54629358206c709a2c83901602eafd5ec2462
 	// Whenever anything in the Form is updated, update the state so the search can be done
 	handleInputChange = event => {
 		const { name, value } = event.target;
@@ -45,6 +76,7 @@ class CharacterInfo extends Component {
 
 		API.createCharacter(charInfo);
 		window.location = "/dashboard";
+
 	};
 
     render() {
@@ -65,6 +97,12 @@ class CharacterInfo extends Component {
 									handleInputChange={this.handleInputChange}
 									handleFormSubmit={this.handleFormSubmit}
 								/>
+								<form>
+									<label>
+										Create New Game:
+										<input size="100%" type="text" value={this.state.value} onChange={this.handleChange} onClick={this.handleInputChange}/>
+									</label>
+								</form>
 							</div>
 						</div>
 					</div>

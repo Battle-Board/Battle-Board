@@ -14,7 +14,7 @@ class Game extends Component {
 			chosenList: []
 		};
 		
-      this.handleChange = this.handleChange.bind(this);
+    this.handleChange = this.handleChange.bind(this);
 	  this.handleBuild = this.handleBuild.bind(this);
 	  this.handleBattle = this.handleBattle.bind(this);
 	}
@@ -49,10 +49,14 @@ class Game extends Component {
 		console.log(event.target.checked, event.target.name);
 	}
   
-    handleBuild(event) {
-		event.preventDefault();
+	handleBuild(event) {
+    event.preventDefault();
+		window.location="/dashboard"
+		console.log('Name submitted: ' + this.state.value);
+
 		let gameName =  {
 			game_name: this.state.gameName
+
 		};
 
 		if ((gameName.game_name !== "") && (this.state.chosenList.length > 0)) {
@@ -75,6 +79,8 @@ class Game extends Component {
 	handleBattle(event) {
 		console.log("Battle for", this.state.gameName);
 		event.preventDefault();
+		window.location="/board"
+
 		let gameName = {
 			game_name: this.state.gameName
 		};
