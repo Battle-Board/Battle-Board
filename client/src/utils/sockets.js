@@ -17,8 +17,17 @@ const sockets = {
         socket.emit('message', data);
 	},
 	
-	gameList: (data) => {
+
+    listenForGameList: (callback) => {
+        socket.on("gameList", (data) => {
+            callback(data);
+        });
+    },
+    
+    sendGameList: (data) => {
 		socket.emit("gameList", data);
-	}
+    }
+    
+
 };
 export { sockets };

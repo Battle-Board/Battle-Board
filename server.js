@@ -6,8 +6,8 @@ const logger = require("morgan");
 const PORT = process.env.PORT || 3001;
 const app = express();
 
-// const http = require('http').Server(app);
-// const io = require('socket.io')(http);
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
 
 //const controller = require("./controllers");
 
@@ -79,13 +79,19 @@ app.use("/games", gamesController);
 app.use("/users", usersController);
 
 // socket setup
-// io.on("connection", (client) => {
-// 	console.log("I'm in io.on in the server.js file");
-// 	console.log("Client.conn.id is", client.conn.id);
-// 	client.on("message", (message) => {
-// 		io.emit("message", message);
-// 	});
-// });
+io.on("connection", (client) => {
+	console.log("I'm in io.on in the server.js file");
+	console.log("Client.conn.id is", client.conn.id);
+	client.on("message", (message) => {
+        console.log("message from client", message);
+        io.emit("message", message);
+    });
+    
+    client.on("gameList", (message) => {
+        console.log("message from client", message);
+        io.emit("gameList", message);
+	});
+});
 
 
 // just a dummy GET route on our Test model
@@ -122,6 +128,6 @@ app.get("*", (req, res) => {
     }
 });
 
-app.listen(PORT, function() {
+http.listen(PORT, function() {
     console.log(`🌎 ==> Server now on port ${PORT}!`);
 });

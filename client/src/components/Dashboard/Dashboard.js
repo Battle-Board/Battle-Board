@@ -2,22 +2,26 @@ import React, { Component } from "react";
 import "./Dashboard.css";
 import TopNav from "../TopNav/TopNavLoggedIn";
 import API from "../../utils/API.js";
-// import { sockets } from "../../utils/sockets.js";
+import { sockets } from "../../utils/sockets.js";
 
 
 class Game extends Component {
     constructor(props) {
 		super(props);
-		// sockets.listenForMessage((data) => {
-		// 	this.setState({sentMessage: data})
-		// });
+		
     	this.state = {
 			gameList: [],
 			foundGames: false,
 			charList: [],
 			foundChars: false,
-			userID: 2
+			userID: 1,
+			sentMessage: ''
 		};
+
+		sockets.listenForGameList((data) => {
+			console.log("from the server", data);
+			this.getGames();
+		});
   	}
 
 	createCharacter(event) {
@@ -54,25 +58,30 @@ class Game extends Component {
 			})
 			.catch(err => console.log(err));
 
+			this.getGames();
+
+	}
+
+	getGames() {
 		API.getGames()
-			.then(res => {
-				if (res.data.length !== 0) {
+		.then(res => {
+			if (res.data.length !== 0) {
+				this.setState({
+					gameList: res.data,
+					foundGames: true
+				});					
+			}
+				else {
+					let noGames = [{
+						game_name: "No games found"
+					}];
 					this.setState({
-						gameList: res.data,
-						foundGames: true
-					});					
+						gameList: noGames,
+						foundGames: false
+					});
 				}
-					else {
-						let noGames = [{
-							game_name: "No games found"
-						}];
-						this.setState({
-							gameList: noGames,
-							foundGames: false
-						});
-					}
-			})
-			.catch(err => console.log(err));
+		})
+		.catch(err => console.log(err));
 	}
 
 
