@@ -14,6 +14,7 @@ router.post("/create", function(req, res) {
         // pass the result of our call
         .then(function(data) {
             // log the result to our terminal/bash window
+            console.log("after insertion into games, the returned gameID is", data.dataValues.game_id);
             res.json(data);
         }).catch(function(err) {
             res.json(err);

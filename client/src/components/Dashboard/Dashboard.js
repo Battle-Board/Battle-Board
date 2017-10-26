@@ -92,7 +92,7 @@ class Game extends Component {
 							</div>
 							<div className="row">
 								<div className="panel panel-default">
-									<div className="panel-body text-center">
+									<div className="panel-body text-center fixed-panel">
 										{this.state.charList.map(info => (
 											<div className = "row">
 												<div className = "col-sm-12">
@@ -119,7 +119,7 @@ class Game extends Component {
 							</div>
 							<div className = "row">
 								<div className = "panel panel-default">
-									<div className = "panel-body text-center">
+									<div className = "panel-body text-center fixed-panel">
 										{this.state.gameList.map(info => (
 											<div className = "row">
 												<div className = "col-sm-12">

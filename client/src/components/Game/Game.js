@@ -54,10 +54,10 @@ class Game extends Component {
 		let gameInfo =  {
 			game_name: this.state.gameName,
 		};
-		console.log("gameInfo is", gameInfo);
-		alert('Name submitted: ' + this.state.gameName);
 		
-		API.createGame(gameInfo);
+		API.createGame(gameInfo).then(res => {
+			alert("Back from the insert")
+		});
 		window.location = "/dashboard";
 
 	}
