@@ -1,9 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom';
-// import { Switch, Route } from 'react-router-dom'
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Home from './Home/Home.js'
-// import CharacterCreation from './CharacterCreation'
 import Game from "./Game/Game.js";
 import Board from "./Board/Board.js";
 import LogReg from "./LogReg/LogReg.js";
@@ -18,7 +16,6 @@ import CharacterInfo from "./Dashboard/CharacterInfo.js";
 const Main = () => (
 	<Switch>
 		<Route exact path='/' component={Home}/>
-		{/* <Route path="/character" component={CharacterCreation}/> */}
 		<Route path="/game" component={Game}/>
 		<Route path="/board" component={Board}/>
 		<Route path="/LogReg" component={LogReg}/>

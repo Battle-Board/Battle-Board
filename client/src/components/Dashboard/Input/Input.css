@@ -1,12 +1,3 @@
-.gameForm {
-	font-family: 'Mirza', cursive;
-	font-size: 24pt;
-}
-
-.buttonText {
-	font-size: 150%;
-}
-
 input {
     width: 100%; /* force to expand to container's width */  
     padding: 0 10px;

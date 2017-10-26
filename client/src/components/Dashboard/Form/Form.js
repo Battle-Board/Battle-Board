@@ -1,19 +1,21 @@
 import React from "react";
 import { FormBtn } from "./FormButton.js";
 import { Input } from "../Input/Input.js";
+import "../Input/Input.css";
 
 
 const Form = props =>
 
 	<form>
 		<Input
+			width = "100%"
 			value={props.charName}
 			onChange={props.handleInputChange}
 			name="charName"
 			className="form-control"
 			placeholder="Character Name"
 			id = "charName"
-			labelName = "Character Name"
+			labelname = "Character Name"
 		/>
 		<Input
 			value={props.initBonus}
@@ -22,7 +24,7 @@ const Form = props =>
 			className="form-control"
 			placeholder="Initiative Bonus"
 			id="initBonus"
-			labelName = "Initiative Bonus"
+			labelname = "Initiative Bonus"
 		/>
 		<Input
 			value={props.dexterity}
@@ -31,7 +33,7 @@ const Form = props =>
 			className="form-control"
 			placeholder="Dexterity"
 			id="dexterity"
-			labelName = "Dexterity"
+			labelname = "Dexterity"
 		/>
 		<Input
 			value={props.hitPoints}
@@ -40,16 +42,17 @@ const Form = props =>
 			className="form-control"
 			placeholder="HitPoints"
 			id="hitPoints"
-			labelName = "Hit Points"
+			labelname = "Hit Point Damage"
 		/>
 		<Input
+			type="textarea"
 			value={props.conditions}
 			onChange={props.handleInputChange}
 			name="conditions"
 			className="form-control"
 			placeholder="Conditions"
 			id="conditions"
-			labelName = "Conditions"
+			labelname = "Conditions"
 		/>
 		<FormBtn
 			// disabled={!(props.subject)}

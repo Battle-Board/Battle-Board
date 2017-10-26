@@ -6,11 +6,6 @@ import Form from "./Form/Form.js";
 
 
 class CharacterInfo extends Component {
-    // constructor(props) {
-    // 	super(props);  
-	//   this.handleInputChange = this.handleInputChange.bind(this);
-	//   this.handleFormSubmit = this.handleFormSubmit.bind(this);
-	// }
 
 	state = {
 		charName: "",
@@ -20,6 +15,7 @@ class CharacterInfo extends Component {
 		conditions: ""
 	}
 
+<<<<<<< HEAD
 	
 	// componentDidMount() {
 	// 	this.searchGames();
@@ -54,6 +50,8 @@ class CharacterInfo extends Component {
 			.catch(err => console.log(err));
 	};
 
+=======
+>>>>>>> 38e54629358206c709a2c83901602eafd5ec2462
 	// Whenever anything in the Form is updated, update the state so the search can be done
 	handleInputChange = event => {
 		const { name, value } = event.target;
@@ -66,7 +64,17 @@ class CharacterInfo extends Component {
 	handleFormSubmit = event => {
 		// Preventing the default behavior of the form submit (which is to refresh the page)
 		event.preventDefault();
-		alert("I'm about to redirect");
+		let charInfo =  {
+			character_name: this.state.charName,
+			dexterity: this.state.dexterity,
+			initiative_bonus: this.state.initBonus,
+			hitpoints: this.state.hitPoints,
+			conditions: this.state.conditions,
+			isCharacter: true,
+			user_id: 1
+		};
+
+		API.createCharacter(charInfo);
 		window.location = "/dashboard";
 
 	};
@@ -95,7 +103,6 @@ class CharacterInfo extends Component {
 										<input size="100%" type="text" value={this.state.value} onChange={this.handleChange} onClick={this.handleInputChange}/>
 									</label>
 								</form>
-
 							</div>
 						</div>
 					</div>

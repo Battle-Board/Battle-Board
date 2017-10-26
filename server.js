@@ -6,6 +6,9 @@ const logger = require("morgan");
 const PORT = process.env.PORT || 3001;
 const app = express();
 
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
+
 //const controller = require("./controllers");
 
 // logging for request to the console
@@ -35,23 +38,6 @@ mdb.once("open", function() {
     console.log("Mongoose connection successful");
 });
 
-// const GameState = require("./models/GameState.js");
-
-// let GameInfo = {};
-
-// 	GameInfo.game_id = "Game 1";
-// 	GameInfo.order_array = [1, 2, 3];
-// 	GameInfo.turn_index = 1;
-
-// 	// Create a new etnry for the database based off the Schema
-// 	let entry = new GameState(GameInfo);
-
-// 	// Save the entry into the database.
-// 	entry.save(function(err, doc) {
-// 		if (err) {
-// 			console.log(err);
-// 		}
-// 	});
 
 // Set up Sequelize
 const sdb = require("./models");
@@ -92,6 +78,20 @@ app.use("/games", gamesController);
 // for all the users routes
 app.use("/users", usersController);
 
+// socket setup
+io.on("connection", (client) => {
+	console.log("I'm in io.on in the server.js file");
+	console.log("Client.conn.id is", client.conn.id);
+	client.on("message", (message) => {
+        console.log("message from client", message);
+        io.emit("message", message);
+    });
+    
+    client.on("gameList", (message) => {
+        console.log("message from client", message);
+        io.emit("gameList", message);
+	});
+});
 
 
 // just a dummy GET route on our Test model
@@ -128,6 +128,6 @@ app.get("*", (req, res) => {
     }
 });
 
-app.listen(PORT, function() {
+http.listen(PORT, function() {
     console.log(`🌎 ==> Server now on port ${PORT}!`);
 });
