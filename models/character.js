@@ -16,10 +16,6 @@ module.exports = function(sequelize, Sequelize) {
             type: Sequelize.STRING,
             unique: true
         },
-        avatar: {
-            type: Sequelize.STRING,
-            defaultValue: "1.jpg"
-        },
         dexterity: {
             type: Sequelize.INTEGER,
             allowNull: false
@@ -43,13 +39,13 @@ module.exports = function(sequelize, Sequelize) {
         }
     });
 
-    Character.associate = function(models) {
-        Character.belongsTo(models.User, {
-            foreignKey: {
-                allowNull: false
-            }
-        });
-    }
+    // Character.associate = function(models) {
+    //     Character.belongsTo(models.User, {
+    //         foreignKey: {
+    //             allowNull: false
+    //         }
+    //     });
+    // }
 
     return Character;
 }

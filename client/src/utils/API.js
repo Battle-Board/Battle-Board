@@ -1,6 +1,5 @@
 import axios from "axios";
 
-
 export default {
 
 	searchGames: function() {
@@ -10,17 +9,34 @@ export default {
 	},
 
 	createGame: function(gameName) {
-		return axios.post("/saveGame", gameName).then((games) => {
+		return axios.post("/games/create", gameName).then((games) => {
 			return games;
 		});
 	},
 
-	createCharacter: function(charName, initBonus, dexterity, hitPoints, conditions) {
-		return axios.post("/characters/create", charName, initBonus, dexterity, hitPoints, conditions).then((data) => {
+	createCharacter: function(charInfo) {
+		return axios.post("/characters/create", charInfo).then((data) => {
 			return data;
 		});
-	}
+	},
 
+	getUserCharacters: function(userID) {
+		return axios.post("/characters/user/", userID).then((characters) => {
+			return characters;
+		});
+	},
+
+	getAllCharacters: function() {
+		return axios.get("/characters/all/").then((characters) => {
+			return characters;
+		});
+	},
+
+	getGames: function() {
+		return axios.get("/games/all").then((games) => {
+			return games;
+		});
+	},
 	// search: function(query, start_date, end_date) {
 	//   let fullQuery = query;
 	//   if (start_date) {
