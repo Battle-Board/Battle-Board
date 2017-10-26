@@ -33,7 +33,17 @@ class CharacterInfo extends Component {
 	handleFormSubmit = event => {
 		// Preventing the default behavior of the form submit (which is to refresh the page)
 		event.preventDefault();
-		alert("I'm about to redirect");
+		let charInfo =  {
+			character_name: this.state.charName,
+			dexterity: this.state.dexterity,
+			initiative_bonus: this.state.initBonus,
+			hitpoints: this.state.hitPoints,
+			conditions: this.state.conditions,
+			isCharacter: true,
+			user_id: 1
+		};
+
+		API.createCharacter(charInfo);
 		window.location = "/dashboard";
 	};
 

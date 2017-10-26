@@ -2,22 +2,23 @@ import React, { Component } from "react";
 import "./Dashboard.css";
 import TopNav from "../TopNav/TopNavLoggedIn";
 import API from "../../utils/API.js";
+// import { sockets } from "../../utils/sockets.js";
 
 
 class Game extends Component {
     constructor(props) {
-    	super(props);
+		super(props);
+		// sockets.listenForMessage((data) => {
+		// 	this.setState({sentMessage: data})
+		// });
     	this.state = {
 			gameList: [],
 			foundGames: false,
 			charList: [],
-			foundChars: false
+			foundChars: false,
+			userID: 2
 		};
   	}
-	
-	// componentDidMount() {
-	// 	this.searchGames();
-	// }
 
 	createCharacter(event) {
 		event.preventDefault();
@@ -26,11 +27,14 @@ class Game extends Component {
 	
 	createGame(event) {
 		event.preventDefault();
-		window.location = "/games";
+		window.location = "/game";
 	}
 
 	componentDidMount() {
-		API.getCharacters()
+		let userID = {
+			userID: this.state.userID
+		};
+		API.getUserCharacters(userID)
 			.then(res => {
 				if (res.data.length !== 0) {
 					this.setState({
@@ -79,54 +83,58 @@ class Game extends Component {
 				<div className="container dashText">
 					<div className="row">
 						<div className = "col-sm-12 col-md-4 col-md-offset-1">
-							<div className="panel panel-default">
-								<div className="panel-body text-center">
-									Your Characters:
-								</div>
-							</div>
-						</div>
-						<div className = "col-sm12 col-md-4 col-md-offset-2">
-							<div className = "panel panel-default">
-								<div className = "panel-body text-center">
-									Your Games:
-								</div>
-							</div>
-						</div>
-					</div>
-					<div className="row">
-						<div className = "col-sm-12 col-md-4 col-md-offset-1">
-							<div className="panel panel-default">
-								<div className="panel-body text-center">
-									{this.state.charList.map(info => (
-										<div className = "row">
-											<div className = "col-sm-12">
-												<h2>{info.character_name}</h2>
-											</div>
-										</div>
-									))}
-								</div>
-							</div>
-						</div>
-						<div className = "col-sm12 col-md-4 col-md-offset-2">
-							<div className = "panel panel-default">
-								<div className = "panel-body text-center">
-								{this.state.gameList.map(info => (
-									<div className = "row">
-										<div className = "col-sm-12">
-											<h2>{info.game_name}</h2>
-										</div>
+							<div className="row">
+								<div className="panel panel-default">
+									<div className="panel-body text-center">
+										Your Characters:
 									</div>
-								))}
+								</div>
 							</div>
+							<div className="row">
+								<div className="panel panel-default">
+									<div className="panel-body text-center">
+										{this.state.charList.map(info => (
+											<div className = "row">
+												<div className = "col-sm-12">
+													<h2>{info.character_name}</h2>
+												</div>
+											</div>
+										))}
+									</div>
+								</div>
 							</div>
-						</div>
-					</div>
-					<div className="row">
-						<div className = "col-sm-12 col-md-4 col-md-offset-1">
-							<button className="btn btn-primary center-block" onClick={this.createCharacter} type="submit" value="CreateCharacter"><span className="buttonText">Create New Character</span></button>
+							<div className="row">
+								<div className = "col-sm-12">
+									<button className="btn btn-primary center-block" onClick={this.createCharacter} type="submit" value="CreateCharacter"><span className="buttonText">Create New Character</span></button>
+								</div>
+							</div>
 						</div>
 						<div className = "col-sm12 col-md-4 col-md-offset-2">
-							<button className="btn btn-primary center-block" type="submit" value="CreateGame"><span className="buttonText">Create New Game</span></button>
+							<div className = "row">
+							<div className = "panel panel-default">
+								<div className = "panel-body text-center">
+									Available Games:
+								</div>
+							</div>
+							</div>
+							<div className = "row">
+								<div className = "panel panel-default">
+									<div className = "panel-body text-center">
+										{this.state.gameList.map(info => (
+											<div className = "row">
+												<div className = "col-sm-12">
+													<h2>{info.game_name}</h2>
+												</div>
+											</div>
+										))}
+									</div>
+								</div>
+							</div>
+							<div className = "row">
+								<div className = "col-sm-12">
+									<button className="btn btn-primary center-block" onClick={this.createGame} type="submit" value="CreateGame"><span className="buttonText">Create New Game</span></button>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>

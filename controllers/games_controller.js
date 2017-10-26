@@ -21,7 +21,9 @@ router.post("/create", function(req, res) {
 });
 
 router.get("/all", function(req, res) {
-    db.Game.findAll({})
+    db.Game.findAll({
+        order: [["game_name"]]
+    })
         .then(function(data) {
             res.json(data);
         }).catch(function(err) {

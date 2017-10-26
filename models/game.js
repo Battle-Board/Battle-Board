@@ -1,5 +1,3 @@
-// game_id (default unique identifier auto created by sequelize), game_name
-
 module.exports = function(sequelize, Sequelize) {
     const Game = sequelize.define("Game", {
         game_id: {

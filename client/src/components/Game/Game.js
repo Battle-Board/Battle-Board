@@ -9,9 +9,9 @@ class Game extends Component {
     constructor(props) {
     	super(props);
     	this.state = {
-			value: '',
-			gameList: [],
-			foundGames: true
+			gameName: '',
+			charList: [],
+			foundChars: true
 		};
   
       this.handleChange = this.handleChange.bind(this);
@@ -19,17 +19,47 @@ class Game extends Component {
 	  this.handleBattle = this.handleBattle.bind(this);
 	}
 	
-	// componentDidMount() {
-	// 	this.searchGames();
-	// }
+	componentDidMount() {
+		API.getAllCharacters()
+		.then(res => {
+			if (res.data.length !== 0) {
+				this.setState({
+					charList: res.data,
+					foundChars: true
+				});					
+			}
+				else {
+					let noChars = [{
+						character_name: "No characters found"
+					}];
+					this.setState({
+						charList: noChars,
+						foundChars: false
+					});
+				}
+		})
+		.catch(err => console.log(err));
+	}
   
     handleChange(event) {
-		this.setState({value: event.target.value});
-    }
+		this.setState({gameName: event.target.value});
+	}
+	
+	checkChange(event) {
+		console.log(event.target.checked, event.target.name);
+	}
   
     handleBuild(event) {
 		event.preventDefault();
-		console.log('Name submitted: ' + this.state.value);
+		let gameInfo =  {
+			game_name: this.state.gameName,
+		};
+		console.log("gameInfo is", gameInfo);
+		alert('Name submitted: ' + this.state.gameName);
+		
+		API.createGame(gameInfo);
+		window.location = "/dashboard";
+
 	}
 	
 	handleBattle(event) {
@@ -46,12 +76,26 @@ class Game extends Component {
 					<div className = "col-sm-12 col-md-6 col-md-offset-3 gameForm">
 						<div className="panel panel-default">
 							<div className="panel-body">
-								<form>
+								<form className="form-horizontal">
 									<label>
 										Create New Game:
-										<input size="100%" type="text" value={this.state.value} onChange={this.handleChange} />
+										<input width="100%" type="text" value={this.state.value} onChange={this.handleChange} />
 									</label>
-									<Button />
+									<div className="row">
+										<div className="panel panel-default">
+											<div className="panel-body">
+												{this.state.charList.map(info => (
+													<div className = "row">
+														<div className = "col-sm-12 checkbox">
+															<label for={info.user_id}>
+																<input id={info.user_id} type="checkbox" name="character" onChange={this.checkChange} value={info.user_id} />{info.character_name}
+															</label>
+														</div>
+													</div>
+												))}
+											</div>
+										</div>
+									</div>
 									<button onClick={this.handleBuild} className="btn btn-primary pull-left" type="submit" value="Build and Return"><span className="buttonText">Build and Return</span></button>
 									<button onClick={this.handleBattle} className="btn btn-primary pull-right" type="submit" value="Build and Battle"><span className="buttonText">Build and Battle</span></button>
 								</form>
