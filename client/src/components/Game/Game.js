@@ -14,26 +14,24 @@ class Game extends Component {
 			foundGames: true
 		};
   
-      this.handleChange = this.handleChange.bind(this);
+    this.handleChange = this.handleChange.bind(this);
 	  this.handleBuild = this.handleBuild.bind(this);
 	  this.handleBattle = this.handleBattle.bind(this);
 	}
-	
-	// componentDidMount() {
-	// 	this.searchGames();
-	// }
   
-    handleChange(event) {
+	handleChange(event) {
 		this.setState({value: event.target.value});
-    }
+	}
   
-    handleBuild(event) {
+	handleBuild(event) {
 		event.preventDefault();
+		window.location="/dashboard"
 		console.log('Name submitted: ' + this.state.value);
 	}
 	
 	handleBattle(event) {
 		event.preventDefault();
+		window.location="/board"
 		console.log("Battle for", this.state.value);
 	}
   
