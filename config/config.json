@@ -1,7 +1,7 @@
 {
     "development": {
         "username": "root",
-        "password": "MySQLpw0rd!",
+        "password": "R2Qeph2thavU",
         "database": "battleboard_db",
         "host": "127.0.0.1",
         "dialect": "mysql"

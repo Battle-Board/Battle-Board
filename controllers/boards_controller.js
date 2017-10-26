@@ -10,7 +10,17 @@ var db = require("../models");
 // POST to /boards/create
 router.post("/create", function(req, res) {
     // add item to board table
-    db.Board.create(req.body)
+    const newBody = req.body.charInfo.map((char) => {
+        return {
+            game_id: req.body.gameID,
+            character_id: char.character_id,
+            user_id: char.user_id
+        }
+    });
+
+    console.error(newBody);
+
+    db.Board.bulkCreate(newBody)
         // pass the result of our call
         .then(function(data) {
             // log the result to our terminal/bash window
