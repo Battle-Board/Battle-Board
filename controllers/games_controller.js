@@ -9,6 +9,7 @@ var db = require("../models");
 // Post route to insert a game into the game table
 // POST to /games/create
 router.post("/create", function(req, res) {
+    console.log("req.body is", req.body);
     // add item to game table
     db.Game.create(req.body)
         // pass the result of our call
