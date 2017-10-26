@@ -3,7 +3,7 @@ import "./Game.css";
 import TopNav from "../TopNav/TopNavLoggedIn";
 import API from "../../utils/API.js";
 import Button from "./Button.js";
-
+import {sockets} from "../../utils/sockets";
 
 class Game extends Component {
     constructor(props) {
@@ -13,7 +13,7 @@ class Game extends Component {
 			charList: [],
 			foundChars: true
 		};
-  
+		
       this.handleChange = this.handleChange.bind(this);
 	  this.handleBuild = this.handleBuild.bind(this);
 	  this.handleBattle = this.handleBattle.bind(this);
@@ -56,9 +56,11 @@ class Game extends Component {
 		};
 		
 		API.createGame(gameInfo).then(res => {
-			alert("Back from the insert")
+			alert("Back from the insert");
+			console.log(res.data);
+			sockets.sendGameList(res.data);
+			window.location = "/dashboard";			
 		});
-		window.location = "/dashboard";
 
 	}
 	
