@@ -9,8 +9,8 @@ const Character = ({ props }) =>
 				<p className="charName">{props.charName}</p>
 				<p className="bodyText">Initiative Bonus: {props.initBonus}<br />
 				Dexterity: {props.dexterity}<br />
-				Initiative Roll:<br />
-				Final Initiative:<br />
+				Initiative Roll: {props.initRoll}<br />
+				Final Initiative: {props.finalInit}<br />
 				Hit Points:</p>
 			</div>
 		</div>

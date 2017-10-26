@@ -13,34 +13,31 @@ export default {
 		return axios.post("/saveGame", gameName).then((games) => {
 			return games;
 		});
+	},
+
+	createCharacter: function(charName, initBonus, dexterity, hitPoints, conditions) {
+		return axios.post("/characters/create", charName, initBonus, dexterity, hitPoints, conditions).then((data) => {
+			return data;
+		});
+	},
+
+	createUser: function(data) {
+		console.log("In create user!");
+		return axios.post("/signup", data);
 	}
-
-	// search: function(query, start_date, end_date) {
-	//   let fullQuery = query;
-	//   if (start_date) {
-	// 	  fullQuery = fullQuery + "&start_date=" + start_date.trim() + "0101";
-	//   }
-	//   if (end_date) {
-	// 	  fullQuery = fullQuery + "&end_date=" + end_date.trim() + "1231";
-	//   }
-	// return axios.get(BASEURL + APIKEY + fullQuery);
-	// },
-
-	// saveArticle: function(article) {
-	// 	return axios.post("/saved", article).then((data)=>{
-	// 		return data;
-	// 	});
-	// },
-
-	// getSavedArticles: function() {
-	// 	return axios.get("/getSaved").then((articles) => {
-	// 		return articles;
-	// 	});
-	// },
-
-	// deleteArticle: function(article) {
-	// 	return axios.post("/deleteArticle", article).then((data)=>{
-	// 		return data;
-	// 	});
-	// }
 };
+
+// // User Routes
+// app.get("/users/all", usersController.all);
+
+// // Character Routes
+// app.post("/characters/create", charactersController.create);
+// app.get("/characters/all", charactersController.all);
+
+// // Game Routes
+// app.post("/games/create", gamesController.create);
+// app.get("/games/all", gamesController.all);
+
+// // Board Routes
+// app.post("/boards/create", boardsController.create);
+// app.get("/boards/all", boardsController.all);

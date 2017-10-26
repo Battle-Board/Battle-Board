@@ -10,25 +10,28 @@ module.exports = function(sequelize, Sequelize) {
             primaryKey: true,
             autoIncrement: true
         },
-        game_name: {
-            type: Sequelize.STRING
+        game_id: {
+            type: Sequelize.INTEGER,
+            allowNull: false
         }, 
-        character_name: {
-            type: Sequelize.STRING
+        character_id: {
+            type: Sequelize.INTEGER,
+            allowNull: false
         },
-        username: {
-            type: Sequelize.STRING
+        user_id: {
+            type: Sequelize.INTEGER,
+            allowNull: false
         },
     });
 
     // Associate so that if user deletes we can simply destroy all records
-    Board.associate = function(models) {
-        Board.belongsTo(models.User, {
-            foreignKey: {
-                allowNull: false
-            }
-        });
-    }
+    // Board.associate = function(models) {
+    //     Board.belongsTo(models.User, {
+    //         foreignKey: {
+    //             allowNull: false
+    //         }
+    //     });
+    // }
 
     return Board;
 }

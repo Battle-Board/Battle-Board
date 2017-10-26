@@ -5,11 +5,11 @@ module.exports = function(passport, user) {
     var LocalStrategy = require("passport-local").Strategy;
 
     passport.serializeUser(function(user,done) {
-        done(null, user.id);
+        done(null, user);
     });
 
-    passport.deserializeUser(function(id, done) {
-        User.findById(id).then(function(user) {
+    passport.deserializeUser(function(user_id, done) {
+        User.findById(user_id).then(function(user) {
             if(user) {
                 done(null, user.get());
             } else {
@@ -43,13 +43,15 @@ module.exports = function(passport, user) {
                         password: userPassword,
                         email: req.body.email
                     };
-                    User.create(data).then(function(newUser, created) {
+                    User.create(data).then(newUser => {
+                        console.log("I am successful, but can't respond to axios",req.body.username) 
                         if(!newUser) {
                             return done(null, false);
                         }else if(newUser) {
                             return done(null, newUser);
                         }
-                    });
+                    })
+                    .catch(err => console.log(err));
                 }
             });
         }

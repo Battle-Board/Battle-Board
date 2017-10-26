@@ -1,11 +1,11 @@
 // Users Controller
-var sdb = require("../models");
-var exports = module.exports = {}
+const sdb = require("../models");
+var exports = module.exports = {};
 
-// Post route to insert a user into the user table
-// POST to /users/create is done in passport
+// User creation will be handled in config/passport/passport.js
 
-exports.allUsers = function(req, res) {
+// Grab all Users
+exports.all = function(req, res) {
     sdb.User.findAll({})
         .then(function(data) {
             res.json(data);

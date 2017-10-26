@@ -4,19 +4,20 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const logger = require("morgan");
 const passport = require("passport");
-const session = require("express-session");
+const session = require("express-session")
 
 const PORT = process.env.PORT || 3001;
 const app = express();
 
 //const controller = require("./controllers");
 
-// logging for request to the console
-app.use(logger("dev"));
+// // logging for request to the console
+// app.use(logger("dev"));
 
 // Configure body parser for AJAX requests
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
 
 // Set up Sequelize
 const sdb = require("./models");
@@ -33,18 +34,19 @@ app.use(passport.session());
 
 // Passport Middleware to have a global variable for userName (res.locals.user.user_name)
 app.use(function(req, res, next) {
-  res.locals.user = req.user;
-  if(!req.user){
-      next();
-  }else {
-      next();
-  }
-});
+    console.log("middleware test:",req.user);
+    console.log("middleware body test: ",req.body.username);
+    res.locals.user = req.user;
+    if(!req.user){
+        next();
+    }else {
+        next();
+    }
+  });
 
 // Passports Requirements for Functionality
 require("./routes/auth.js")(app, passport);
 require("./config/passport/passport.js")(passport, sdb.User);
-
 
 // Set up Mongoose
 // Set up promises with mongoose
@@ -66,90 +68,13 @@ mdb.once("open", function() {
     console.log("Mongoose connection successful");
 });
 
-// const GameState = require("./models/GameState.js");
-
-// let GameInfo = {};
-
-// 	GameInfo.game_id = "Game 1";
-// 	GameInfo.order_array = [1, 2, 3];
-// 	GameInfo.turn_index = 1;
-
-// 	// Create a new etnry for the database based off the Schema
-// 	let entry = new GameState(GameInfo);
-
-// 	// Save the entry into the database.
-// 	entry.save(function(err, doc) {
-// 		if (err) {
-// 			console.log(err);
-// 		}
-// 	});
-
 // Serve up static assets (usually on heroku)
 if (process.env.NODE_ENV === "production") {
     app.use(express.static("client/build"));
 }
 
-
-const Board = require("./models/board.js");
-app.get("/games", (req, res) => {
-    sdb.Board.findAll().then(data => {
-        res.json(data);
-    });
-});
-
-// const boardsController = require("./controllers/boards_controller.js");
-// const charactersController = require("./controllers/characters_controller.js");
-// const gamesController = require("./controllers/games_controller.js");
-// const usersController = require("./controllers/users_controller.js");
-
-// // for all the boards routes
-// app.use("/boards", boardsController);
-
-// // for all the characters routes
-// app.use("/characters", charactersController);
-
-// // for all the games routes
-// app.use("/games", gamesController);
-
-// // for all the users routes
-// app.use("/users", usersController);
-
-
-
-// just a dummy GET route on our Test model
-app.get("/data", (req, res) => {
-    Test.find((err, data) => {
-        if (err) throw err; {
-            console.log(data);
-            res.json(data);
-        }
-    });
-});
-
-// just a post on our Test model
-app.post("/new", (req, res) => {
-    const test = new Test(req.body);
-    test.save(req.body, (err, data) => {
-        if (err) throw err;
-        res.json(data);
-    });
-});
-
-
-app.get("/healthcheck", function(req, res) {
-    res.json({ "success": true, status: 200 })
-});
-
-// Send every request to the React app
-// Define any API routes before this runs
-app.get("*", (req, res) => {
-    if (process.env.NODE_ENV === "production") {
-        res.sendFile(__dirname + "./client/build/index.html");
-    } else {
-        res.sendFile(__dirname + "./client/public/index.html");
-    }
-});
-
 app.listen(PORT, function() {
     console.log(`🌎 ==> Server now on port ${PORT}!`);
 });
+
+module.exports = app;

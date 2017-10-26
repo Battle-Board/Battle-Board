@@ -5,38 +5,39 @@ const gamesController = require("../controllers/games_controller.js");
 const usersController = require("../controllers/users_controller.js");
 
 module.exports = function(app, passport) {
-    // Waits for a get request on /signup
-    // app.get("/", authController.index);
-    app.get("/signup", authController.signup);
+    // User Routes
+    app.get("/users/all", usersController.all);
 
-    // ADD isLoggedIn TO ALL OF THESE ROUTES
-    // Board related post and get routes
-    app.post("/board/create", boardsController.createBoard);
-    app.get("/board/all", boardsController.populateBoard);
-    app.post("/character/create", charactersController.createCharacter);
-    app.get("/character/all", charactersController.allCharacters);
-    app.post("/game/create", gamesController.createGame);
-    app.get("/game/all", gamesController.allGames);
-    app.get("/user/all", usersController.allUsers);
-    // END OF isLoggedIn ADDITION
+    // Character Routes
+    app.post("/characters/create", charactersController.create);
+    app.get("/characters/all", charactersController.all);
 
-    // Looks for a post request on /signup then runs through passport
-    app.post("/signup", passport.authenticate("local-signup", {
-        successRedirect: "/",
-        failureRedirect: "/signup"
-    }));
+    // Game Routes
+    app.post("/games/create", gamesController.create);
+    app.get("/games/all", gamesController.all);
 
-    // Looks for a post request on /signin then runs passport
-    app.post("/signin", passport.authenticate("local-signin", {
-        successRedirect: "/user",
-        failureRedirect: "/signup"
-    }));
+    // Board Routes
+    app.post("/boards/create", boardsController.create);
+    app.get("/boards/all", boardsController.all);
 
-    // Waits for a get request for /user
-    app.get("/user", isLoggedIn, authController.user);
+    // Passport Routes
+    app.post("/signup", passport.authenticate("local-signup"));
+    app.get("/signup", usersController.all);
 
-    // Waits for a get request on /logout
+    // AuthController Routes
     app.get("/logout", authController.logout);
+    app.get("/userid", authController.user);
+
+    // Send every request to the React app
+    // Define any API routes before this runs
+
+    app.get("*", (req, res) => {
+        if (process.env.NODE_ENV === "production") {
+            res.sendFile(__dirname + "./client/build/index.html");
+        } else {
+            res.sendFile(__dirname + "./client/public/index.html");
+        }
+    });
 
     function isLoggedIn(req, res, next) {
         if(req.isAuthenticated()) return next();

@@ -14,13 +14,13 @@ module.exports = function(sequelize, Sequelize) {
         }
     });
 
-    Game.associate = function(models) {
-        Game.belongsTo(models.User, {
-            foreignKey: {
-                allowNull: false
-            }
-        });
-    }
+    // Game.associate = function(models) {
+    //     Game.belongsTo(models.User, {
+    //         foreignKey: {
+    //             allowNull: false
+    //         }
+    //     });
+    // }
 
     return Game;
 }

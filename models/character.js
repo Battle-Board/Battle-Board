@@ -8,6 +8,10 @@ module.exports = function(sequelize, Sequelize) {
             primaryKey: true,
             autoIncrement: true
         },
+        user_id: {
+            type: Sequelize.INTEGER,
+            allowNull: false
+        },
         character_name: {
             type: Sequelize.STRING,
             unique: true
@@ -17,19 +21,19 @@ module.exports = function(sequelize, Sequelize) {
             defaultValue: "1.jpg"
         },
         dexterity: {
-            type: Sequelize.DOUBLE,
+            type: Sequelize.INTEGER,
             allowNull: false
         },
         initiative_bonus: {
-            type: Sequelize.DOUBLE,
+            type: Sequelize.INTEGER,
             allowNull: false
         },
         hitpoints: {
-            type: Sequelize.DOUBLE,
+            type: Sequelize.INTEGER,
             allowNull: false
         },
         conditions: {
-            type: Sequelize.STRING,
+            type: Sequelize.TEXT,
             allowNull: true
         },
         isCharacter: {
@@ -39,13 +43,13 @@ module.exports = function(sequelize, Sequelize) {
         }
     });
 
-    Character.associate = function(models) {
-        Character.belongsTo(models.User, {
-            foreignKey: {
-                allowNull: false
-            }
-        });
-    }
+    // Character.associate = function(models) {
+    //     Character.belongsTo(models.User, {
+    //         foreignKey: {
+    //             allowNull: false
+    //         }
+    //     });
+    // }
 
     return Character;
 }
