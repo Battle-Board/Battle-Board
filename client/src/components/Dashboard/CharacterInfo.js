@@ -6,11 +6,6 @@ import Form from "./Form/Form.js";
 
 
 class CharacterInfo extends Component {
-    // constructor(props) {
-    // 	super(props);  
-	//   this.handleInputChange = this.handleInputChange.bind(this);
-	//   this.handleFormSubmit = this.handleFormSubmit.bind(this);
-	// }
 
 	state = {
 		charName: "",
@@ -19,38 +14,6 @@ class CharacterInfo extends Component {
 		hitPoints: 0,
 		conditions: ""
 	}
-
-	
-
-
-		// Do a search for articles based on subject, start date, and end date
-	createCharacter = (charName, initBonus, dexterity, hitPoints, conditions) => {
-		API.createCharacter(charName, initBonus, dexterity, hitPoints, conditions)
-			.then(res => {
-				// If articles were found, set the state and set the foundArticles to true
-				if (res.data.response.docs.length !== 0) {
-					this.setState({
-						articles: res.data.response.docs,
-						foundArticles: true
-					});					
-				}
-					// Otherwise, create a dummy entry for the articles and set the foundArticles to false
-					else {
-						let noArticles = [{
-							web_url: "",
-							snippet: "No articles found matching search terms",
-							headline: {
-								main: "No Articles Found"
-							}
-						}];
-						this.setState({
-							articles: noArticles,
-							foundArticles: false
-						});
-					}
-			})
-			.catch(err => console.log(err));
-	};
 
 	// Whenever anything in the Form is updated, update the state so the search can be done
 	handleInputChange = event => {
@@ -64,7 +27,17 @@ class CharacterInfo extends Component {
 	handleFormSubmit = event => {
 		// Preventing the default behavior of the form submit (which is to refresh the page)
 		event.preventDefault();
-		alert("I'm about to redirect");
+		let charInfo =  {
+			character_name: this.state.charName,
+			dexterity: this.state.dexterity,
+			initiative_bonus: this.state.initBonus,
+			hitpoints: this.state.hitPoints,
+			conditions: this.state.conditions,
+			isCharacter: true,
+			user_id: 1
+		};
+
+		API.createCharacter(charInfo);
 		window.location = "/dashboard";
 	};
 
@@ -98,7 +71,6 @@ class CharacterInfo extends Component {
 										<input size="100%" type="text" value={this.state.value} onChange={this.handleChange} onClick={this.createCharacter} />
 									</label>
 								</form>
-
 							</div>
 						</div>
 					</div>

@@ -25,13 +25,13 @@ module.exports = function(sequelize, Sequelize) {
     });
 
     // Associate so that if user deletes we can simply destroy all records
-    Board.associate = function(models) {
-        Board.belongsTo(models.User, {
-            foreignKey: {
-                allowNull: false
-            }
-        });
-    }
+    // Board.associate = function(models) {
+    //     Board.belongsTo(models.User, {
+    //         foreignKey: {
+    //             allowNull: false
+    //         }
+    //     });
+    // }
 
     return Board;
 }

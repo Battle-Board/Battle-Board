@@ -5,6 +5,20 @@ import './LogReg.scss';
 import { Switch, Route, Link} from 'react-router-dom';
 
 class LogReg extends Component{
+
+	state = {
+		username: "",
+        password: "",
+        email: ""
+    }
+
+	handleInputChange = event => {
+		const { name, value } = event.target;
+		this.setState({
+			[name]: value
+		});
+	};
+
     render(){
         return(
             <div>
@@ -21,15 +35,15 @@ class LogReg extends Component{
                     <ul className="noBullet">
                         <li>
                         <label for="username"></label>
-                        <input type="text" className="inputFields" id="username" name="username" placeholder="Username" value="" oninput="return userNameValidation(this.value)" required/>
+                        <input type="text" className="inputFields" id="username" name="username" placeholder="Username" value={this.state.value} onChange={this.handleInputChange} oninput="return userNameValidation(this.value)" required/>
                         </li>
                         <li>
                         <label for="password"></label>
-                        <input type="password" className="inputFields" id="password" name="password" placeholder="Password" value="" oninput="return passwordValidation(this.value)" required/>
+                        <input type="password" className="inputFields" id="password" name="password" placeholder="Password" value={this.state.value} onChange={this.handleInputChange} oninput="return passwordValidation(this.value)" required/>
                         </li>
                         <li>
                         <label for="email"></label>
-                        <input type="email" className="inputFields" id="email" name="email" placeholder="Email" value="" required />
+                        <input type="email" className="inputFields" id="email" name="email" placeholder="Email" value={this.state.value} onChange={this.handleInputChange} required />
                         </li>
                         <li id="center-btn">
                         <input type="submit" id="join-btn" name="join" alt="Join" value="Join" />
