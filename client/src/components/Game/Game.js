@@ -47,6 +47,9 @@ class Game extends Component {
 		API.userLoggedIn()
 		.then(res => {
 			console.log("Got res from API in Dashboard: ",res);
+			if(res.data.status === "4xx") {
+				this.setState({redirect: true});
+			}
 		})
 		.catch(err => {
 			console.log("Error from API in Dashboard: ",err);
@@ -130,7 +133,7 @@ class Game extends Component {
 		const { redirect } = this.state;
 		// const { characterRedirect } = this.state;
 		if(redirect) {
-			return <Redirect to="/LogReg"/>;
+			return <Redirect to="/login-signup"/>;
 		}
       return (
         <div>

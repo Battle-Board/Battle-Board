@@ -62,6 +62,9 @@ class Board extends Component {
 		API.userLoggedIn()
 		.then(res => {
 			console.log("Got res from API in Dashboard: ",res);
+			if(res.data.status === "4xx") {
+				this.setState({redirect: true});
+			}
 		})
 		.catch(err => {
 			console.log("Error from API in Dashboard: ",err);
