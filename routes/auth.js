@@ -27,6 +27,11 @@ module.exports = function(app, passport) {
         res.json(req.user.dataValues.username);
     });
 
+    app.post("/signin", passport.authenticate('local-signin'), function(req, res) {
+        console.log("In function after passport!",res.locals.user);
+        res.json(res.locals.user);
+    });
+
     app.get("/signup", usersController.all);
 
     // AuthController Routes

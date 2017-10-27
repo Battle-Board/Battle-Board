@@ -35,6 +35,18 @@ class LogReg extends Component{
         .catch((err) => {console.log("Some Error (from API): ",err);});
     }
 
+    handleLogin = event => {
+        event.preventDefault();
+        API.login({
+            username: this.state.username,
+            password: this.state.password
+        }).then(res => {
+            this.setState({redirect: true});
+        }).catch(err => {
+            console.log("Handle Login Error: ", err);
+        });
+    }
+
     handleLogout = event => {
         event.preventDefault();
         API.logout();
@@ -72,6 +84,23 @@ class LogReg extends Component{
                         </li>
                         <li id="center-btn">
                         <input type="submit" id="join-btn" name="join" alt="Join" value="Join" onClick={this.handleFormSubmit}/>
+                        </li>
+                    </ul>
+                    </form>
+                    <br/><br/><br/>
+                    <form action="#" method="POST" className="signupForm" name="signupform">
+                    <h2>Sign Up</h2>
+                    <ul className="noBullet">
+                        <li>
+                        <label for="username"></label>
+                        <input type="text" className="inputFields" id="username" name="username" placeholder="Username" value={this.state.username} onChange={this.handleInputChange} required/>
+                        </li>
+                        <li>
+                        <label for="password"></label>
+                        <input type="password" className="inputFields" id="password" name="password" placeholder="Password" value={this.state.password} onChange={this.handleInputChange} required/>
+                        </li>
+                        <li id="center-btn">
+                        <input type="submit" id="join-btn" name="login" alt="Login" value="Login" onClick={this.handleLogin}/>
                         </li>
                     </ul>
                     </form>

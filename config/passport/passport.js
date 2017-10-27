@@ -84,6 +84,7 @@ module.exports = function(passport, user) {
                     return done(null, false, {message: "Incorrect Password!"});
                 };
                 var userinfo = user.get();
+                console.log("logged in");
                 return done(null, userinfo);
             }).catch(function(err) {
                 console.error("Error: ", err);

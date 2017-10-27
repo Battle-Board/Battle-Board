@@ -42,6 +42,11 @@ export default {
 		return axios.post("/signup", data);
 	},
 
+	login: function(data) {
+		console.log("In login user!");
+		return axios.post("/signin", data);
+	},
+
 	userLoggedIn: function() {
 		console.log("userLoggedIn right before axios call");
 		return axios.get("/auth/userid").then((user) => {
