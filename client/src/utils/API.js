@@ -1,7 +1,6 @@
 import axios from "axios";
 
 export default {
-
 	searchGames: function() {
 		return axios.get("/games").then((games) => {
 			return games;
@@ -37,32 +36,27 @@ export default {
 			return games;
 		});
 	},
-	// search: function(query, start_date, end_date) {
-	//   let fullQuery = query;
-	//   if (start_date) {
-	// 	  fullQuery = fullQuery + "&start_date=" + start_date.trim() + "0101";
-	//   }
-	//   if (end_date) {
-	// 	  fullQuery = fullQuery + "&end_date=" + end_date.trim() + "1231";
-	//   }
-	// return axios.get(BASEURL + APIKEY + fullQuery);
-	// },
 
-	// saveArticle: function(article) {
-	// 	return axios.post("/saved", article).then((data)=>{
-	// 		return data;
-	// 	});
-	// },
+	createUser: function(data) {
+		console.log("In create user!");
+		return axios.post("/signup", data);
+	},
 
-	// getSavedArticles: function() {
-	// 	return axios.get("/getSaved").then((articles) => {
-	// 		return articles;
-	// 	});
-	// },
+	login: function(data) {
+		console.log("In login user!");
+		return axios.post("/signin", data);
+	},
 
-	// deleteArticle: function(article) {
-	// 	return axios.post("/deleteArticle", article).then((data)=>{
-	// 		return data;
-	// 	});
-	// }
+	userLoggedIn: function() {
+		console.log("userLoggedIn right before axios call");
+		return axios.get("/auth/userid").then((user) => {
+			console.log("Inside API userId: ",user," and username: ",user.data.username);
+			return user;
+		}).catch(err => console.log("Error in userLoggedIn: ",err));
+	},
+
+	logout: function() {
+		console.log("In logout API call!");
+		return axios.get("/auth/logout").then((res) => console.log("Logout Response: ",res)).catch(err => console.log("Logout Error: ",err));
+	}
 };

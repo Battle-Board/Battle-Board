@@ -3,7 +3,8 @@ import "./Dashboard.css";
 import TopNav from "../TopNav/TopNavLoggedIn";
 import API from "../../utils/API.js";
 import Form from "./Form/Form.js";
-
+import ReactDOM from 'react-dom';
+import {BrowserRouter as Router,Route,Link,Redirect,withRouter} from 'react-router-dom';
 
 class CharacterInfo extends Component {
 
@@ -12,14 +13,14 @@ class CharacterInfo extends Component {
 		initBonus: 0,
 		dexterity: 0,
 		hitPoints: 0,
-		conditions: ""
+		conditions: "",
+		redirect: false
 	}
 
 	
 	// componentDidMount() {
 	// 	this.searchGames();
 	// }
-
 
 	// Whenever anything in the Form is updated, update the state so the search can be done
 	handleInputChange = event => {
@@ -47,7 +48,25 @@ class CharacterInfo extends Component {
 		window.location = "/dashboard";
 	};
 
+	componentDidMount() {
+		API.userLoggedIn()
+		.then(res => {
+			console.log("Got res from API in Dashboard: ",res);
+			if(res.data.status === "4xx") {
+				this.setState({redirect: true});
+			}
+		})
+		.catch(err => {
+			console.log("Error from API in Dashboard: ",err);
+			this.setState({redirect: true});
+		});
+	}
+
     render() {
+		const { redirect } = this.state;
+		if(redirect) {
+			return <Redirect to="/login-signup"/>;
+		}
       return (
         <div>
 			<TopNav />

@@ -1,25 +1,62 @@
 import React, { Component } from 'react';
 import TopNav from "../TopNav/TopNav.js";
+import API from "../../utils/API.js";
 import ReactDOM from 'react-dom';
 import './LogReg.scss';
-import { Switch, Route, Link} from 'react-router-dom';
+import {BrowserRouter as Router,Route,Link,Redirect,withRouter} from 'react-router-dom';
 
 class LogReg extends Component{
-
-	state = {
-		username: "",
+    state = {
+        username: "",
         password: "",
-        email: ""
+        email: "",
+        redirect: false
+    }
+    
+    handleInputChange = event => {
+        const { name, value } = event.target;
+        this.setState({
+          [name]: value
+        });
+      };
+
+    handleFormSubmit = event => {
+        event.preventDefault();
+        // console.log("Username: ",this.state.username," Password: ",this.state.password," Email: ",this.state.email);
+        API.createUser({
+            username: this.state.username,
+            password: this.state.password,
+            email: this.state.email
+        })
+        .then(res => {
+            console.log("Created User!",res.data);
+            this.setState({redirect: true});
+        })
+        .catch((err) => {console.log("Some Error (from API): ",err);});
     }
 
-	handleInputChange = event => {
-		const { name, value } = event.target;
-		this.setState({
-			[name]: value
-		});
-	};
+    handleLogin = event => {
+        event.preventDefault();
+        API.login({
+            username: this.state.username,
+            password: this.state.password
+        }).then(res => {
+            this.setState({redirect: true});
+        }).catch(err => {
+            console.log("Handle Login Error: ", err);
+        });
+    }
 
+    handleLogout = event => {
+        event.preventDefault();
+        API.logout();
+    }
+    
     render(){
+        const { redirect } = this.state;
+        if(redirect) {
+            return <Redirect to="/dashboard"/>;
+        }
         return(
             <div>
                 <TopNav/>
@@ -35,27 +72,42 @@ class LogReg extends Component{
                     <ul className="noBullet">
                         <li>
                         <label for="username"></label>
-                        <input type="text" className="inputFields" id="username" name="username" placeholder="Username" value={this.state.value} onChange={this.handleInputChange} oninput="return userNameValidation(this.value)" required/>
+                        <input type="text" className="inputFields" id="username" name="username" placeholder="Username" value={this.state.username} onChange={this.handleInputChange} required/>
                         </li>
                         <li>
                         <label for="password"></label>
-                        <input type="password" className="inputFields" id="password" name="password" placeholder="Password" value={this.state.value} onChange={this.handleInputChange} oninput="return passwordValidation(this.value)" required/>
+                        <input type="password" className="inputFields" id="password" name="password" placeholder="Password" value={this.state.password} onChange={this.handleInputChange} required/>
                         </li>
                         <li>
                         <label for="email"></label>
-                        <input type="email" className="inputFields" id="email" name="email" placeholder="Email" value={this.state.value} onChange={this.handleInputChange} required />
+                        <input type="email" className="inputFields" id="email" name="email" placeholder="Email" value={this.state.email} onChange={this.handleInputChange} required />
                         </li>
                         <li id="center-btn">
-                        <input type="submit" id="join-btn" name="join" alt="Join" value="Join" />
+                        <input type="submit" id="join-btn" name="join" alt="Join" value="Join" onClick={this.handleFormSubmit}/>
                         </li>
                     </ul>
                     </form>
+                    <br/><br/><br/>
+                    <form action="#" method="POST" className="signupForm" name="signupform">
+                    <h2>Sign Up</h2>
+                    <ul className="noBullet">
+                        <li>
+                        <label for="username"></label>
+                        <input type="text" className="inputFields" id="username" name="username" placeholder="Username" value={this.state.username} onChange={this.handleInputChange} required/>
+                        </li>
+                        <li>
+                        <label for="password"></label>
+                        <input type="password" className="inputFields" id="password" name="password" placeholder="Password" value={this.state.password} onChange={this.handleInputChange} required/>
+                        </li>
+                        <li id="center-btn">
+                        <input type="submit" id="join-btn" name="login" alt="Login" value="Login" onClick={this.handleLogin}/>
+                        </li>
+                    </ul>
+                    </form>
+                    <br/><br/><br/>
+                    <button className="btn btn-primary center-block" onClick={this.handleLogout} type="submit" value="logout"><span className="buttonText">Logout!</span></button>
                 </div>
             </div>
-
-  
-
-            
         );
         
     }

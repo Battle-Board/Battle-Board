@@ -16,7 +16,7 @@ const TopNav = () => (
 				<div className="col-sm-6 text-right">
 					<Link to='/'>Home</Link>
 		 			&nbsp; | &nbsp;
-		 			<Link to="/LogReg">Login</Link>
+		 			<Link to="/login-signup">Login</Link>
 				</div>
 			</div>
 		</div>

@@ -22,7 +22,7 @@ const TopNav = () => (
 		 			&nbsp; | &nbsp;
 		 			<Link to="/board">Board</Link>
 					&nbsp; | &nbsp;
-					<Link to="/LogReg">Log/Register</Link>
+					<Link to="/login-signup">Log/Register</Link>
 				</div>
 			</div>
 		</div>

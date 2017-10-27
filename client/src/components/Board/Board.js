@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import "./Board.css";
 import TopNav from "../TopNav/TopNavLoggedIn";
 import Character from "../Character/Character.js";
+import API from "../../utils/API.js";
+import ReactDOM from 'react-dom';
+import {BrowserRouter as Router,Route,Link,Redirect,withRouter} from 'react-router-dom';
 
 class Board extends Component {
 
@@ -41,7 +44,8 @@ class Board extends Component {
 			initRoll: 19,
 			finalInit: 0
 		}
-		]
+		],
+		redirect: false
 	}
 
 	componentDidMount() {
@@ -54,9 +58,25 @@ class Board extends Component {
 			return parseFloat(a.finalInit) - parseFloat(b.finalInit);
 		}).reverse();
 		this.setState({charinfo: orderArray});
+
+		API.userLoggedIn()
+		.then(res => {
+			console.log("Got res from API in Dashboard: ",res);
+			if(res.data.status === "4xx") {
+				this.setState({redirect: true});
+			}
+		})
+		.catch(err => {
+			console.log("Error from API in Dashboard: ",err);
+			this.setState({redirect: true});
+		});
 	}
 
 	render() {
+		const { redirect } = this.state;
+		if(redirect) {
+			return <Redirect to="/LogReg"/>;
+		}
 		return (
 			<div>
 				<TopNav/>

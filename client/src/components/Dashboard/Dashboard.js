@@ -3,6 +3,9 @@ import "./Dashboard.css";
 import TopNav from "../TopNav/TopNavLoggedIn";
 import API from "../../utils/API.js";
 import { sockets } from "../../utils/sockets.js";
+import ReactDOM from 'react-dom';
+import {BrowserRouter as Router,Route,Link,Redirect,withRouter} from 'react-router-dom';
+
 
 
 class Game extends Component {
@@ -15,7 +18,8 @@ class Game extends Component {
 			charList: [],
 			foundChars: false,
 			userID: localStorage.getItem("userID"),
-			sentMessage: ''
+			sentMessage: '',
+			redirect: false
 		};
 
 		sockets.listenForGameList((data) => {
@@ -26,6 +30,9 @@ class Game extends Component {
 
 	createCharacter(event) {
 		event.preventDefault();
+		// console.log("hi");
+		// this.setState({someValue: true});
+		// this.setState({characterRedirect: true});
 		window.location ="/createCharacter";
 	}
 	
@@ -41,7 +48,17 @@ class Game extends Component {
 
 		this.getCharacters(userID);
 		this.getGames();
-
+		API.userLoggedIn()
+		.then(res => {
+			console.log("Got res from API in Dashboard: ",res);
+			if(res.data.status === "4xx") {
+				this.setState({redirect: true});
+			}
+		})
+		.catch(err => {
+			console.log("Error from API in Dashboard: ",err);
+			this.setState({redirect: true});
+		});
 	}
 
 	getCharacters(userID) {
@@ -89,6 +106,11 @@ class Game extends Component {
 
 
     render() {
+		const { redirect } = this.state;
+		// const { characterRedirect } = this.state;
+		if(redirect) {
+			return <Redirect to="/login-signup"/>;
+		}
     	return (
 			<div>
 				<TopNav />
