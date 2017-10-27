@@ -38,6 +38,9 @@ router.post("/user", function(req, res) {
 
 router.get("/all", function(req, res) {
     db.Character.findAll({
+        where: {
+            isCharacter: true
+        },
         order: [["character_name"]]
     })
         .then(function(data) {

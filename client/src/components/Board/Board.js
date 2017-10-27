@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import API from "../../utils/API.js";
 import "./Board.css";
 import TopNav from "../TopNav/TopNavLoggedIn";
 import Character from "../Character/Character.js";
@@ -45,15 +46,31 @@ class Board extends Component {
 	}
 
 	componentDidMount() {
-		let orderArray = this.state.charInfo;
-
-		for (let i = 0; i < orderArray.length; i++) {
-			orderArray[i].finalInit = orderArray[i].initRoll + orderArray[i].initBonus + orderArray[i].dexterity/100;
-		}
-		orderArray.sort(function(a, b) {
-			return parseFloat(a.finalInit) - parseFloat(b.finalInit);
-		}).reverse();
-		this.setState({charinfo: orderArray});
+		let gameID = {
+			gameID: localStorage.getItem("gameID")
+		};
+		API.getBoardCharacters(gameID)
+		.then(res => {
+			console.log("res.data[0] is", res.data[0]);
+			let orderArray = [];
+			for (let i = 0; i < res.data[0].length; i++) {
+				let charEntry = {};
+				charEntry.charName = res.data[0][i].character_name;
+				charEntry.initBonus = res.data[0][i].initiative_bonus;
+				charEntry.dexterity = res.data[0][i].dexterity;
+				charEntry.initRoll = Math.floor(Math.random()*20 + 1);
+				charEntry.finalInit = 0;
+				orderArray.push(charEntry);
+			}
+			for (let i = 0; i < orderArray.length; i++) {
+				orderArray[i].finalInit = orderArray[i].initRoll + orderArray[i].initBonus + orderArray[i].dexterity/100;
+			}
+			orderArray.sort(function(a, b) {
+				return parseFloat(a.finalInit) - parseFloat(b.finalInit);
+			}).reverse();
+			this.setState({charInfo: orderArray});
+		})
+		.catch(err => console.log(err));
 	}
 
 	render() {
