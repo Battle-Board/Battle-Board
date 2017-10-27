@@ -19,7 +19,7 @@ class Game extends Component {
 			foundChars: false,
 			userID: localStorage.getItem("userID"),
 			sentMessage: '',
-			someValue: false
+			redirect: false
 		};
 
 		sockets.listenForGameList((data) => {
@@ -30,6 +30,9 @@ class Game extends Component {
 
 	createCharacter(event) {
 		event.preventDefault();
+		// console.log("hi");
+		// this.setState({someValue: true});
+		// this.setState({characterRedirect: true});
 		window.location ="/createCharacter";
 	}
 	
@@ -45,7 +48,14 @@ class Game extends Component {
 
 		this.getCharacters(userID);
 		this.getGames();
-		API.userLoggedIn().then(res => console.log("got response from api",res)).catch(err => console.log("error in api",err));
+		API.userLoggedIn()
+		.then(res => {
+			console.log("got response from api",res);
+		})
+		.catch(err => {
+			console.log("error in api",err);
+			this.setState({redirect: true});
+		});
 	}
 
 	getCharacters(userID) {
@@ -93,6 +103,11 @@ class Game extends Component {
 
 
     render() {
+		const { redirect } = this.state;
+		// const { characterRedirect } = this.state;
+		if(redirect) {
+			return <Redirect to="/LogReg"/>;
+		}
     	return (
 			<div>
 				<TopNav />

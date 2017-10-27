@@ -4,6 +4,8 @@ import TopNav from "../TopNav/TopNavLoggedIn";
 import API from "../../utils/API.js";
 import Button from "./Button.js";
 import {sockets} from "../../utils/sockets";
+import ReactDOM from 'react-dom';
+import {BrowserRouter as Router,Route,Link,Redirect,withRouter} from 'react-router-dom';
 
 class Game extends Component {
     constructor(props) {
@@ -12,7 +14,8 @@ class Game extends Component {
 			gameName: '',
 			charList: [],
 			foundChars: true,
-			chosenList: []
+			chosenList: [],
+			redirect: false
 		};
 		
       this.handleChange = this.handleChange.bind(this);
@@ -40,6 +43,15 @@ class Game extends Component {
 				}
 		})
 		.catch(err => console.log(err));
+
+		API.userLoggedIn()
+		.then(res => {
+			console.log("Got res from API in Dashboard: ",res);
+		})
+		.catch(err => {
+			console.log("Error from API in Dashboard: ",err);
+			this.setState({redirect: true});
+		});
 	}
   
     handleChange(event) {
@@ -115,6 +127,11 @@ class Game extends Component {
 	}
   
     render() {
+		const { redirect } = this.state;
+		// const { characterRedirect } = this.state;
+		if(redirect) {
+			return <Redirect to="/LogReg"/>;
+		}
       return (
         <div>
 			<TopNav />
