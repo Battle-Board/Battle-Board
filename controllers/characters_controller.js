@@ -5,6 +5,7 @@ var exports = module.exports = {};
 // Post route to insert a character into the Character table
 // POST to /characters/create
 exports.create = function(req,res) {
+    console.log("Inside Character Create: ",req.body);
     // add item to character table
     sdb.Character.create(req.body)
         // pass the result of our call
@@ -19,7 +20,7 @@ exports.create = function(req,res) {
 exports.user = function(req, res) {
     sdb.Character.findAll({
         where: {
-            user_id: req.body.userID
+            user_id: res.locals.user.id
         },
         order: [["character_name"]]
     })

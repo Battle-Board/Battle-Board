@@ -6,14 +6,6 @@ import Form from "./Form/Form.js";
 
 
 class CharacterInfo extends Component {
-<<<<<<< HEAD
-    // constructor(props) {
-    // 	super(props);  
-	//   this.handleInputChange = this.handleInputChange.bind(this);
-	//   this.handleFormSubmit = this.handleFormSubmit.bind(this);
-	// }
-=======
->>>>>>> master
 
 	state = {
 		charName: "",
@@ -28,38 +20,6 @@ class CharacterInfo extends Component {
 	// 	this.searchGames();
 	// }
 
-<<<<<<< HEAD
-		// Do a search for articles based on subject, start date, and end date
-	createCharacter = (charName, initBonus, dexterity, hitPoints, conditions) => {
-		API.createCharacter(charName, initBonus, dexterity, hitPoints, conditions)
-			.then(res => {
-				// If articles were found, set the state and set the foundArticles to true
-				if (res.data.response.docs.length !== 0) {
-					this.setState({
-						articles: res.data.response.docs,
-						foundArticles: true
-					});					
-				}
-					// Otherwise, create a dummy entry for the articles and set the foundArticles to false
-					else {
-						let noArticles = [{
-							web_url: "",
-							snippet: "No articles found matching search terms",
-							headline: {
-								main: "No Articles Found"
-							}
-						}];
-						this.setState({
-							articles: noArticles,
-							foundArticles: false
-						});
-					}
-			})
-			.catch(err => console.log(err));
-	};
-=======
->>>>>>> master
-
 	// Whenever anything in the Form is updated, update the state so the search can be done
 	handleInputChange = event => {
 		const { name, value } = event.target;
@@ -72,9 +32,6 @@ class CharacterInfo extends Component {
 	handleFormSubmit = event => {
 		// Preventing the default behavior of the form submit (which is to refresh the page)
 		event.preventDefault();
-<<<<<<< HEAD
-		alert("I'm about to redirect");
-=======
 		let charInfo =  {
 			character_name: this.state.charName,
 			dexterity: this.state.dexterity,
@@ -86,7 +43,6 @@ class CharacterInfo extends Component {
 		};
 
 		API.createCharacter(charInfo);
->>>>>>> master
 		window.location = "/dashboard";
 	};
 
@@ -108,16 +64,6 @@ class CharacterInfo extends Component {
 									handleInputChange={this.handleInputChange}
 									handleFormSubmit={this.handleFormSubmit}
 								/>
-<<<<<<< HEAD
-								<form>
-									<label>
-										Create New Game:
-										<input size="100%" type="text" value={this.state.value} onChange={this.handleChange} />
-									</label>
-								</form>
-
-=======
->>>>>>> master
 							</div>
 						</div>
 					</div>

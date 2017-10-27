@@ -23,7 +23,7 @@ module.exports = function(app, passport) {
 
     // Passport Routes
     app.post("/signup", passport.authenticate('local-signup'), function(req, res) {
-        console.log("In function after passport!",req.user.dataValues.username);
+        console.log("In function after passport!",res.locals.user);
         res.json(req.user.dataValues.username);
     });
 

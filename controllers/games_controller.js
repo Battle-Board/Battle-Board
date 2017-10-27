@@ -18,7 +18,7 @@ exports.create = function(req, res) {
 };
 
 exports.all = function(req, res) {
-    db.Game.findAll({
+    sdb.Game.findAll({
         order: [["game_name"]]
     })
         .then(function(data) {

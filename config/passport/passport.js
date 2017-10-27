@@ -5,13 +5,13 @@ module.exports = function(passport, user) {
     var LocalStrategy = require("passport-local").Strategy;
 
     passport.serializeUser(function(user,done) {
-        console.log("serial");
+        console.log("serial",user);
         done(null, user);
     });
 
     passport.deserializeUser(function(id, done) {
-        console.log("deserial", id);
-        User.findById(id.id).then(function(user) {
+        console.log("Deserial: ",id);
+        User.findById(id.user_id).then(function(user) {
             if(user) {
                 done(null, user.get());
             } else {

@@ -3,6 +3,9 @@ import "./Dashboard.css";
 import TopNav from "../TopNav/TopNavLoggedIn";
 import API from "../../utils/API.js";
 import { sockets } from "../../utils/sockets.js";
+import ReactDOM from 'react-dom';
+import {BrowserRouter as Router,Route,Link,Redirect,withRouter} from 'react-router-dom';
+
 
 
 class Game extends Component {
@@ -15,7 +18,8 @@ class Game extends Component {
 			charList: [],
 			foundChars: false,
 			userID: localStorage.getItem("userID"),
-			sentMessage: ''
+			sentMessage: '',
+			someValue: false
 		};
 
 		sockets.listenForGameList((data) => {

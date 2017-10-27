@@ -6,7 +6,7 @@ var exports = module.exports = {};
 // POST to /boards/create
 exports.create = function(req, res) {
     // add item to board table
-   s db.Board.create(req.body)
+   sdb.Board.create(req.body)
         // pass the result of our call
         .then(function(data) {
             // log the result to our terminal/bash window

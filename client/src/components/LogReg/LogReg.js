@@ -34,6 +34,11 @@ class LogReg extends Component{
         })
         .catch((err) => {console.log("Some Error (from API): ",err);});
     }
+
+    handleLogout = event => {
+        event.preventDefault();
+        API.logout();
+    }
     
     render(){
         const { redirect } = this.state;
@@ -70,12 +75,10 @@ class LogReg extends Component{
                         </li>
                     </ul>
                     </form>
+                    <br/><br/><br/>
+                    <button className="btn btn-primary center-block" onClick={this.handleLogout} type="submit" value="logout"><span className="buttonText">Logout!</span></button>
                 </div>
             </div>
-
-  
-
-            
         );
         
     }
