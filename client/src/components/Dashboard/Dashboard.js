@@ -43,6 +43,7 @@ class Game extends Component {
 	}
 
 	componentDidMount() {
+		console.log("Mounted UserID: ",this.state.userID);
 		let userID = {
 			userID: this.state.userID
 		};

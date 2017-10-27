@@ -20,7 +20,7 @@ exports.create = function(req,res) {
 exports.user = function(req, res) {
     sdb.Character.findAll({
         where: {
-            user_id: res.locals.user.id
+            user_id: req.body.userID
         },
         order: [["character_name"]]
     })
