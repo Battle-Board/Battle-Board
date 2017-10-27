@@ -19,7 +19,8 @@ class Game extends Component {
 			foundChars: false,
 			userID: localStorage.getItem("userID"),
 			sentMessage: '',
-			redirect: false
+			redirect: false,
+			userPromise: false
 		};
 
 		sockets.listenForGameList((data) => {
@@ -50,6 +51,7 @@ class Game extends Component {
 		this.getGames();
 		API.userLoggedIn()
 		.then(res => {
+			this.setState({userPromise: true})
 			console.log("Got res from API in Dashboard: ",res);
 			if(res.data.status === "4xx") {
 				this.setState({redirect: true});
@@ -104,10 +106,8 @@ class Game extends Component {
 		.catch(err => console.log(err));
 	}
 
-
-    render() {
+	getRender() {
 		const { redirect } = this.state;
-		// const { characterRedirect } = this.state;
 		if(redirect) {
 			return <Redirect to="/login-signup"/>;
 		}
@@ -174,6 +174,14 @@ class Game extends Component {
 				</div>
 			</div>
     	);
+	}
+
+
+    render() {
+		const { redirect } = this.state;
+		const { userPromise } = this.state;
+		// const { characterRedirect } = this.state;
+		return userPromise ? this.getRender() : (<span>Loading...</span>);
     }
   }
 
