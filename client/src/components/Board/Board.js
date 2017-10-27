@@ -45,7 +45,8 @@ class Board extends Component {
 			finalInit: 0
 		}
 		],
-		redirect: false
+		redirect: false,
+		userPromise: false
 	}
 
 	componentDidMount() {
@@ -61,6 +62,7 @@ class Board extends Component {
 
 		API.userLoggedIn()
 		.then(res => {
+			this.setState({userPromise: true});
 			console.log("Got res from API in Dashboard: ",res);
 			if(res.data.status === "4xx") {
 				this.setState({redirect: true});
@@ -72,10 +74,10 @@ class Board extends Component {
 		});
 	}
 
-	render() {
+	getRender() {
 		const { redirect } = this.state;
 		if(redirect) {
-			return <Redirect to="/LogReg"/>;
+			return <Redirect to="/login-signup"/>;
 		}
 		return (
 			<div>
@@ -92,6 +94,11 @@ class Board extends Component {
 			</div>
 		);
 	}
+
+	render() {
+		const { userPromise } = this.state;
+		return userPromise ? this.getRender() : (<span>Loading...</span>);
+	}		
 }
 
 

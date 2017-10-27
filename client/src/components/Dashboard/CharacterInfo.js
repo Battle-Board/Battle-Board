@@ -14,7 +14,8 @@ class CharacterInfo extends Component {
 		dexterity: 0,
 		hitPoints: 0,
 		conditions: "",
-		redirect: false
+		redirect: false,
+		userPromise: false
 	}
 
 	
@@ -51,6 +52,7 @@ class CharacterInfo extends Component {
 	componentDidMount() {
 		API.userLoggedIn()
 		.then(res => {
+			this.setState({userPromise: true});
 			console.log("Got res from API in Dashboard: ",res);
 			if(res.data.status === "4xx") {
 				this.setState({redirect: true});
@@ -62,35 +64,40 @@ class CharacterInfo extends Component {
 		});
 	}
 
-    render() {
+	getRender() {
 		const { redirect } = this.state;
 		if(redirect) {
 			return <Redirect to="/login-signup"/>;
 		}
-      return (
-        <div>
-			<TopNav />
-			<div className="container">
-				<div className="row">
-					<div className = "col-sm-12 col-md-6 col-md-offset-3 gameForm">
-						<div className="panel panel-default">
-							<div className="panel-body">
-								<Form
-									charName={this.state.charName}
-									initBonus={this.state.initBonus}
-									dexterity={this.state.dexterity}
-									hitPoints={this.state.hitPoints}
-									conditions={this.state.conditions}
-									handleInputChange={this.handleInputChange}
-									handleFormSubmit={this.handleFormSubmit}
-								/>
+    	return (
+			<div>
+				<TopNav />
+				<div className="container">
+					<div className="row">
+						<div className = "col-sm-12 col-md-6 col-md-offset-3 gameForm">
+							<div className="panel panel-default">
+								<div className="panel-body">
+									<Form
+										charName={this.state.charName}
+										initBonus={this.state.initBonus}
+										dexterity={this.state.dexterity}
+										hitPoints={this.state.hitPoints}
+										conditions={this.state.conditions}
+										handleInputChange={this.handleInputChange}
+										handleFormSubmit={this.handleFormSubmit}
+									/>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-        </div>
-      );
+		  );
+		}
+
+    render() {
+		const { userPromise } = this.state;
+		return userPromise ? this.getRender() : (<span>Loading..</span>);
     }
   }
 

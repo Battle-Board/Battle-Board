@@ -15,7 +15,8 @@ class Game extends Component {
 			charList: [],
 			foundChars: true,
 			chosenList: [],
-			redirect: false
+			redirect: false,
+			userPromise: false
 		};
 		
       this.handleChange = this.handleChange.bind(this);
@@ -46,6 +47,7 @@ class Game extends Component {
 
 		API.userLoggedIn()
 		.then(res => {
+			this.setState({userPromise: true});
 			console.log("Got res from API in Dashboard: ",res);
 			if(res.data.status === "4xx") {
 				this.setState({redirect: true});
@@ -128,14 +130,13 @@ class Game extends Component {
 				this.setState({chosenList: newArray});
 			}
 	}
-  
-    render() {
-		const { redirect } = this.state;
-		// const { characterRedirect } = this.state;
-		if(redirect) {
-			return <Redirect to="/login-signup"/>;
-		}
-      return (
+
+	getRender() {
+	const { redirect } = this.state;
+	if(redirect) {
+		return <Redirect to="/login-signup"/>;
+	}
+	return (
         <div>
 			<TopNav />
 			<div className="container">
@@ -186,7 +187,12 @@ class Game extends Component {
 				</div>
 			</div>
         </div>
-      );
+	  );
+	}
+  
+    render() {
+		const { userPromise } = this.state;
+		return userPromise ? this.getRender() : (<span>Loading...</span>);
     }
   }
 
