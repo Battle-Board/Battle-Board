@@ -67,6 +67,7 @@ class Game extends Component {
 	getCharacters(userID) {
 		API.getUserCharacters(userID)
 		.then(res => {
+			console.log("Inside get Chars:",res);
 			if (res.data.length !== 0) {
 				this.setState({
 					charList: res.data,
@@ -83,7 +84,7 @@ class Game extends Component {
 					});
 				}
 		})
-		.catch(err => console.log(err));
+		.catch(err => console.log("Get user Error: ",err));
 	}
 	getGames() {
 		API.getGames()

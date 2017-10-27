@@ -10,7 +10,7 @@ module.exports = function(app, passport) {
 
     // Character Routes
     app.post("/characters/create", charactersController.create);
-    app.get("/characters/user", charactersController.user);
+    app.post("/characters/user", charactersController.user);
     app.get("/characters/all", charactersController.all);
 
     // Game Routes
@@ -20,6 +20,7 @@ module.exports = function(app, passport) {
     // Board Routes
     app.post("/boards/create", boardsController.create);
     app.get("/boards/all", boardsController.all);
+    app.post("/boards/characters", boardsController.characters);
 
     // Passport Routes
     app.post("/signup", passport.authenticate('local-signup'), function(req, res) {

@@ -30,24 +30,17 @@ exports.all = function(req, res) {
             res.json(data);
         }).catch(function(err) {
             res.json(err);
-<<<<<<< HEAD
-        })
-};
-=======
         });
-});
+};
 
-router.post("/characters", function(req, res) {
+exports.characters = function(req, res) {
     let sqlQuery = "SELECT * FROM characters WHERE character_id IN (SELECT character_id FROM boards WHERE game_id = ";
     sqlQuery += req.body.gameID;
     sqlQuery += ")";
-    db.sequelize.query(sqlQuery)
+    sdb.sequelize.query(sqlQuery)
         .then(function(data){
             res.json(data);})
         .catch(function(err) {
             res.json(err);
         });
-});
-
-module.exports = router;
->>>>>>> master
+};

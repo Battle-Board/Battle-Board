@@ -64,7 +64,8 @@ export default {
 	logout: function() {
 		console.log("In logout API call!");
 		return axios.get("/auth/logout").then((res) => console.log("Logout Response: ",res)).catch(err => console.log("Logout Error: ",err));
-
+	},
+	
 	getBoardCharacters: function(gameID) {
 		return axios.post("/boards/characters", gameID).then((characters) => {
 			return characters;

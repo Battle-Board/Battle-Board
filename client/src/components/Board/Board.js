@@ -3,7 +3,6 @@ import API from "../../utils/API.js";
 import "./Board.css";
 import TopNav from "../TopNav/TopNavLoggedIn";
 import Character from "../Character/Character.js";
-import API from "../../utils/API.js";
 import ReactDOM from 'react-dom';
 import {BrowserRouter as Router,Route,Link,Redirect,withRouter} from 'react-router-dom';
 
