@@ -46,6 +46,7 @@ class Game extends Component {
 		let userID = {
 			userID: this.state.userID
 		};
+		// API.userID.then if OK, set to this.state.userID if not, bad things;
 
 		this.getCharacters(userID);
 		this.getGames();

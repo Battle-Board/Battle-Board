@@ -62,11 +62,7 @@ class Game extends Component {
     handleChange(event) {
 		this.setState({gameName: event.target.value});
 	}
-	
-	checkChange(event) {
-		console.log(event.target.checked, event.target.name);
-	}
-  
+	  
     handleBuild(event) {
 		event.preventDefault();
 		let gameName =  {
@@ -75,38 +71,35 @@ class Game extends Component {
 
 		if ((gameName.game_name !== "") && (this.state.chosenList.length > 0)) {
 			API.createGame(gameName).then(res => {
-				console.log("Back from the insert with game_id of ", res.data.game_id);
 				let boardInfo = {
 					gameID: res.data.game_id,
 					charInfo: this.state.chosenList
 				}
-				// API.creeteBoard(boardInfo);
+				API.createBoard(boardInfo);
 				sockets.sendGameList(res.data);
 				// window.location = "/board";			
 
 			});	
 		}
-		
-
 	}
 	
 	handleBattle(event) {
-		console.log("Battle for", this.state.gameName);
 		event.preventDefault();
-		let gameName = {
+		let gameName =  {
 			game_name: this.state.gameName
 		};
 
 		if ((gameName.game_name !== "") && (this.state.chosenList.length > 0)) {
 			API.createGame(gameName).then(res => {
-				console.log("back from the insert with game_id of", res.data.game_id);
+				localStorage.setItem("gameID", res.data.game_id);
 				let boardInfo = {
 					gameID: res.data.game_id,
 					charInfo: this.state.chosenList
 				}
+				API.createBoard(boardInfo);
 				sockets.sendGameList(res.data);
-				// window.location = "/board";			
-			})
+				window.location = "/board";
+			});	
 		}
 	}
 

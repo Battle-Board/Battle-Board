@@ -33,6 +33,9 @@ exports.user = function(req, res) {
 
 exports.all = function(req, res) {
     sdb.Character.findAll({
+        where: {
+            isCharacter: true
+        },
         order: [["character_name"]]
     })
         .then(function(data) {

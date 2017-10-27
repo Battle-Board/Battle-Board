@@ -6,7 +6,15 @@ var exports = module.exports = {};
 // POST to /boards/create
 exports.create = function(req, res) {
     // add item to board table
-   sdb.Board.create(req.body)
+    const newBody = req.body.charInfo.map((char) => {
+        return {
+            game_id: req.body.gameID,
+            character_id: char.character_id,
+            user_id: char.user_id
+        }
+    });
+
+    db.Board.bulkCreate(newBody)
         // pass the result of our call
         .then(function(data) {
             // log the result to our terminal/bash window
@@ -22,5 +30,24 @@ exports.all = function(req, res) {
             res.json(data);
         }).catch(function(err) {
             res.json(err);
+<<<<<<< HEAD
         })
 };
+=======
+        });
+});
+
+router.post("/characters", function(req, res) {
+    let sqlQuery = "SELECT * FROM characters WHERE character_id IN (SELECT character_id FROM boards WHERE game_id = ";
+    sqlQuery += req.body.gameID;
+    sqlQuery += ")";
+    db.sequelize.query(sqlQuery)
+        .then(function(data){
+            res.json(data);})
+        .catch(function(err) {
+            res.json(err);
+        });
+});
+
+module.exports = router;
+>>>>>>> master
