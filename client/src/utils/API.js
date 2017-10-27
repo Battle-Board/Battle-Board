@@ -21,7 +21,7 @@ export default {
 	},
 
 	createBoard: function(boardInfo) {
-		return axios.post("/boards/create", boardInfo).then((data) => {
+		return axios.post("/boards/create", boardInfo).then((boards) => {
 			return boards;
 		});
 	},
@@ -41,6 +41,12 @@ export default {
 	getGames: function() {
 		return axios.get("/games/all").then((games) => {
 			return games;
+		});
+	},
+
+	getBoardCharacters: function(gameID) {
+		return axios.post("/boards/characters", gameID).then((characters) => {
+			return characters;
 		});
 	}
 };
