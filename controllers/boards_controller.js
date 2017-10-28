@@ -14,7 +14,7 @@ exports.create = function(req, res) {
         }
     });
 
-    db.Board.bulkCreate(newBody)
+    sdb.Board.bulkCreate(newBody)
         // pass the result of our call
         .then(function(data) {
             // log the result to our terminal/bash window

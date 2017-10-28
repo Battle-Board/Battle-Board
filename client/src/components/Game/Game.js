@@ -75,7 +75,7 @@ class Game extends Component {
 					gameID: res.data.game_id,
 					charInfo: this.state.chosenList
 				}
-				API.createBoard(boardInfo);
+				API.createBoard(boardInfo).then(res => console.log("in create board")).catch(err=>console.log("In create Board error: ",err));
 				sockets.sendGameList(res.data);
 				// window.location = "/board";			
 
