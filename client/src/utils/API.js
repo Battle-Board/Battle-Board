@@ -25,9 +25,8 @@ export default {
 		});
 	},
 
-	getUserCharacters: function(userID) {
-		console.log("GetUserCharactersAPI: ",userID.userID);
-		return axios.post("/characters/user/", userID).then((characters) => {
+	getUserCharacters: function() {
+		return axios.post("/characters/user/").then((characters) => {
 			return characters;
 		});
 	},

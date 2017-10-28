@@ -7,20 +7,31 @@ var exports = module.exports = {};
 exports.create = function(req,res) {
     console.log("Inside Character Create: ",req.body);
     // add item to character table
-    sdb.Character.create(req.body)
+    sdb.Character.create({
+        character_name: req.body.character_name,
+        dexterity: req.body.dexterity,
+        initiative_bonus: req.body.initiative_bonus,
+        hitpoints: req.body.hitpoints,
+        conditions: req.body.conditions,
+        isCharacter: true,
+        UserId: res.locals.user.id
+    })
         // pass the result of our call
         .then(function(data) {
             // log the result to our terminal/bash window
+            console.log("Character Create Success");
             res.json(data);
         }).catch(function(err) {
+            console.log("Character Create Error",err);
             res.json(err);
         });
+    console.log("End of Character Create!");
 };
 
 exports.user = function(req, res) {
     sdb.Character.findAll({
         where: {
-            user_id: req.body.userID
+            UserId: res.locals.user.id
         },
         order: [["character_name"]]
     })

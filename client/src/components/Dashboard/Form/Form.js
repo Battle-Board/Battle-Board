@@ -42,7 +42,7 @@ const Form = props =>
 			className="form-control"
 			placeholder="HitPoints"
 			id="hitPoints"
-			labelname = "Hit Point Damage"
+			labelname = "Hit Points"
 		/>
 		<Input
 			type="textarea"

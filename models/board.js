@@ -17,21 +17,17 @@ module.exports = function(sequelize, Sequelize) {
         character_id: {
             type: Sequelize.INTEGER,
             allowNull: false
-        },
-        user_id: {
-            type: Sequelize.INTEGER,
-            allowNull: false
-        },
+        }
     });
 
     // Associate so that if user deletes we can simply destroy all records
-    // Board.associate = function(models) {
-    //     Board.belongsTo(models.User, {
-    //         foreignKey: {
-    //             allowNull: false
-    //         }
-    //     });
-    // }
+    Board.associate = function(models) {
+        Board.belongsTo(models.User, {
+            foreignKey: {
+                allowNull: false
+            }
+        });
+    }
 
     return Board;
 }

@@ -17,7 +17,7 @@ class Game extends Component {
 			foundGames: false,
 			charList: [],
 			foundChars: false,
-			userID: localStorage.getItem("userID"),
+			// userID: localStorage.getItem("userID"),
 			sentMessage: '',
 			redirect: false,
 			userPromise: false
@@ -43,18 +43,18 @@ class Game extends Component {
 	}
 
 	componentDidMount() {
-		console.log("Mounted UserID: ",this.state.userID);
-		let userID = {
-			userID: this.state.userID
-		};
-		// API.userID.then if OK, set to this.state.userID if not, bad things;
+		// console.log("Mounted UserID: ",this.state.userID);
+		// let userID = {
+		// 	userID: this.state.userID
+		// };
+		// // API.userID.then if OK, set to this.state.userID if not, bad things;
 
-		this.getCharacters(userID);
+		this.getCharacters();
 		this.getGames();
 		API.userLoggedIn()
 		.then(res => {
 			this.setState({userPromise: true})
-			console.log("Got res from API in Dashboard: ",res);
+			console.log("Got res from API in Dashboard: ",res.data);
 			if(res.data.status === "4xx") {
 				this.setState({redirect: true});
 			}
@@ -65,8 +65,8 @@ class Game extends Component {
 		});
 	}
 
-	getCharacters(userID) {
-		API.getUserCharacters(userID)
+	getCharacters() {
+		API.getUserCharacters()
 		.then(res => {
 			console.log("Inside get Chars:",res);
 			if (res.data.length !== 0) {

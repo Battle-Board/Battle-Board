@@ -6,13 +6,18 @@ var exports = module.exports = {};
 // POST to /games/create
 exports.create = function(req, res) {
     // add item to game table
-    sdb.Game.create(req.body)
+    sdb.Game.create({
+        game_id: req.body.game_id,
+        game_name: req.body.game_name,
+        UserId: res.locals.user.id
+    })
         // pass the result of our call
         .then(function(data) {
             // log the result to our terminal/bash window
             console.log("after insertion into games, the returned gameID is", data.dataValues.game_id);
             res.json(data);
         }).catch(function(err) {
+            console.log("Game Create Error: ",err)
             res.json(err);
         });
 };

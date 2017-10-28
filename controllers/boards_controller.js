@@ -10,7 +10,7 @@ exports.create = function(req, res) {
         return {
             game_id: req.body.gameID,
             character_id: char.character_id,
-            user_id: char.user_id
+            UserId: res.locals.user.id
         }
     });
 
@@ -20,6 +20,7 @@ exports.create = function(req, res) {
             // log the result to our terminal/bash window
             res.json(data);
         }).catch(function(err) {
+            console.log("Error in Bulk Create",err);
             res.json(err);
         });
 };
@@ -34,6 +35,7 @@ exports.all = function(req, res) {
 };
 
 exports.characters = function(req, res) {
+    console.log("Boards Characters req.body.gameID: ",req.body.gameID);
     let sqlQuery = "SELECT * FROM characters WHERE character_id IN (SELECT character_id FROM boards WHERE game_id = ";
     sqlQuery += req.body.gameID;
     sqlQuery += ")";

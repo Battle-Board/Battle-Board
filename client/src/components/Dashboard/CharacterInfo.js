@@ -41,8 +41,7 @@ class CharacterInfo extends Component {
 			initiative_bonus: this.state.initBonus,
 			hitpoints: this.state.hitPoints,
 			conditions: this.state.conditions,
-			isCharacter: true,
-			user_id: 1
+			isCharacter: true
 		};
 
 		API.createCharacter(charInfo);

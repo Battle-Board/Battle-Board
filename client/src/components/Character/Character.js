@@ -11,7 +11,7 @@ const Character = ({ props }) =>
 				Dexterity: {props.dexterity}<br />
 				Initiative Roll: {props.initRoll}<br />
 				Final Initiative: {props.finalInit}<br />
-				Hit Points:</p>
+				Hit Points: {props.hitPoints}</p>
 			</div>
 		</div>
 	</div>
