@@ -91,6 +91,7 @@ class Game extends Component {
 
 		if ((gameName.game_name !== "") && (this.state.chosenList.length > 0)) {
 			API.createGame(gameName).then(res => {
+				console.log("Some GameID: ",res.data.game_id);
 				localStorage.setItem("gameID", res.data.game_id);
 				let boardInfo = {
 					gameID: res.data.game_id,
