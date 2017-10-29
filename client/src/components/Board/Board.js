@@ -11,7 +11,7 @@ class Board extends Component {
 	state = {
 		charInfo: [],
 		redirect: false,
-		userPromise: false
+		userPromise: false,
 	}
 
 	componentDidMount() {
@@ -46,6 +46,7 @@ class Board extends Component {
 			let orderArray = [];
 			for (let i = 0; i < res.data[0].length; i++) {
 				let charEntry = {};
+				charEntry.uniqueValue = i;
 				charEntry.charName = res.data[0][i].character_name;
 				charEntry.initBonus = res.data[0][i].initiative_bonus;
 				charEntry.dexterity = res.data[0][i].dexterity;

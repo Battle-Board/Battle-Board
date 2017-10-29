@@ -9,3 +9,7 @@
 .bodyText {
 	font-size: 16pt;
 }
+
+#activePlayer {
+	background-color: #98FB98;
+}
