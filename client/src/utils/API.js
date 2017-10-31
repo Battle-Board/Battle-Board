@@ -48,5 +48,23 @@ export default {
 		return axios.post("/boards/characters", gameID).then((characters) => {
 			return characters;
 		});
+	},
+
+	updateCharacter: function(charInfo) {
+		return axios.post("/characters/update", charInfo).then((characters) => {
+			return characters;
+		});
+	},
+
+	updateGame: function(gameInfo) {
+		return axios.post("/games/update", gameInfo).then((games) => {
+			return games;
+		});
+	},
+
+	updateBoard: function(boardInfo) {
+		return axios.post("/boards/update", boardInfo).then((boards) => {
+			return boards;
+		});
 	}
 };

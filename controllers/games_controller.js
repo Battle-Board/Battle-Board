@@ -33,4 +33,21 @@ router.get("/all", function(req, res) {
         })
 });
 
+router.post("/update", function(req, res) {
+    let gameInfo = {
+        game_name: req.body.game_name
+    };
+    db.Game.update(
+        gameInfo,
+        {
+        where: {
+            game_id: req.body.game_id
+        }
+    }).then(function(data) {
+        res.json(data);
+    }).catch(function(err) {
+        res.json(err);
+    });
+})
+
 module.exports = router;

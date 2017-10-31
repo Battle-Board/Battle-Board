@@ -8,6 +8,7 @@ const Form = props =>
 
 	<form>
 		<Input
+			type="text"
 			width = "100%"
 			value={props.charName}
 			onChange={props.handleInputChange}
@@ -31,9 +32,9 @@ const Form = props =>
 			onChange={props.handleInputChange}
 			name="dexterity"
 			className="form-control"
-			placeholder="Dexterity"
+			placeholder="Dexterity Bonus"
 			id="dexterity"
-			labelname = "Dexterity"
+			labelname = "Dexterity Bonus"
 		/>
 		<Input
 			value={props.hitPoints}

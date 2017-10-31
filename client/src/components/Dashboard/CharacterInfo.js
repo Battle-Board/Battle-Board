@@ -40,7 +40,7 @@ class CharacterInfo extends Component {
 			hitpoints: this.state.hitPoints,
 			conditions: this.state.conditions,
 			isCharacter: true,
-			user_id: 1
+			user_id: sessionStorage.getItem("userID")
 		};
 
 		API.createCharacter(charInfo);

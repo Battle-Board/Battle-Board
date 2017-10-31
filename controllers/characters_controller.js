@@ -28,12 +28,11 @@ router.post("/user", function(req, res) {
             user_id: req.body.userID
         },
         order: [["character_name"]]
-    })
-        .then(function(data) {
+    }).then(function(data) {
             res.json(data);
         }).catch(function(err) {
-            res.json(err);
-        })
+            res.json(err)
+        });
 });
 
 router.get("/all", function(req, res) {
@@ -42,12 +41,33 @@ router.get("/all", function(req, res) {
             isCharacter: true
         },
         order: [["character_name"]]
-    })
-        .then(function(data) {
+    }).then(function(data) {
             res.json(data);
         }).catch(function(err) {
             res.json(err);
-        })
+        });
+});
+
+router.post("/update", function(req, res) {
+    let charInfo = {
+        character_name: req.body.character_name,
+        dexterity: req.body.dexterity,
+        initiative_bonus: req.body.initiative_bonus,
+        hitpoints: req.body.hitpoints,
+        conditions: req.body.conditions,
+        dexterity: req.body.dexterity
+    };
+    db.Character.update(
+        charInfo,
+        {
+        where: {
+            character_id: req.body.character_id
+        }
+    }).then(function(data) {
+        res.json(data);
+    }).catch(function(err) {
+        res.json(err);
+    });
 });
 
 module.exports = router;
