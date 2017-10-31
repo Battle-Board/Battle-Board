@@ -66,5 +66,17 @@ export default {
 		return axios.post("/boards/update", boardInfo).then((boards) => {
 			return boards;
 		});
+	},
+
+	deleteGame: function(gameID) {
+		return axios.post("/games/delete", gameID).then((games) => {
+			return games;
+		});
+	},
+
+	deleteBoard: function(gameID) {
+		return axios.post("/boards/delete", gameID).then((games) => {
+			return games;
+		});
 	}
 };

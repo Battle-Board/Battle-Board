@@ -19,6 +19,7 @@ class Game extends Component {
 			initBonus: 0,
 			conditions: "",
 			gameList: [],
+			gameButtonDisplay: "toggleDisplayOff",
 			gameCharList: [],
 			gameName: "",
 			chosenList: [],
@@ -94,17 +95,19 @@ class Game extends Component {
 					itm.buttonColor = "btn btn-primary pull-right";
 				});
 				this.setState({
-					gameList: res.data
+					gameList: res.data,
+					gameButtonDisplay: "toggleDisplayOn"
 				});					
 			}
 				else {
 					let noGames = [{
-						game_name: "No games found",
+						game_name: "No games",
 						gameDisplay: "toggleDisplayOff",
 						buttonColor: "toggleDisplayOff"
 					}];
 					this.setState({
-						gameList: noGames
+						gameList: noGames,
+						gameButtonDisplay: "toggleDisplayOff"
 					});
 				}
 		})
@@ -182,7 +185,7 @@ class Game extends Component {
 			}
 				else {
 					let noChars = [{
-						character_name: "No characters found"
+						character_name: "No characters"
 					}];
 					this.setState({
 						charList: noChars
@@ -193,12 +196,10 @@ class Game extends Component {
 			};
 			API.getBoardCharacters(boardID)
 			.then(res => {
-				console.log("after getting characters, I have an array of", res.data);
 				let currentList = [];
 				for (let i = 0; i < res.data[0].length; i++) {
 					currentList.push(res.data[0][i]);
 				}
-				console.log("after processing characters, I'm going to set state of", currentList);
 				this.setState({
 					chosenList: currentList
 				})
@@ -273,13 +274,24 @@ class Game extends Component {
 				charList: this.state.chosenList
 			};
 			API.updateGame(gameInfo).then(res => {
-			// 	API.updateBoard(boardInfo).then(res => {
+				API.updateBoard(boardInfo).then(res => {
 					this.getGames();
-			// 	}).catch(err => console.log(err));
+				}).catch(err => console.log(err));
 			}).catch(err => console.log(err));	
 		}
 	}
 
+	deleteGame(game_id) {
+		console.log("I'm about to delete", game_id);
+		let gameID = {
+			game_id: game_id
+		};
+		API.deleteGame(gameID).then(res => {
+			API.deleteBoard(gameID).then(res => {
+				this.getGames();
+			}).catch(err => console.log(err));
+		}).catch(err => console.log(err));
+	}
 
     render() {
     	return (
@@ -408,9 +420,16 @@ class Game extends Component {
 										{this.state.gameList.map(info => (
 											<div>
 												<div className = "row">
-													<div className = "col-sm-12 top-buffer">
+													<div className = "col-sm-6 top-buffer">
 														{info.game_name}
-														<a className={info.buttonColor} onClick={() => this.editGame(info.game_id)}><span className="buttonText">Edit</span></a>
+													</div>
+													<div className = "col-sm-6 top-buffer">
+														<div className={this.state.gameButtonDisplay}>
+															<div className="btn-toolbar pull-right">
+																<a className="btn btn-primary" onClick={(event) => {event.preventDefault(); this.deleteGame(info.game_id)}}><span className="buttonText">Delete</span></a>
+																<a className={info.buttonColor} onClick={() => this.editGame(info.game_id)}><span className="buttonText">Edit</span></a>
+															</div>
+														</div>
 													</div>
 												</div>
 												<div className={info.gameDisplay}>
