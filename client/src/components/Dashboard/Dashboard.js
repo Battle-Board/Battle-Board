@@ -282,13 +282,41 @@ class Game extends Component {
 	}
 
 	deleteGame(game_id) {
-		console.log("I'm about to delete", game_id);
 		let gameID = {
 			game_id: game_id
 		};
 		API.deleteGame(gameID).then(res => {
 			API.deleteBoard(gameID).then(res => {
 				this.getGames();
+			}).catch(err => console.log(err));
+		}).catch(err => console.log(err));
+	}
+
+	deleteChar = event => {
+		event.preventDefault();
+		let charID = {
+			character_id: this.state.charID
+		};
+		let userID = {
+			userID: this.state.userID
+		};
+		console.log("About to delete character from Character table");
+		API.deleteChar(charID).then(res => {
+			console.log("About to delete character from Boards table");
+			API.deleteCharFromBoard(charID).then(res => {
+				console.log("I've deleted from boards, about to manage games");
+				API.getGames().then(res => {
+					if (res.data.length === 0) {
+						console.log("no games, userID is", userID);
+						this.getCharacters(userID);
+					}
+						else {
+							console.log("I have games of", res.data);
+							API.updateGameLoseChar(charID).then(res => {
+								this.getCharacters(userID);
+							}).catch(err => console.log(err));
+						}
+				}).catch(err => console.log(err));	
 			}).catch(err => console.log(err));
 		}).catch(err => console.log(err));
 	}
@@ -306,7 +334,7 @@ class Game extends Component {
 				</div>
 				<div className="container dashText">
 					<div className="row">
-						<div className = "col-sm-12 col-md-4 col-md-offset-1">
+						<div className = "col-sm-12 col-md-5">
 							<div className="row">
 								<div className="panel panel-default">
 									<div className="panel-body text-center">
@@ -328,10 +356,11 @@ class Game extends Component {
 												<div className={info.charDisplay}>
 													<div className="row">
 														<div className="col-sm-12">
-															<form className="form-horizontal formText">
-																<label>
-																	Character Name{this.state.character_name}:
+															<form className="formText" role="form">
+																<div className="form-group">
+																	Character Name{this.state.character_name}:<br/>
 																	<input
+																		className="hundred"
 																		name="charName"
 																		id="charName"
 																		type="text"
@@ -339,10 +368,8 @@ class Game extends Component {
 																		value={this.state.charName}
 																		onChange={this.handleChange}
 																		required
-																	/>
-																</label>
-																<label>
-																	Initiative Bonus:
+																	/><br/>
+																	Initiative Bonus:<br/>
 																	<input
 																		name="initBonus"
 																		id="initBonus"
@@ -350,10 +377,9 @@ class Game extends Component {
 																		placeholder={info.initiative_bonus}
 																		value={this.state.initBonus}
 																		onChange={this.handleChange}
-																		required />
-																</label>
-																<label>
-																	Dexterity Bonus:
+																		required
+																	/><br/>
+																	Dexterity Bonus:<br/>
 																	<input
 																		name="dexterity"
 																		id="dexterity"
@@ -361,10 +387,9 @@ class Game extends Component {
 																		placeholder={info.dexterity}
 																		value={this.state.dexterity}
 																		onChange={this.handleChange}
-																		required />
-																</label>
-																<label>
-																	Hit Point Damage:
+																		required
+																	/><br/>
+																	Hit Point Damage:<br/>
 																	<input
 																		name="hitPoints"
 																		id="hitPoints"
@@ -372,23 +397,26 @@ class Game extends Component {
 																		placeholder={info.hitpoints}
 																		value={this.state.hitPoints}
 																		onChange={this.handleChange}
-																	/>
-																</label>
-																<label>
-																	Conditions:
+																	/><br/>
+																	Conditions:<br/>
+																	<div className="row">
+																	<div className="col-sm-12">
 																	<textarea
+																		className="hundred"
 																		name="conditions"
 																		id="conditions"
 																		placeholder={info.conditions}
 																		value={this.state.conditions}
 																		onChange={this.handleChange}
 																	/>
-																</label>
+																	</div>
+																	</div>
 																<div className="row">
 																	<div className = "col-sm-12">
 																		<button onClick={this.deleteChar} className="btn btn-primary pull-left" type="submit" value="Delete"><span className="buttonText">Delete</span></button>
 																		<button onClick={this.updateChar} className="btn btn-primary pull-right" type="submit" value="Save"><span className="buttonText">Save</span></button>
 																	</div>
+																</div>
 																</div>
 															</form>
 														</div>
@@ -406,7 +434,7 @@ class Game extends Component {
 								</div>
 							</div>
 						</div>
-						<div className = "col-sm12 col-md-4 col-md-offset-2">
+						<div className = "col-sm12 col-md-6 col-md-offset-1">
 							<div className = "row">
 							<div className = "panel panel-default">
 								<div className = "panel-body text-center">
@@ -426,7 +454,7 @@ class Game extends Component {
 													<div className = "col-sm-6 top-buffer">
 														<div className={this.state.gameButtonDisplay}>
 															<div className="btn-toolbar pull-right">
-																<a className="btn btn-primary" onClick={(event) => {event.preventDefault(); this.deleteGame(info.game_id)}}><span className="buttonText">Delete</span></a>
+																<a className="btn btn-primary" onClick={(event) => {event.preventDefault(); this.goBattle(info.game_id)}}><span className="buttonText">Battle</span></a>
 																<a className={info.buttonColor} onClick={() => this.editGame(info.game_id)}><span className="buttonText">Edit</span></a>
 															</div>
 														</div>
@@ -436,8 +464,7 @@ class Game extends Component {
 													<div className="row">
 														<div className="col-sm-12">
 															<form className="form-horizontal formText">
-																<label>
-																	Game Name:
+																	Game Name<br/>
 																	<input
 																		name="gameName"
 																		id="gameName"
@@ -446,8 +473,7 @@ class Game extends Component {
 																		value={this.state.gameName}
 																		onChange={this.handleChange}
 																		required
-																	/>
-																</label>
+																	/><br/><br/>
 																<div className="row">
 																	<div className="panel panel-default">
 																		<div className="text-center">
@@ -479,7 +505,7 @@ class Game extends Component {
 																</div>
 																<div className="row">
 																	<div className="col-sm-12">
-																		<button onClick={this.deleteGame} className="btn btn-primary pull-left" type="submit" value="Delete"><span className="buttonText">Delete</span></button>
+																		<button onClick={(event) => {event.preventDefault(); this.deleteGame(info.game_id)}} className="btn btn-primary pull-left" type="submit" value="Delete"><span className="buttonText">Delete</span></button>
 																		<button onClick={this.updateGame} className="btn btn-primary pull-right" type="submit" value="Save"><span className="buttonText">Save</span></button>
 																	</div>
 																</div>

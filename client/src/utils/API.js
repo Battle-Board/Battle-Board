@@ -62,8 +62,26 @@ export default {
 		});
 	},
 
+	updateGameLoseChar: function(charInfo) {
+		return axios.post("/games/resetturn", charInfo).then((games) => {
+			return games;
+		});
+	},
+
 	updateBoard: function(boardInfo) {
 		return axios.post("/boards/update", boardInfo).then((boards) => {
+			return boards;
+		});
+	},
+
+	deleteChar: function(charInfo) {
+		return axios.post("/characters/delete", charInfo).then((characters) => {
+			return characters;
+		});
+	},
+
+	deleteCharFromBoard: function(charInfo) {
+		return axios.post("/boards/deletechar", charInfo).then((boards) => {
 			return boards;
 		});
 	},

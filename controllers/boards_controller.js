@@ -77,10 +77,21 @@ router.post("/update", function(req, res) {
 });
 
 router.post("/delete", function(req, res) {
-    console.log("I'm about to delete board with game_id of", req.body.game_id);
     db.Board.destroy({
         where: {
             game_id: req.body.game_id
+        }
+    }).then(function(data) {
+        res.json(data);
+    }).catch(function(err) {
+        res.json(err);
+    });
+});
+
+router.post("/deletechar", function(req, res) {
+    db.Board.destroy({
+        where: {
+            character_id: req.body.character_id
         }
     }).then(function(data) {
         res.json(data);

@@ -70,4 +70,17 @@ router.post("/update", function(req, res) {
     });
 });
 
+router.post("/delete", function(req, res) {
+    console.log("in controller, about to delete", req.body.character_id);
+    db.Character.destroy({
+        where: {
+            character_id: req.body.character_id
+        }
+    }).then(function(data) {
+        res.json(data);
+    }).catch(function(err) {
+        res.json(err);
+    });
+});
+
 module.exports = router;
