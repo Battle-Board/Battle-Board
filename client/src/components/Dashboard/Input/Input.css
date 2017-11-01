@@ -8,3 +8,11 @@ input {
 	font-family: 'Mirza', cursive;
 	font-size: 24pt;
 }
+
+.formText {
+	font-size: 18pt !important;
+}
+
+.hundred {
+	width: 100% !important;
+}

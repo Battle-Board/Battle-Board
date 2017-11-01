@@ -1,7 +1,7 @@
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 const logger = require("morgan");
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -9,7 +9,6 @@ const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
-//const controller = require("./controllers");
 
 // logging for request to the console
 app.use(logger("dev"));
@@ -20,23 +19,23 @@ app.use(bodyParser.json());
 
 // Set up Mongoose
 // Set up promises with mongoose
-mongoose.Promise = global.Promise;
+// mongoose.Promise = global.Promise;
 // Connect to the Mongo DB
-mongoose.connect(
-    process.env.MONGODB_URI || "mongodb://localhost/battleboard", {
-        useMongoClient: true
-    }
-);
+// mongoose.connect(
+//     process.env.MONGODB_URI || "mongodb://localhost/battleboard", {
+//         useMongoClient: true
+//     }
+// );
 
-let mdb = mongoose.connection;
+// let mdb = mongoose.connection;
 
-mdb.on("error", function(error) {
-    console.log("mongoose Error: ", error);
-});
+// mdb.on("error", function(error) {
+//     console.log("mongoose Error: ", error);
+// });
 
-mdb.once("open", function() {
-    console.log("Mongoose connection successful");
-});
+// mdb.once("open", function() {
+//     console.log("Mongoose connection successful");
+// });
 
 
 // Set up Sequelize
@@ -54,12 +53,12 @@ if (process.env.NODE_ENV === "production") {
 }
 
 
-const Board = require("./models/board.js");
-app.get("/games", (req, res) => {
-    sdb.Board.findAll().then(data => {
-        res.json(data);
-    });
-});
+// const Board = require("./models/board.js");
+// app.get("/games", (req, res) => {
+//     sdb.Board.findAll().then(data => {
+//         res.json(data);
+//     });
+// });
 
 const boardsController = require("./controllers/boards_controller.js");
 const charactersController = require("./controllers/characters_controller.js");

@@ -49,16 +49,11 @@ router.get("/all", function(req, res) {
 });
 
 router.post("/update", function(req, res) {
-    let charInfo = {
-        character_name: req.body.character_name,
-        dexterity: req.body.dexterity,
-        initiative_bonus: req.body.initiative_bonus,
-        hitpoints: req.body.hitpoints,
-        conditions: req.body.conditions,
-        dexterity: req.body.dexterity
-    };
+    let newInfo = req.body;
+    delete newInfo.user_id;
+    delete newInfo.charcter_id;
     db.Character.update(
-        charInfo,
+        newInfo,
         {
         where: {
             character_id: req.body.character_id

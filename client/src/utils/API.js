@@ -2,11 +2,11 @@ import axios from "axios";
 
 export default {
 
-	searchGames: function() {
-		return axios.get("/games").then((games) => {
-			return games;
-		});
-	},
+	// searchGames: function() {
+	// 	return axios.get("/games").then((games) => {
+	// 		return games;
+	// 	});
+	// },
 
 	createGame: function(gameName) {
 		return axios.post("/games/create", gameName).then((games) => {

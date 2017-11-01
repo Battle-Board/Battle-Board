@@ -9,3 +9,11 @@
 .bodyText {
 	font-size: 16pt;
 }
+
+.buttonText {
+	font-size: 150%;
+}
+
+.hundred {
+	width: 100% !important;
+}

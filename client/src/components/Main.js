@@ -7,6 +7,7 @@ import Board from "./Board/Board.js";
 import LogReg from "./LogReg/LogReg.js";
 import Dashboard from "./Dashboard/Dashboard.js";
 import CharacterInfo from "./Dashboard/CharacterInfo.js";
+import MonsterInfo from "./Dashboard/MonsterInfo.js"
 
 // The Main component renders one of the three provided
 // Routes (provided that one matches). Both the /roster
@@ -21,6 +22,7 @@ const Main = () => (
 		<Route path="/LogReg" component={LogReg}/>
 		<Route path="/dashboard" component={Dashboard}/>
 		<Route path="/createCharacter" component={CharacterInfo}/>
+		<Route path="/createMonster" component={MonsterInfo}/>
     </Switch>
 )
 

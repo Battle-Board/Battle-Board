@@ -5,7 +5,7 @@ import API from "../../utils/API.js";
 import Form from "./Form/Form.js";
 
 
-class CharacterInfo extends Component {
+class MonsterInfo extends Component {
 
 	state = {
 		charName: "",
@@ -14,11 +14,6 @@ class CharacterInfo extends Component {
 		hitPoints: 0,
 		conditions: ""
 	}
-
-	
-	// componentDidMount() {
-	// 	this.searchGames();
-	// }
 
 
 	// Whenever anything in the Form is updated, update the state so the search can be done
@@ -39,7 +34,7 @@ class CharacterInfo extends Component {
 			initiative_bonus: this.state.initBonus,
 			hitpoints: this.state.hitPoints,
 			conditions: this.state.conditions,
-			isCharacter: true,
+			isCharacter: false,
 			user_id: sessionStorage.getItem("userID")
 		};
 
@@ -57,7 +52,7 @@ class CharacterInfo extends Component {
 						<div className="panel panel-default">
 							<div className="panel-body">
 								<Form
-									charType="Character Name"
+									charType="Monster Name"
 									charName={this.state.charName}
 									initBonus={this.state.initBonus}
 									dexterity={this.state.dexterity}
@@ -76,4 +71,4 @@ class CharacterInfo extends Component {
     }
   }
 
-export default CharacterInfo;
+export default MonsterInfo;

@@ -55,6 +55,8 @@ class Game extends Component {
 					charInfo: this.state.chosenList
 				}
 				API.createBoard(boardInfo);
+				console.log(res.data);
+				alert("about to go");
 				sockets.sendGameList(res.data);
 				window.location = "/dashboard";
 			});	

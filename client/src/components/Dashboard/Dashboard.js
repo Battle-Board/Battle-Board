@@ -22,8 +22,7 @@ class Game extends Component {
 			gameButtonDisplay: "toggleDisplayOff",
 			gameCharList: [],
 			gameName: "",
-			chosenList: [],
-			sentMessage: ''
+			chosenList: []
 		};
 
 		sockets.listenForGameList((data) => {
@@ -257,6 +256,7 @@ class Game extends Component {
 		};
 
 		API.updateCharacter(charInfo).then(res => {
+			sockets.sendBoardUpdate(res.data);
 			this.getCharacters(userID)
 		})
 		.catch(err => console.log(err));
@@ -334,7 +334,7 @@ class Game extends Component {
 				<div className="container">
 					<div className="row">
 						<div className="col-sm-12 headerText text-center">
-							<span className="topStyle">Dashboard</span>
+							Dashboard
 						</div>
 					</div>
 				</div>
@@ -366,7 +366,6 @@ class Game extends Component {
 																<div className="form-group">
 																	Character Name{this.state.character_name}:<br/>
 																	<input
-																		className="hundred"
 																		name="charName"
 																		id="charName"
 																		type="text"
@@ -406,23 +405,23 @@ class Game extends Component {
 																	/><br/>
 																	Conditions:<br/>
 																	<div className="row">
-																	<div className="col-sm-12">
-																	<textarea
-																		className="hundred"
-																		name="conditions"
-																		id="conditions"
-																		placeholder={info.conditions}
-																		value={this.state.conditions}
-																		onChange={this.handleChange}
-																	/>
+																		<div className="col-sm-12">
+																			<textarea
+																				className="hundred"
+																				name="conditions"
+																				id="conditions"
+																				placeholder={info.conditions}
+																				value={this.state.conditions}
+																				onChange={this.handleChange}
+																			/>
+																		</div>
 																	</div>
+																	<div className="row">
+																		<div className = "col-sm-12">
+																			<button onClick={this.deleteChar} className="btn btn-primary pull-left" type="submit" value="Delete"><span className="buttonText">Delete</span></button>
+																			<button onClick={this.updateChar} className="btn btn-primary pull-right" type="submit" value="Save"><span className="buttonText">Save</span></button>
+																		</div>
 																	</div>
-																<div className="row">
-																	<div className = "col-sm-12">
-																		<button onClick={this.deleteChar} className="btn btn-primary pull-left" type="submit" value="Delete"><span className="buttonText">Delete</span></button>
-																		<button onClick={this.updateChar} className="btn btn-primary pull-right" type="submit" value="Save"><span className="buttonText">Save</span></button>
-																	</div>
-																</div>
 																</div>
 															</form>
 														</div>

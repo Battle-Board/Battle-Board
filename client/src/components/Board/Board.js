@@ -3,57 +3,135 @@ import API from "../../utils/API.js";
 import "./Board.css";
 import TopNav from "../TopNav/TopNavLoggedIn";
 import Character from "../Character/Character.js";
+import { sockets } from "../../utils/sockets.js";
 
 class Board extends Component {
 
-	state = {
-		charInfo: []
-	}
+    constructor(props) {
+		super(props);
+		
+    	this.state = {
+			charArray: [],
+			gameName: "",
+			round: 0,
+			turn_id: null
+		};
+
+		this.getBoard = this.getBoard.bind(this);
+
+		sockets.listenForBoardUpdate((data) => {
+			let gameID = {
+				gameID: sessionStorage.getItem("gameID")
+			};
+			console.log("from the server", data);
+			this.getBoard(gameID);
+		});
+  	}
 
 	componentDidMount() {
 		let gameID = {
 			gameID: sessionStorage.getItem("gameID")
 		};
-		console.log("gameID is", sessionStorage.getItem("gameID"));		
 
+		let turnID = {
+			turn_id: null
+		};
+
+		API.getGames()
+		.then(res => {
+			let index = res.data.findIndex(x => x.game_id == gameID.gameID);
+			this.setState({
+				gameName: res.data[index].game_name
+			});
+			if(res.data[index].turn_id === null)
+				{
+					console.log("I don't think I know who goes first");
+				}
+		});
+
+		this.getBoard(gameID);
+	}
+
+	getBoard(gameID) {
+		console.log("I got triggered");
+		let myOrderArray = [];
 		API.getBoardCharacters(gameID)
 		.then(res => {
-			let orderArray = [];
 			for (let i = 0; i < res.data[0].length; i++) {
 				let charEntry = {};
+				charEntry.charID = res.data[0][i].character_id;
 				charEntry.charName = res.data[0][i].character_name;
+				charEntry.hitPoints = res.data[0][i].hitpoints;
 				charEntry.initBonus = res.data[0][i].initiative_bonus;
 				charEntry.dexterity = res.data[0][i].dexterity;
-				charEntry.initRoll = Math.floor(Math.random()*20 + 1);
+				charEntry.initRoll = res.data[0][i].initiative_roll;
 				charEntry.finalInit = 0;
-				orderArray.push(charEntry);
+				charEntry.conditions = res.data[0][i].conditions;
+				myOrderArray.push(charEntry);
 			}
-			for (let i = 0; i < orderArray.length; i++) {
-				orderArray[i].finalInit = orderArray[i].initRoll + orderArray[i].initBonus + orderArray[i].initBonus/100 + orderArray[i].dexterity/10000;
+			for (let i = 0; i < myOrderArray.length; i++) {
+				myOrderArray[i].finalInit = myOrderArray[i].initRoll + myOrderArray[i].initBonus + myOrderArray[i].initBonus/100 + myOrderArray[i].dexterity/10000;
 			}
-			orderArray.sort(function(a, b) {
+			myOrderArray.sort(function(a, b) {
 				return parseFloat(a.finalInit) - parseFloat(b.finalInit);
 			}).reverse();
-			this.setState({charInfo: orderArray});
+			this.setState({charArray: myOrderArray});
 		})
 		.catch(err => console.log(err));
+		this.setState({charArray: myOrderArray});
 	}
+
+	handleChange = event => {
+		let value = event.target.value;
+		let name = event.target.name;
+		this.setState({
+			[name]: value
+		});
+	};
+
+	triggerBoard = event => {
+		event.preventDefault();
+		let gameID = {
+			gameID: sessionStorage.getItem("gameID")
+		};
+		console.log("after trigger, charArray is", this.state.charArray);
+	}
+
+	addMonster() {
+		window.location = "/createMonster";
+	};
 
 	render() {
 		return (
 			<div>
 				<TopNav/>
+				<div className="container">
+					<div className="row">
+						<div className="col-sm-7 headerText">
+							Battle Board for {this.state.gameName}
+						</div>
+						<div className="col-sm-2 headerText">
+							<button className="btn btn-primary" onClick={this.addMonster}><span className="buttonText">Add Monster</span></button>
+						</div>
+						<div className="col-sm-2 headerText text-right">
+							Round
+						</div>
+						<div className="col-sm-1 headerText">
+							{this.state.round}
+						</div>
+					</div>
+				</div>
 				<div className="Board">
 					<div className="container">
 						<div className = "row">
-								{this.state.charInfo.map(info => (
-									<Character props={info} />
-								))}
+							{this.state.charArray.map(info => (
+								<Character charList={info} updateBoard={this.getBoard}/>
+							))}
 						</div>
 					</div>
 				</div>
 			</div>
-		);
+		)
 	}
 }
 
