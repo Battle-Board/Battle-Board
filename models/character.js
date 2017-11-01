@@ -24,6 +24,11 @@ module.exports = function(sequelize, Sequelize) {
             type: Sequelize.INTEGER,
             allowNull: false
         },
+        initiative_roll: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+            defaultValue: 0
+        },
         hitpoints: {
             type: Sequelize.INTEGER,
             allowNull: false

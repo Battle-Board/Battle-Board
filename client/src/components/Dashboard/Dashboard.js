@@ -321,6 +321,12 @@ class Game extends Component {
 		}).catch(err => console.log(err));
 	}
 
+	goBattle(game_id) {
+		console.log("I think the game_id is", game_id);
+		sessionStorage.setItem("gameID", game_id);
+		window.location = "/board";
+	}
+
     render() {
     	return (
 			<div>
