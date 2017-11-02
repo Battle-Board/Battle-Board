@@ -5,7 +5,7 @@ import API from "../../utils/API.js";
 import Form from "./Form/Form.js";
 
 
-class CharacterInfo extends Component {
+class MonsterInfo extends Component {
 
 	state = {
 		charName: "",
@@ -14,11 +14,6 @@ class CharacterInfo extends Component {
 		hitPoints: 0,
 		conditions: ""
 	}
-
-	
-	// componentDidMount() {
-	// 	this.searchGames();
-	// }
 
 
 	// Whenever anything in the Form is updated, update the state so the search can be done
@@ -39,12 +34,22 @@ class CharacterInfo extends Component {
 			initiative_bonus: this.state.initBonus,
 			hitpoints: this.state.hitPoints,
 			conditions: this.state.conditions,
-			isCharacter: true,
-			user_id: sessionStorage.getItem("userID")
+			isCharacter: false,
+			user_id: 0
 		};
 
-		API.createCharacter(charInfo);
-		window.location = "/dashboard";
+		API.createCharacter(charInfo)
+		.then(res => {
+			charInfo.character_id = res.data.character_id;
+			let monsterInfo = [charInfo];
+			let boardInfo = {
+				gameID: sessionStorage.getItem("gameID"),
+				charInfo: monsterInfo
+			}
+			console.log("Before saving, I have a boardInfo of", boardInfo);
+			API.createBoard(boardInfo);
+		});
+		window.location = "/board";
 	};
 
     render() {
@@ -57,7 +62,7 @@ class CharacterInfo extends Component {
 						<div className="panel panel-default">
 							<div className="panel-body">
 								<Form
-									charType="Character Name"
+									charType="Monster Name"
 									charName={this.state.charName}
 									initBonus={this.state.initBonus}
 									dexterity={this.state.dexterity}
@@ -76,4 +81,4 @@ class CharacterInfo extends Component {
     }
   }
 
-export default CharacterInfo;
+export default MonsterInfo;

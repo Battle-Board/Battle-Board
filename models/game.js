@@ -9,6 +9,15 @@ module.exports = function(sequelize, Sequelize) {
         game_name: {
             type: Sequelize.STRING,
             unique: true
+        },
+        round: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+            defaultValue: 1
+        },
+        turn_id: {
+            type: Sequelize.INTEGER,
+            defaultValue: null
         }
     });
 
