@@ -19,6 +19,14 @@ export default {
 		});
 	},
 
+	createMonster: function(charInfo) {
+		console.log("In API CreateMunsta");
+		return axios.post("/characters/createMonster", charInfo).then((data) => {
+			console.log("Monster API data: ", data);
+			return data;
+		});
+	},
+
 	createBoard: function(boardInfo) {
 		return axios.post("/boards/create", boardInfo).then((boards) => {
 			return boards;
@@ -44,25 +52,20 @@ export default {
 	},
 
 	createUser: function(data) {
-		console.log("In create user!");
 		return axios.post("/signup", data);
 	},
 
 	login: function(data) {
-		console.log("In login user!");
 		return axios.post("/signin", data);
 	},
 
 	userLoggedIn: function() {
-		console.log("userLoggedIn right before axios call");
 		return axios.get("/auth/userid").then((user) => {
-			console.log("Inside API userId: ",user," and username: ",user.data.username);
 			return user;
 		}).catch(err => console.log("Error in userLoggedIn: ",err));
 	},
 
 	logout: function() {
-		console.log("In logout API call!");
 		return axios.get("/auth/logout").then((res) => console.log("Logout Response: ",res)).catch(err => console.log("Logout Error: ",err));
 	},
 

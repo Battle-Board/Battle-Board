@@ -32,33 +32,12 @@ exports.all = function(req, res) {
             res.json(err);
         })
 };
-router.post("/create", function(req, res) {
-	// add item to game table
-	db.Game.create(req.body)
-		// pass the result of our call
-		.then(function(data) {
-			res.json(data);
-		}).catch(function(err) {
-			res.json(err);
-		});
-});
 
-router.get("/all", function(req, res) {
-	db.Game.findAll({
-		order: [["game_name"]]
-	})
-		.then(function(data) {
-			res.json(data);
-		}).catch(function(err) {
-			res.json(err);
-		})
-});
-
-router.post("/update", function(req, res) {
+exports.update = function(req, res) {
 	let gameInfo = {
 		game_name: req.body.game_name
 	};
-	db.Game.update(
+	sdb.Game.update(
 		gameInfo,
 		{
 			where: {
@@ -69,10 +48,10 @@ router.post("/update", function(req, res) {
 		}).catch(function(err) {
 			res.json(err);
 		});
-});
+};
 
-router.post("/delete", function(req, res) {
-	db.Game.destroy({
+exports.delete = function(req, res) {
+	sdb.Game.destroy({
 		where: {
 			game_id: req.body.game_id
 		}
@@ -81,15 +60,15 @@ router.post("/delete", function(req, res) {
 	}).catch(function(err) {
 		res.json(err);
 	});
-});
+};
 
-router.post("/resetturn", function(req, res) {
+exports.resetturn = function(req, res) {
 	let charInfo = {
 		character_id: null
 	};
 	console.log("the charInfo is", charInfo);
 	console.log("the characterID is", req.body.character_id);
-	db.Game.update(
+	sdb.Game.update(
 		charInfo,
 		{
 			where: {
@@ -100,6 +79,4 @@ router.post("/resetturn", function(req, res) {
 		}).catch(function(err) {
 			res.json(err);
 		});
-});
-
-module.exports = router;
+};

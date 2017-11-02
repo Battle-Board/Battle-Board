@@ -34,16 +34,6 @@ class Board extends Component {
   	}
 
 	componentDidMount() {
-		let orderArray = this.state.charInfo;
-
-		for (let i = 0; i < orderArray.length; i++) {
-			orderArray[i].finalInit = orderArray[i].initRoll + orderArray[i].initBonus + orderArray[i].dexterity/100;
-		}
-		orderArray.sort(function(a, b) {
-			return parseFloat(a.finalInit) - parseFloat(b.finalInit);
-		}).reverse();
-		this.setState({charinfo: orderArray});
-
 		API.userLoggedIn()
 		.then(res => {
 			this.setState({userPromise: true});

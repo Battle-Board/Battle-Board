@@ -4,7 +4,6 @@ var exports = module.exports = {}
 exports.user = function(req, res) {
     // CAN PASS MORE THAN ONE OBJECT THROUGH RENDER
     // console.log("AuthCont USER: ",res.locals.user.username);
-    console.log("RES IN AUTHCONT: ",res.locals.user);
     if(!res.locals.user) {
         res.json({"status":"4xx","message":"User is not logged in!"});
     }else if(res) {

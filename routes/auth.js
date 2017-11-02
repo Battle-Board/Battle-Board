@@ -12,24 +12,30 @@ module.exports = function(app, passport) {
     app.post("/characters/create", charactersController.create);
     app.post("/characters/user", charactersController.user);
     app.get("/characters/all", charactersController.all);
+    app.post("/characters/update", charactersController.update);
+    app.post("/characters/delete", charactersController.delete);
+    app.post("/characters/createMonster", charactersController.createMonster);
 
     // Game Routes
     app.post("/games/create", gamesController.create);
     app.get("/games/all", gamesController.all);
+    app.post("/games/update", gamesController.update);
+    app.post("/games/delete", gamesController.delete);
+    app.post("/games/resetturn", gamesController.resetturn);
 
     // Board Routes
     app.post("/boards/create", boardsController.create);
     app.get("/boards/all", boardsController.all);
     app.post("/boards/characters", boardsController.characters);
+    app.post("/boards/delete", boardsController.delete);
+    app.post("/boards/deletechar", boardsController.deletechar);
 
     // Passport Routes
     app.post("/signup", passport.authenticate('local-signup'), function(req, res) {
-        console.log("In function after passport!",req.user.dataValues.username);
         res.json(req.user.dataValues.username);
     });
 
     app.post("/signin", passport.authenticate('local-signin'), function(req, res) {
-        console.log("In function after passport!",res.locals.user);
         res.json(res.locals.user);
     });
 

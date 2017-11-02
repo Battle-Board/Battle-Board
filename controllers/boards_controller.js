@@ -49,16 +49,15 @@ exports.characters = function(req, res) {
             res.json(err);
         });
 };
-});
 
-router.post("/update", function(req, res) {
+exports.update = function(req, res) {
     console.log("in boards_controllers, gameID is", req.body.game_id);
     console.log("rest of body is", req.body);
     const newBody = req.body.charList.map((char) => {
         return {
             game_id: req.body.game_id,
             character_id: char.character_id,
-            user_id: char.user_id
+            UserId: res.locals.user.id
         }
     });
     console.log("newBody is", newBody);
@@ -67,7 +66,7 @@ router.post("/update", function(req, res) {
             game_id: req.body.game_id
         }
     }).then(function() {
-        db.Board.bulkCreate(newBody)
+        sdb.Board.bulkCreate(newBody)
         // pass the result of our call
         .then(function(data) {
             // log the result to our terminal/bash window
@@ -76,10 +75,10 @@ router.post("/update", function(req, res) {
     }).catch(function(err) {
         res.json(err);
     });
-});
+};
 
-router.post("/delete", function(req, res) {
-    db.Board.destroy({
+exports.delete = function(req, res) {
+    sdb.Board.destroy({
         where: {
             game_id: req.body.game_id
         }
@@ -88,10 +87,10 @@ router.post("/delete", function(req, res) {
     }).catch(function(err) {
         res.json(err);
     });
-});
+};
 
-router.post("/deletechar", function(req, res) {
-    db.Board.destroy({
+exports.deletechar = function(req, res) {
+    sdb.Board.destroy({
         where: {
             character_id: req.body.character_id
         }
@@ -100,6 +99,4 @@ router.post("/deletechar", function(req, res) {
     }).catch(function(err) {
         res.json(err);
     });
-});
-
-module.exports = router;
+};

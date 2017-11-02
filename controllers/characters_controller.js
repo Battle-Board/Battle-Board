@@ -13,7 +13,7 @@ exports.create = function(req,res) {
         initiative_bonus: req.body.initiative_bonus,
         hitpoints: req.body.hitpoints,
         conditions: req.body.conditions,
-        isCharacter: true,
+        isCharacter: req.body.isCharacter,
         UserId: res.locals.user.id
     })
         // pass the result of our call
@@ -23,6 +23,30 @@ exports.create = function(req,res) {
             res.json(data);
         }).catch(function(err) {
             console.log("Character Create Error",err);
+            res.json(err);
+        });
+    console.log("End of Character Create!");
+};
+
+exports.createMonster = function(req,res) {
+    console.log("Inside Character Create: ",req.body);
+    // add item to character table
+    sdb.Character.create({
+        character_name: req.body.character_name,
+        dexterity: req.body.dexterity,
+        initiative_bonus: req.body.initiative_bonus,
+        hitpoints: req.body.hitpoints,
+        conditions: req.body.conditions,
+        isCharacter: false,
+        UserId: 1
+    })
+        // pass the result of our call
+        .then(function(data) {
+            // log the result to our terminal/bash window
+            console.log("Monster Create Success ", data.dataValues.UserId);
+            res.json(data);
+        }).catch(function(err) {
+            console.log("Monster Create Error",err);
             res.json(err);
         });
     console.log("End of Character Create!");
@@ -40,9 +64,6 @@ exports.user = function(req, res) {
             res.json(err);
         })
 };
-            res.json(err)
-        });
-});
 
 exports.all = function(req, res) {
     sdb.Character.findAll({
@@ -56,14 +77,12 @@ exports.all = function(req, res) {
             res.json(err);
         })
 };
-        });
-});
 
-router.post("/update", function(req, res) {
+exports.update = function(req, res) {
     let newInfo = req.body;
     delete newInfo.user_id;
     delete newInfo.charcter_id;
-    db.Character.update(
+    sdb.Character.update(
         newInfo,
         {
         where: {
@@ -74,11 +93,11 @@ router.post("/update", function(req, res) {
     }).catch(function(err) {
         res.json(err);
     });
-});
+};
 
-router.post("/delete", function(req, res) {
+exports.delete = function(req, res) {
     console.log("in controller, about to delete", req.body.character_id);
-    db.Character.destroy({
+    sdb.Character.destroy({
         where: {
             character_id: req.body.character_id
         }
@@ -87,6 +106,4 @@ router.post("/delete", function(req, res) {
     }).catch(function(err) {
         res.json(err);
     });
-});
-
-module.exports = router;
+};

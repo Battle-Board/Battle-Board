@@ -37,7 +37,6 @@ app.use(passport.session());
 app.use(function(req, res, next) {
     res.locals.user = req.user;
     app.locals.user = req.user;
-    console.log("middleware body test: ",req.body.username, " ", res.locals.user);
     if(!req.user){
         next();
     }else {

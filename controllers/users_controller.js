@@ -5,7 +5,7 @@ var exports = module.exports = {};
 // POST of user is handled by Passport
 
 exports.all = function(req, res) {
-    db.User.findAll({})
+    sdb.User.findAll({})
         .then(function(data) {
             res.json(data);
         }).catch(function(err) {

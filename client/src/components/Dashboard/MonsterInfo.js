@@ -35,11 +35,12 @@ class MonsterInfo extends Component {
 			hitpoints: this.state.hitPoints,
 			conditions: this.state.conditions,
 			isCharacter: false,
-			user_id: 0
+			UserId: 0
 		};
 
-		API.createCharacter(charInfo)
+		API.createMonster(charInfo)
 		.then(res => {
+			console.log("Got a value in monster return", res);
 			charInfo.character_id = res.data.character_id;
 			let monsterInfo = [charInfo];
 			let boardInfo = {
@@ -47,9 +48,11 @@ class MonsterInfo extends Component {
 				charInfo: monsterInfo
 			}
 			console.log("Before saving, I have a boardInfo of", boardInfo);
-			API.createBoard(boardInfo);
+			API.createBoard(boardInfo).then(window.location = "/board");
+		}).catch(err => {
+			console.log("Catching Error on Monsters: ",err);	
 		});
-		window.location = "/board";
+		
 	};
 
     render() {

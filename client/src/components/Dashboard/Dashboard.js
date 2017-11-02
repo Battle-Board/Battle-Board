@@ -15,13 +15,11 @@ class Game extends Component {
     	this.state = {
 			userID: sessionStorage.getItem("userID"),
 			charList: [],
-<<<<<<< HEAD
 			foundChars: false,
 			// userID: localStorage.getItem("userID"),
 			sentMessage: '',
 			redirect: false,
-			userPromise: false
-=======
+			userPromise: false,
 			character_id: -1,
 			charName: "",
 			dexterity: 0,
@@ -33,7 +31,6 @@ class Game extends Component {
 			gameCharList: [],
 			gameName: "",
 			chosenList: []
->>>>>>> master
 		};
 
 		sockets.listenForGameList((data) => {
@@ -56,17 +53,9 @@ class Game extends Component {
 	}
 
 	componentDidMount() {
-<<<<<<< HEAD
-		// console.log("Mounted UserID: ",this.state.userID);
-		// let userID = {
-		// 	userID: this.state.userID
-		// };
-		// // API.userID.then if OK, set to this.state.userID if not, bad things;
-=======
 		let userID = {
 			userID: this.state.userID
 		};
->>>>>>> master
 
 		this.getCharacters();
 		this.getGames();
@@ -84,10 +73,6 @@ class Game extends Component {
 		});
 	}
 
-<<<<<<< HEAD
-	getCharacters() {
-		API.getUserCharacters()
-=======
 	handleChange = event => {
 		let value = event.target.value;
 		let name = event.target.name;
@@ -98,7 +83,6 @@ class Game extends Component {
 
 	getCharacters(userID) {
 		API.getUserCharacters(userID)
->>>>>>> master
 		.then(res => {
 			console.log("Inside get Chars:",res);
 			if (res.data.length !== 0) {
