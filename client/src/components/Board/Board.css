@@ -1,0 +1,59 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #fff !important;
+}
+.char {
+    padding-left: 15px;
+}
+.char-container {
+    padding-top: 10px;
+}
+.char-name {
+    width: 100%;
+    background-color: grey;
+    padding-left: 10px;
+    font-weight: bold;
+}
+.char-info {
+    width: 100%;
+    padding: 5px 0 5px 10px;
+    background-color: #dcdcdc;
+}
+.char-edit {
+    width: 100%;
+    background-color: grey;
+    text-align: center;
+}
+/*			.char:nth-child(even) {
+    background: grey;
+}*/
+/*
+.char:nth-child(odd) {
+    background: #dcdcdc;
+}*/
+#main-container {
+    padding-right: 15px;
+}
+input.boardIn {
+    width: 100px !important;
+    padding-left: 5px;
+    background-color: #dedede;
+    border: 1px solid lightgray;
+    height: 20px;
+    margin: 0 !important;
+}
+.active-player {
+    background-color: #d5ffd5;
+}
+li {
+    list-style-type: none;
+    width: 100%;
+}
+ul {
+    padding: 0 0 0 10px;
+    margin: 0;
+}
+.attribute {
+    float: left;
+}

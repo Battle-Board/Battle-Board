@@ -12,6 +12,8 @@ class Board extends Component {
 		charInfo: [],
 		redirect: false,
 		userPromise: false,
+		uniqueValue: 0,
+		update: false,
 	}
 
 	componentDidMount() {
@@ -66,8 +68,85 @@ class Board extends Component {
 		.catch(err => console.log(err));
 	}
 
+	incrementUnique(e)  {
+		e.preventDefault();
+		let uniqueVal = this.state.uniqueValue + 1;
+		if(uniqueVal >= this.state.charInfo.length) {
+			console.log("I am in here!");
+			this.setState({uniqueValue: 0});
+		}else {
+			this.setState({uniqueValue: uniqueVal});
+		}
+	}
+
+	decrementUnique(e)  {
+		e.preventDefault();
+		let uniqueVal = this.state.uniqueValue - 1;
+		let highestVal = this.state.charInfo.length -1;
+		if(uniqueVal < 0) {
+			console.log("I am in here!");
+			this.setState({uniqueValue: highestVal});
+		}else {
+			this.setState({uniqueValue: uniqueVal});
+		}
+	}
+
+	edit(e) {
+		e.preventDefault();
+		console.log("in edit");
+		this.setState({update: true});
+	}
+
+	conditonalEditing(info) {
+		if(this.state.update === true && this.state.uniqueValue === info.uniqueValue) {
+			return (<div class="row">
+			<div class="char-info col-xs-12">
+				<ul>
+					<li><span class="attribute">Dexterity: </span><input class="boardIn" type="text" name="dexterity" value={info.dexterity}/></li>
+					<li><span class="attribute">Init Bonus: </span><input class="boardIn" type="text" name="initBonus" value={info.initBonus}/></li>
+					<li><span class="attribute">Init Roll: </span><input class="boardIn" type="text" name="initRoll" value={info.initRoll}/></li>
+					<li><span class="attribute">Final Init: &nbsp;</span> {info.finalInit}</li>
+					<li><span class="attribute">Hit Points: </span><input class="boardIn" type="text" name="hitPoints" value={info.hitPoints}/></li>
+					<li><span class="attribute">UNIQUE VALUE: </span><input class="boardIn" type="text" name="uniquevalue" value={info.uniqueValue}/></li>
+					<li><span class="attribute">Conditions: </span><input class="boardIn" type="text" name="condition" value="someText"/></li>
+				</ul>
+			</div>
+		</div>);
+		}else if(this.state.update === false || this.state.update === true) {
+			return (<div className="row">
+			<div className={"char-info col-xs-12 "+(info.uniqueValue === this.state.uniqueValue?("active-player"):("not-active"))}>
+				<ul>
+					<li>Dexterity: {info.dexterity}</li>
+					<li>Init Bonus: {info.initBonus}</li>
+					<li>Init Roll: {info.initRoll}</li>
+					<li>Final Init: {info.finalInit}</li>
+					<li>Hit Points: {info.hitPoints}</li>
+					<li>UNIQUE VALUE: {info.uniqueValue}</li>
+					<li>Conditions: someText</li>
+				</ul>
+			</div>
+		</div>);
+		}
+	}
+
+	updateCharacter(e){
+		e.preventDefault();
+		this.setState({update: false});
+	}
+
+	nextEditUpdate(info) {
+		if(info.uniqueValue === this.state.uniqueValue && this.state.update === true) {
+			return (<div><span onClick={(e) => this.updateCharacter(e)}><a>UPDATE</a></span></div>)
+		}else if(info.uniqueValue === this.state.uniqueValue) {
+			return (<div><span onClick={(e) => this.decrementUnique(e)}><a>&lt; Previous</a></span> | <span onClick={(e) => this.edit(e)}><a>Edit</a></span> | <span onClick={(e) => this.incrementUnique(e)}><a>Next ></a></span></div>)			
+		}else {
+			return(<div><span>{'\u00A0'}</span></div>)
+		}			
+	}
+
 	getRender() {
 		const { redirect } = this.state;
+		const { update } = this.state;
 		if(redirect) {
 			return <Redirect to="/login-signup"/>;
 		}
@@ -78,7 +157,20 @@ class Board extends Component {
 					<div className="container">
 						<div className = "row">
 								{this.state.charInfo.map(info => (
-									<Character props={info} />
+									<div className="col-12 col-md-3 char-container">
+									<div className="char">
+										<div className="row">
+											<div className="char-name col-xs-12">Character Name: {info.charName}</div>
+										</div>
+										{this.conditonalEditing(info)}
+
+										<div className="row">
+											<div className="char-edit col-xs-12">
+													{this.nextEditUpdate(info)}
+											</div>
+										</div>
+									</div>
+								</div>
 								))}
 						</div>
 					</div>
