@@ -14,15 +14,15 @@ const TopNav = () => (
 					<img src={logo} alt="Battle Board Logo"/>
 				</div>
 				<div className="col-sm-6 text-right">
-					<Link to='/'>Home</Link>
+					<Link style={{ color: '#428bca' }} to='/'>Home</Link>
 					&nbsp; | &nbsp;
-		 			<Link to="/dashboard">Dashboard</Link>
+		 			<Link style={{ color: '#428bca' }} to="/dashboard">Dashboard</Link>
 		 			&nbsp; | &nbsp;
-		 			<Link to="/game">Game</Link>
+		 			<Link style={{ color: '#428bca' }} to="/game">Game</Link>
 		 			&nbsp; | &nbsp;
-		 			<Link to="/board">Board</Link>
+		 			<Link style={{ color: '#428bca' }} to="/board">Board</Link>
 					&nbsp; | &nbsp;
-					<Link to="/login-signup">Log/Register</Link>
+					<Link style={{ color: '#428bca' }} to="/login-signup">Log/Register</Link>
 				</div>
 			</div>
 		</div>

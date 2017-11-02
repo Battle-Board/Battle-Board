@@ -14,9 +14,9 @@ const TopNav = () => (
 					<img src={logo} alt="Battle Board Logo"/>
 				</div>
 				<div className="col-sm-6 text-right">
-					<Link to='/'>Home</Link>
+					<Link style={{ color: '#428bca' }} to='/'>Home</Link>
 		 			&nbsp; | &nbsp;
-		 			<Link to="/login-signup">Login</Link>
+		 			<Link style={{ color: '#428bca' }} to="/login-signup">Login</Link>
 				</div>
 			</div>
 		</div>

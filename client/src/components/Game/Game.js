@@ -29,8 +29,7 @@ class Game extends Component {
 		.then(res => {
 			if (res.data.length !== 0) {
 				this.setState({
-					charList: res.data,
-					foundChars: true
+					charList: res.data
 				});					
 			}
 				else {
@@ -38,8 +37,7 @@ class Game extends Component {
 						character_name: "No characters found"
 					}];
 					this.setState({
-						charList: noChars,
-						foundChars: false
+						charList: noChars
 					});
 				}
 		})
@@ -69,16 +67,16 @@ class Game extends Component {
 			game_name: this.state.gameName
 		};
 
-		if ((gameName.game_name !== "") && (this.state.chosenList.length > 0)) {
+		if ((gameName.game_name.trim().length !== 0) && (this.state.chosenList.length > 0)) {
 			API.createGame(gameName).then(res => {
+				sessionStorage.setItem("gameID", res.data.game_id);				
 				let boardInfo = {
 					gameID: res.data.game_id,
 					charInfo: this.state.chosenList
 				}
 				API.createBoard(boardInfo).then(res => console.log("in create board")).catch(err=>console.log("In create Board error: ",err));
 				sockets.sendGameList(res.data);
-				// window.location = "/board";			
-
+				window.location = "/dashboard";
 			});	
 		}
 	}
@@ -91,8 +89,7 @@ class Game extends Component {
 
 		if ((gameName.game_name !== "") && (this.state.chosenList.length > 0)) {
 			API.createGame(gameName).then(res => {
-				console.log("Some GameID: ",res.data.game_id);
-				localStorage.setItem("gameID", res.data.game_id);
+				sessionStorage.setItem("gameID", res.data.game_id);
 				let boardInfo = {
 					gameID: res.data.game_id,
 					charInfo: this.state.chosenList
@@ -140,8 +137,8 @@ class Game extends Component {
 							<div className="panel-body">
 								<form className="form-horizontal">
 									<label className="text-center">
-										Create New Game:
-										<input width="100%" type="text" value={this.state.value} onChange={this.handleChange} />
+										Create New Campaign:
+										<input width="100%" type="text" placeholder="Campaign Name (required)" value={this.state.value} onChange={this.handleChange} required />
 									</label>
 									<div className="row">
 										<div className="panel panel-default">

@@ -9,8 +9,7 @@ module.exports = function(sequelize, Sequelize) {
             autoIncrement: true
         },
         character_name: {
-            type: Sequelize.STRING,
-            unique: true
+            type: Sequelize.STRING
         },
         dexterity: {
             type: Sequelize.INTEGER,
@@ -19,6 +18,11 @@ module.exports = function(sequelize, Sequelize) {
         initiative_bonus: {
             type: Sequelize.INTEGER,
             allowNull: false
+        },
+        initiative_roll: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+            defaultValue: 0
         },
         hitpoints: {
             type: Sequelize.INTEGER,

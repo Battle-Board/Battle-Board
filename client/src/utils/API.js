@@ -70,5 +70,53 @@ export default {
 		return axios.post("/boards/characters", gameID).then((characters) => {
 			return characters;
 		});
+	},
+
+	updateCharacter: function(charInfo) {
+		return axios.post("/characters/update", charInfo).then((characters) => {
+			return characters;
+		});
+	},
+
+	updateGame: function(gameInfo) {
+		return axios.post("/games/update", gameInfo).then((games) => {
+			return games;
+		});
+	},
+
+	updateGameLoseChar: function(charInfo) {
+		return axios.post("/games/resetturn", charInfo).then((games) => {
+			return games;
+		});
+	},
+
+	updateBoard: function(boardInfo) {
+		return axios.post("/boards/update", boardInfo).then((boards) => {
+			return boards;
+		});
+	},
+
+	deleteChar: function(charInfo) {
+		return axios.post("/characters/delete", charInfo).then((characters) => {
+			return characters;
+		});
+	},
+
+	deleteCharFromBoard: function(charInfo) {
+		return axios.post("/boards/deletechar", charInfo).then((boards) => {
+			return boards;
+		});
+	},
+
+	deleteGame: function(gameID) {
+		return axios.post("/games/delete", gameID).then((games) => {
+			return games;
+		});
+	},
+
+	deleteBoard: function(gameID) {
+		return axios.post("/boards/delete", gameID).then((games) => {
+			return games;
+		});
 	}
 };

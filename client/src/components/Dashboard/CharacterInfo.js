@@ -31,7 +31,7 @@ class CharacterInfo extends Component {
 		});
 	};
   
-	// When the form is submitted, run the search
+	// When the form is submitted, run the insertion into the database
 	handleFormSubmit = event => {
 		// Preventing the default behavior of the form submit (which is to refresh the page)
 		event.preventDefault();
@@ -41,7 +41,8 @@ class CharacterInfo extends Component {
 			initiative_bonus: this.state.initBonus,
 			hitpoints: this.state.hitPoints,
 			conditions: this.state.conditions,
-			isCharacter: true
+			isCharacter: true,
+			user_id: sessionStorage.getItem("userID")
 		};
 
 		API.createCharacter(charInfo);
@@ -68,33 +69,36 @@ class CharacterInfo extends Component {
 		if(redirect) {
 			return <Redirect to="/login-signup"/>;
 		}
-    	return (
-			<div>
-				<TopNav />
-				<div className="container">
-					<div className="row">
-						<div className = "col-sm-12 col-md-6 col-md-offset-3 gameForm">
-							<div className="panel panel-default">
-								<div className="panel-body">
-									<Form
-										charName={this.state.charName}
-										initBonus={this.state.initBonus}
-										dexterity={this.state.dexterity}
-										hitPoints={this.state.hitPoints}
-										conditions={this.state.conditions}
-										handleInputChange={this.handleInputChange}
-										handleFormSubmit={this.handleFormSubmit}
-									/>
+			else {
+				return (
+					<div>
+						<TopNav />
+						<div className="container">
+							<div className="row">
+								<div className = "col-sm-12 col-md-6 col-md-offset-3 gameForm">
+									<div className="panel panel-default">
+										<div className="panel-body">
+											<Form
+												charType="Character Name"
+												charName={this.state.charName}
+												initBonus={this.state.initBonus}
+												dexterity={this.state.dexterity}
+												hitPoints={this.state.hitPoints}
+												conditions={this.state.conditions}
+												handleInputChange={this.handleInputChange}
+												handleFormSubmit={this.handleFormSubmit}
+											/>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-			</div>
-		  );
-		}
+				);
+			}
+	}
 
-    render() {
+	render() {
 		const { userPromise } = this.state;
 		return userPromise ? this.getRender() : (<span>Loading..</span>);
     }

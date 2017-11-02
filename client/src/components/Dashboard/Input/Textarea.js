@@ -1,8 +1,8 @@
 import React from "react";
 import "./Input.css";
 
-export const Input = props =>
+export const Textarea = props =>
 	<div className="form-group inputForm">
 			{props.labelname}:<br />
-			<input className="form-control" {...props} />
-	</div>;
+			<textarea className="form-control" {...props} />
+	</div>

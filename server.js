@@ -1,7 +1,6 @@
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
 const logger = require("morgan");
 const passport = require("passport");
 const session = require("express-session")
@@ -12,7 +11,6 @@ const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
-//const controller = require("./controllers");
 
 // // logging for request to the console
 // app.use(logger("dev"));
@@ -50,26 +48,6 @@ app.use(function(req, res, next) {
 // Passports Requirements for Functionality
 require("./routes/auth.js")(app, passport);
 require("./config/passport/passport.js")(passport, sdb.User);
-
-// Set up Mongoose
-// Set up promises with mongoose
-mongoose.Promise = global.Promise;
-// Connect to the Mongo DB
-mongoose.connect(
-    process.env.MONGODB_URI || "mongodb://localhost/battleboard", {
-        useMongoClient: true
-    }
-);
-
-let mdb = mongoose.connection;
-
-mdb.on("error", function(error) {
-    console.log("mongoose Error: ", error);
-});
-
-mdb.once("open", function() {
-    console.log("Mongoose connection successful");
-});
 
 
 // Serve up static assets (usually on heroku)

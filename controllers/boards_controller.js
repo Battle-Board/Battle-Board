@@ -6,6 +6,7 @@ var exports = module.exports = {};
 // POST to /boards/create
 exports.create = function(req, res) {
     // add item to board table
+    console.log("req.body.charInfo is", req.body.charInfo);
     const newBody = req.body.charInfo.map((char) => {
         return {
             game_id: req.body.gameID,
@@ -15,6 +16,8 @@ exports.create = function(req, res) {
     });
 
     sdb.Board.bulkCreate(newBody)
+    console.log("I'm goint to add to the board with a newBody of", newBody);
+    db.Board.bulkCreate(newBody)
         // pass the result of our call
         .then(function(data) {
             // log the result to our terminal/bash window
@@ -46,3 +49,57 @@ exports.characters = function(req, res) {
             res.json(err);
         });
 };
+});
+
+router.post("/update", function(req, res) {
+    console.log("in boards_controllers, gameID is", req.body.game_id);
+    console.log("rest of body is", req.body);
+    const newBody = req.body.charList.map((char) => {
+        return {
+            game_id: req.body.game_id,
+            character_id: char.character_id,
+            user_id: char.user_id
+        }
+    });
+    console.log("newBody is", newBody);
+    db.Board.destroy({
+        where: {
+            game_id: req.body.game_id
+        }
+    }).then(function() {
+        db.Board.bulkCreate(newBody)
+        // pass the result of our call
+        .then(function(data) {
+            // log the result to our terminal/bash window
+            res.json(data);
+        });
+    }).catch(function(err) {
+        res.json(err);
+    });
+});
+
+router.post("/delete", function(req, res) {
+    db.Board.destroy({
+        where: {
+            game_id: req.body.game_id
+        }
+    }).then(function(data) {
+        res.json(data);
+    }).catch(function(err) {
+        res.json(err);
+    });
+});
+
+router.post("/deletechar", function(req, res) {
+    db.Board.destroy({
+        where: {
+            character_id: req.body.character_id
+        }
+    }).then(function(data) {
+        res.json(data);
+    }).catch(function(err) {
+        res.json(err);
+    });
+});
+
+module.exports = router;

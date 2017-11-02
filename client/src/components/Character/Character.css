@@ -13,3 +13,19 @@
 #activePlayer {
 	background-color: #98FB98;
 }
+
+.buttonText {
+	font-size: 150%;
+}
+
+.hundred {
+	width: 100% !important;
+}
+
+.toggleDisplayOn {
+	display: block;
+}
+
+.toggleDisplayOff {
+	display: none;
+}

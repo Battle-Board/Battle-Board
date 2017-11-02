@@ -34,13 +34,15 @@ exports.user = function(req, res) {
             UserId: res.locals.user.id
         },
         order: [["character_name"]]
-    })
-        .then(function(data) {
+    }).then(function(data) {
             res.json(data);
         }).catch(function(err) {
             res.json(err);
         })
 };
+            res.json(err)
+        });
+});
 
 exports.all = function(req, res) {
     sdb.Character.findAll({
@@ -48,10 +50,43 @@ exports.all = function(req, res) {
             isCharacter: true
         },
         order: [["character_name"]]
-    })
-        .then(function(data) {
+    }).then(function(data) {
             res.json(data);
         }).catch(function(err) {
             res.json(err);
         })
 };
+        });
+});
+
+router.post("/update", function(req, res) {
+    let newInfo = req.body;
+    delete newInfo.user_id;
+    delete newInfo.charcter_id;
+    db.Character.update(
+        newInfo,
+        {
+        where: {
+            character_id: req.body.character_id
+        }
+    }).then(function(data) {
+        res.json(data);
+    }).catch(function(err) {
+        res.json(err);
+    });
+});
+
+router.post("/delete", function(req, res) {
+    console.log("in controller, about to delete", req.body.character_id);
+    db.Character.destroy({
+        where: {
+            character_id: req.body.character_id
+        }
+    }).then(function(data) {
+        res.json(data);
+    }).catch(function(err) {
+        res.json(err);
+    });
+});
+
+module.exports = router;
