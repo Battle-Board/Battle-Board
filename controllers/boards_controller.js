@@ -10,7 +10,6 @@ var db = require("../models");
 // POST to /boards/create
 router.post("/create", function(req, res) {
     // add item to board table
-    console.log("req.body.charInfo is", req.body.charInfo);
     const newBody = req.body.charInfo.map((char) => {
         return {
             game_id: req.body.gameID,
@@ -51,8 +50,6 @@ router.post("/characters", function(req, res) {
 });
 
 router.post("/update", function(req, res) {
-    console.log("in boards_controllers, gameID is", req.body.game_id);
-    console.log("rest of body is", req.body);
     const newBody = req.body.charList.map((char) => {
         return {
             game_id: req.body.game_id,
@@ -60,7 +57,6 @@ router.post("/update", function(req, res) {
             user_id: char.user_id
         }
     });
-    console.log("newBody is", newBody);
     db.Board.destroy({
         where: {
             game_id: req.body.game_id
