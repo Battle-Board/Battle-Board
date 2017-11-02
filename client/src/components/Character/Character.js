@@ -16,7 +16,8 @@ class Character extends Component {
 			finalInit: this.props.charList.finalInit,
 			hitPoints: this.props.charList.hitPoints,
 			initBonus: this.props.charList.initBonus,
-			initRoll: this.props.charList.initRoll
+			initRoll: this.props.charList.initRoll,
+			deleteButton: this.props.charList.deleteButton
 		}
 	}
 
@@ -47,6 +48,25 @@ class Character extends Component {
 			this.props.updateBoard(gameID);
 		})
 		.catch(err => console.log(err));
+	}
+
+	deleteChar(charID) {
+		let characterID = {
+			character_id: charID
+		};
+		console.log("Character ID is", characterID);
+		let userID = {
+			userID: 0
+		};
+		API.deleteChar(characterID).then(res => {
+			API.deleteCharFromBoard(characterID).then(res => {
+				let gameID = {
+					gameID: sessionStorage.getItem("gameID")
+				};
+				sockets.sendBoardUpdate(res.data);
+				this.props.updateBoard(gameID);
+			}).catch(err => console.log(err));
+		}).catch(err => console.log(err));
 	}
 
 
@@ -95,6 +115,9 @@ class Character extends Component {
 								</div>
 								<div className="row">
 									<div className = "col-sm-12">
+										<div className={this.state.deleteButton}>
+										<button onClick={(event) => {event.preventDefault(); this.deleteChar(this.state.charID)}} className="btn btn-primary pull-left" type="submit" value="Save"><span className="buttonText">Delete</span></button>
+										</div>
 										<button onClick={(event) => {event.preventDefault(); this.saveChar(this.state.charID)}} className="btn btn-primary pull-right" type="submit" value="Save"><span className="buttonText">Save</span></button>
 									</div>
 								</div>

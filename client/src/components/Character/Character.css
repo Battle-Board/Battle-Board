@@ -17,3 +17,11 @@
 .hundred {
 	width: 100% !important;
 }
+
+.toggleDisplayOn {
+	display: block;
+}
+
+.toggleDisplayOff {
+	display: none;
+}

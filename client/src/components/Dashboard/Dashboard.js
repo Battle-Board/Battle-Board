@@ -300,18 +300,13 @@ class Game extends Component {
 		let userID = {
 			userID: this.state.userID
 		};
-		console.log("About to delete character from Character table");
 		API.deleteChar(charID).then(res => {
-			console.log("About to delete character from Boards table");
 			API.deleteCharFromBoard(charID).then(res => {
-				console.log("I've deleted from boards, about to manage games");
 				API.getGames().then(res => {
 					if (res.data.length === 0) {
-						console.log("no games, userID is", userID);
 						this.getCharacters(userID);
 					}
 						else {
-							console.log("I have games of", res.data);
 							API.updateGameLoseChar(charID).then(res => {
 								this.getCharacters(userID);
 							}).catch(err => console.log(err));
@@ -453,10 +448,10 @@ class Game extends Component {
 										{this.state.gameList.map(info => (
 											<div>
 												<div className = "row">
-													<div className = "col-sm-6 top-buffer">
+													<div className = "col-sm-8 top-buffer">
 														{info.game_name}
 													</div>
-													<div className = "col-sm-6 top-buffer">
+													<div className = "col-sm-4 top-buffer">
 														<div className={this.state.gameButtonDisplay}>
 															<div className="btn-toolbar pull-right">
 																<a className="btn btn-primary" onClick={(event) => {event.preventDefault(); this.goBattle(info.game_id)}}><span className="buttonText">Battle</span></a>

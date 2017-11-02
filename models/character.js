@@ -13,8 +13,7 @@ module.exports = function(sequelize, Sequelize) {
             allowNull: false
         },
         character_name: {
-            type: Sequelize.STRING,
-            unique: true
+            type: Sequelize.STRING
         },
         dexterity: {
             type: Sequelize.INTEGER,

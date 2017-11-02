@@ -53,7 +53,6 @@ class Board extends Component {
 	}
 
 	getBoard(gameID) {
-		console.log("I got triggered");
 		let myOrderArray = [];
 		API.getBoardCharacters(gameID)
 		.then(res => {
@@ -67,6 +66,9 @@ class Board extends Component {
 				charEntry.initRoll = res.data[0][i].initiative_roll;
 				charEntry.finalInit = 0;
 				charEntry.conditions = res.data[0][i].conditions;
+				if(res.data[0][i].isCharacter) {
+					charEntry.deleteButton = "toggleDisplayOff";
+				}
 				myOrderArray.push(charEntry);
 			}
 			for (let i = 0; i < myOrderArray.length; i++) {
@@ -107,9 +109,11 @@ class Board extends Component {
 				<TopNav/>
 				<div className="container">
 					<div className="row">
-						<div className="col-sm-7 headerText">
+						<div className="col-sm-12 headerText">
 							Battle Board for {this.state.gameName}
 						</div>
+					</div>
+					<div className="row">
 						<div className="col-sm-2 headerText">
 							<button className="btn btn-primary" onClick={this.addMonster}><span className="buttonText">Add Monster</span></button>
 						</div>
