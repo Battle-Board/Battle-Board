@@ -1,42 +1,72 @@
 // Battles Controller
-
-var express = require("express");
-
-var router = express.Router();
-
-var db = require("../models");
-
-// const io = require("socket.io");
+var sdb = require("../models");
+var exports = module.exports = {};
 
 // Post route to insert a character into the Character table
 // POST to /characters/create
-router.post("/create", function(req, res) {
+exports.create = function(req,res) {
+    console.log("Inside Character Create: ",req.body);
     // add item to character table
-    db.Character.create(req.body)
+    sdb.Character.create({
+        character_name: req.body.character_name,
+        dexterity: req.body.dexterity,
+        initiative_bonus: req.body.initiative_bonus,
+        hitpoints: req.body.hitpoints,
+        conditions: req.body.conditions,
+        isCharacter: req.body.isCharacter,
+        UserId: res.locals.user.id
+    })
         // pass the result of our call
         .then(function(data) {
             // log the result to our terminal/bash window
+            console.log("Character Create Success");
             res.json(data);
         }).catch(function(err) {
+            console.log("Character Create Error",err);
             res.json(err);
         });
-});
+    console.log("End of Character Create!");
+};
 
-router.post("/user", function(req, res) {
-    db.Character.findAll({
+exports.createMonster = function(req,res) {
+    console.log("Inside Character Create: ",req.body);
+    // add item to character table
+    sdb.Character.create({
+        character_name: req.body.character_name,
+        dexterity: req.body.dexterity,
+        initiative_bonus: req.body.initiative_bonus,
+        hitpoints: req.body.hitpoints,
+        conditions: req.body.conditions,
+        isCharacter: false,
+        UserId: 1
+    })
+        // pass the result of our call
+        .then(function(data) {
+            // log the result to our terminal/bash window
+            console.log("Monster Create Success ", data.dataValues.UserId);
+            res.json(data);
+        }).catch(function(err) {
+            console.log("Monster Create Error",err);
+            res.json(err);
+        });
+    console.log("End of Character Create!");
+};
+
+exports.user = function(req, res) {
+    sdb.Character.findAll({
         where: {
-            user_id: req.body.userID
+            UserId: res.locals.user.id
         },
         order: [["character_name"]]
     }).then(function(data) {
             res.json(data);
         }).catch(function(err) {
-            res.json(err)
-        });
-});
+            res.json(err);
+        })
+};
 
-router.get("/all", function(req, res) {
-    db.Character.findAll({
+exports.all = function(req, res) {
+    sdb.Character.findAll({
         where: {
             isCharacter: true
         },
@@ -45,14 +75,14 @@ router.get("/all", function(req, res) {
             res.json(data);
         }).catch(function(err) {
             res.json(err);
-        });
-});
+        })
+};
 
-router.post("/update", function(req, res) {
+exports.update = function(req, res) {
     let newInfo = req.body;
     delete newInfo.user_id;
     delete newInfo.charcter_id;
-    db.Character.update(
+    sdb.Character.update(
         newInfo,
         {
         where: {
@@ -63,11 +93,11 @@ router.post("/update", function(req, res) {
     }).catch(function(err) {
         res.json(err);
     });
-});
+};
 
-router.post("/delete", function(req, res) {
+exports.delete = function(req, res) {
     console.log("in controller, about to delete", req.body.character_id);
-    db.Character.destroy({
+    sdb.Character.destroy({
         where: {
             character_id: req.body.character_id
         }
@@ -76,6 +106,4 @@ router.post("/delete", function(req, res) {
     }).catch(function(err) {
         res.json(err);
     });
-});
-
-module.exports = router;
+};

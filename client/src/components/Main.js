@@ -19,7 +19,7 @@ const Main = () => (
 		<Route exact path='/' component={Home}/>
 		<Route path="/game" component={Game}/>
 		<Route path="/board" component={Board}/>
-		<Route path="/LogReg" component={LogReg}/>
+		<Route path="/login-signup" component={LogReg}/>
 		<Route path="/dashboard" component={Dashboard}/>
 		<Route path="/createCharacter" component={CharacterInfo}/>
 		<Route path="/createMonster" component={MonsterInfo}/>

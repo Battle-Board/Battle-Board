@@ -3,6 +3,9 @@ import "./Dashboard.css";
 import TopNav from "../TopNav/TopNavLoggedIn";
 import API from "../../utils/API.js";
 import { sockets } from "../../utils/sockets.js";
+import ReactDOM from 'react-dom';
+import {BrowserRouter as Router,Route,Link,Redirect,withRouter} from 'react-router-dom';
+
 
 
 class Game extends Component {
@@ -12,6 +15,11 @@ class Game extends Component {
     	this.state = {
 			userID: sessionStorage.getItem("userID"),
 			charList: [],
+			foundChars: false,
+			// userID: localStorage.getItem("userID"),
+			sentMessage: '',
+			redirect: false,
+			userPromise: false,
 			character_id: -1,
 			charName: "",
 			dexterity: 0,
@@ -33,6 +41,9 @@ class Game extends Component {
 
 	createCharacter(event) {
 		event.preventDefault();
+		// console.log("hi");
+		// this.setState({someValue: true});
+		// this.setState({characterRedirect: true});
 		window.location ="/createCharacter";
 	}
 	
@@ -46,9 +57,20 @@ class Game extends Component {
 			userID: this.state.userID
 		};
 
-		this.getCharacters(userID);
+		this.getCharacters();
 		this.getGames();
-
+		API.userLoggedIn()
+		.then(res => {
+			this.setState({userPromise: true})
+			console.log("Got res from API in Dashboard: ",res.data);
+			if(res.data.status === "4xx") {
+				this.setState({redirect: true});
+			}
+		})
+		.catch(err => {
+			console.log("Error from API in Dashboard: ",err);
+			this.setState({redirect: true});
+		});
 	}
 
 	handleChange = event => {
@@ -62,6 +84,7 @@ class Game extends Component {
 	getCharacters(userID) {
 		API.getUserCharacters(userID)
 		.then(res => {
+			console.log("Inside get Chars:",res);
 			if (res.data.length !== 0) {
 				res.data.forEach(itm => {
 					itm.charDisplay = "toggleDisplayOff";
@@ -82,7 +105,7 @@ class Game extends Component {
 					});
 				}
 		})
-		.catch(err => console.log(err));
+		.catch(err => console.log("Get user Error: ",err));
 	}
 
 	getGames() {
@@ -111,6 +134,221 @@ class Game extends Component {
 				}
 		})
 		.catch(err => console.log(err));
+	}
+
+	getRender() {
+		const { redirect } = this.state;
+		if(redirect) {
+			return <Redirect to="/login-signup"/>;
+		}
+			else {
+				return (
+					<div>
+						<TopNav />
+						<div className="container">
+							<div className="row">
+								<div className="col-sm-12 headerText text-center">
+									Dashboard
+								</div>
+							</div>
+						</div>
+						<div className="container dashText">
+							<div className="row">
+								<div className = "col-sm-12 col-md-5">
+									<div className="row">
+										<div className="panel panel-default">
+											<div className="panel-body text-center">
+												Your Characters:
+											</div>
+										</div>
+									</div>
+									<div className="row">
+										<div className="panel panel-default">
+											<div className="panel-body fixed-panel">
+												{this.state.charList.map(info => (
+													<div>
+														<div className = "row">
+															<div className = "col-sm-12 top-buffer">
+																{info.character_name}
+																<a className={info.buttonColor} onClick={() => this.editCharacter(info.character_id)}><span className="buttonText">Edit</span></a>
+															</div>
+														</div>
+														<div className={info.charDisplay}>
+															<div className="row">
+																<div className="col-sm-12">
+																	<form className="formText" role="form">
+																		<div className="form-group">
+																			Character Name{this.state.character_name}:<br/>
+																			<input
+																				name="charName"
+																				id="charName"
+																				type="text"
+																				placeholder={info.character_name}
+																				value={this.state.charName}
+																				onChange={this.handleChange}
+																				required
+																			/><br/>
+																			Initiative Bonus:<br/>
+																			<input
+																				name="initBonus"
+																				id="initBonus"
+																				type="text"
+																				placeholder={info.initiative_bonus}
+																				value={this.state.initBonus}
+																				onChange={this.handleChange}
+																				required
+																			/><br/>
+																			Dexterity Bonus:<br/>
+																			<input
+																				name="dexterity"
+																				id="dexterity"
+																				type="text"
+																				placeholder={info.dexterity}
+																				value={this.state.dexterity}
+																				onChange={this.handleChange}
+																				required
+																			/><br/>
+																			Hit Point Damage:<br/>
+																			<input
+																				name="hitPoints"
+																				id="hitPoints"
+																				type="text"
+																				placeholder={info.hitpoints}
+																				value={this.state.hitPoints}
+																				onChange={this.handleChange}
+																			/><br/>
+																			Conditions:<br/>
+																			<div className="row">
+																				<div className="col-sm-12">
+																					<textarea
+																						className="hundred"
+																						name="conditions"
+																						id="conditions"
+																						placeholder={info.conditions}
+																						value={this.state.conditions}
+																						onChange={this.handleChange}
+																					/>
+																				</div>
+																			</div>
+																			<div className="row">
+																				<div className = "col-sm-12">
+																					<button onClick={this.deleteChar} className="btn btn-primary pull-left" type="submit" value="Delete"><span className="buttonText">Delete</span></button>
+																					<button onClick={this.updateChar} className="btn btn-primary pull-right" type="submit" value="Save"><span className="buttonText">Save</span></button>
+																				</div>
+																			</div>
+																		</div>
+																	</form>
+																</div>
+															</div>
+														</div>
+														<hr />
+													</div>
+												))}
+											</div>
+										</div>
+									</div>
+									<div className="row">
+										<div className = "col-sm-12">
+											<button className="btn btn-primary center-block" onClick={this.createCharacter} type="submit" value="CreateCharacter"><span className="buttonText">Create New Character</span></button>
+										</div>
+									</div>
+								</div>
+								<div className = "col-sm12 col-md-6 col-md-offset-1">
+									<div className = "row">
+									<div className = "panel panel-default">
+										<div className = "panel-body text-center">
+											Available Games:
+										</div>
+									</div>
+									</div>
+									<div className = "row">
+										<div className = "panel panel-default">
+											<div className = "panel-body fixed-panel">
+												{this.state.gameList.map(info => (
+													<div>
+														<div className = "row">
+															<div className = "col-sm-8 top-buffer">
+																{info.game_name}
+															</div>
+															<div className = "col-sm-4 top-buffer">
+																<div className={this.state.gameButtonDisplay}>
+																	<div className="btn-toolbar pull-right">
+																		<a className="btn btn-primary" onClick={(event) => {event.preventDefault(); this.goBattle(info.game_id)}}><span className="buttonText">Battle</span></a>
+																		<a className={info.buttonColor} onClick={() => this.editGame(info.game_id)}><span className="buttonText">Edit</span></a>
+																	</div>
+																</div>
+															</div>
+														</div>
+														<div className={info.gameDisplay}>
+															<div className="row">
+																<div className="col-sm-12">
+																	<form className="form-horizontal formText">
+																			Game Name<br/>
+																			<input
+																				name="gameName"
+																				id="gameName"
+																				type="text"
+																				placeholder={info.game_name}
+																				value={this.state.gameName}
+																				onChange={this.handleChange}
+																				required
+																			/><br/><br/>
+																		<div className="row">
+																			<div className="panel panel-default">
+																				<div className="text-center">
+																					Chosen Characters
+																				</div>
+																				<div className = "panel-body">
+																					<div className = "row">
+																						{this.state.chosenList.map(info => (
+																							<div className = "col-sm-4 text-center">
+																								{info.character_name}
+																							</div>
+																						))}
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																		<div className="row">
+																			<div className="panel panel-default">
+																				<div className="panel-body">
+																					{this.state.gameCharList.map(info => (
+																						<div className = "row">
+																							<div className = "col-sm-12 text-center">
+																								<button className="btn btn-primary bottomPadding" onClick={(event) => {event.preventDefault(); this.chooseMe(info)}}><span className="buttonText">{info.character_name}</span></button>
+																							</div>
+																						</div>
+																					))}
+																				</div>
+																			</div>
+																		</div>
+																		<div className="row">
+																			<div className="col-sm-12">
+																				<button onClick={(event) => {event.preventDefault(); this.deleteGame(info.game_id)}} className="btn btn-primary pull-left" type="submit" value="Delete"><span className="buttonText">Delete</span></button>
+																				<button onClick={this.updateGame} className="btn btn-primary pull-right" type="submit" value="Save"><span className="buttonText">Save</span></button>
+																			</div>
+																		</div>
+																	</form>
+																</div>
+															</div>
+														</div>
+														<hr />
+													</div>
+												))}
+											</div>
+										</div>
+									</div>
+									<div className = "row">
+										<div className = "col-sm-12">
+											<button className="btn btn-primary center-block" onClick={this.createGame} type="submit" value="CreateGame"><span className="buttonText">Create New Game</span></button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				);		
+			}
 	}
 
 	editCharacter(charID) {
@@ -322,213 +560,12 @@ class Game extends Component {
 		window.location = "/board";
 	}
 
+
     render() {
-    	return (
-			<div>
-				<TopNav />
-				<div className="container">
-					<div className="row">
-						<div className="col-sm-12 headerText text-center">
-							Dashboard
-						</div>
-					</div>
-				</div>
-				<div className="container dashText">
-					<div className="row">
-						<div className = "col-sm-12 col-md-5">
-							<div className="row">
-								<div className="panel panel-default">
-									<div className="panel-body text-center">
-										Your Characters:
-									</div>
-								</div>
-							</div>
-							<div className="row">
-								<div className="panel panel-default">
-									<div className="panel-body fixed-panel">
-										{this.state.charList.map(info => (
-											<div>
-												<div className = "row">
-													<div className = "col-sm-12 top-buffer">
-														{info.character_name}
-														<a className={info.buttonColor} onClick={() => this.editCharacter(info.character_id)}><span className="buttonText">Edit</span></a>
-													</div>
-												</div>
-												<div className={info.charDisplay}>
-													<div className="row">
-														<div className="col-sm-12">
-															<form className="formText" role="form">
-																<div className="form-group">
-																	Character Name{this.state.character_name}:<br/>
-																	<input
-																		name="charName"
-																		id="charName"
-																		type="text"
-																		placeholder={info.character_name}
-																		value={this.state.charName}
-																		onChange={this.handleChange}
-																		required
-																	/><br/>
-																	Initiative Bonus:<br/>
-																	<input
-																		name="initBonus"
-																		id="initBonus"
-																		type="text"
-																		placeholder={info.initiative_bonus}
-																		value={this.state.initBonus}
-																		onChange={this.handleChange}
-																		required
-																	/><br/>
-																	Dexterity Bonus:<br/>
-																	<input
-																		name="dexterity"
-																		id="dexterity"
-																		type="text"
-																		placeholder={info.dexterity}
-																		value={this.state.dexterity}
-																		onChange={this.handleChange}
-																		required
-																	/><br/>
-																	Hit Point Damage:<br/>
-																	<input
-																		name="hitPoints"
-																		id="hitPoints"
-																		type="text"
-																		placeholder={info.hitpoints}
-																		value={this.state.hitPoints}
-																		onChange={this.handleChange}
-																	/><br/>
-																	Conditions:<br/>
-																	<div className="row">
-																		<div className="col-sm-12">
-																			<textarea
-																				className="hundred"
-																				name="conditions"
-																				id="conditions"
-																				placeholder={info.conditions}
-																				value={this.state.conditions}
-																				onChange={this.handleChange}
-																			/>
-																		</div>
-																	</div>
-																	<div className="row">
-																		<div className = "col-sm-12">
-																			<button onClick={this.deleteChar} className="btn btn-primary pull-left" type="submit" value="Delete"><span className="buttonText">Delete</span></button>
-																			<button onClick={this.updateChar} className="btn btn-primary pull-right" type="submit" value="Save"><span className="buttonText">Save</span></button>
-																		</div>
-																	</div>
-																</div>
-															</form>
-														</div>
-													</div>
-												</div>
-												<hr />
-											</div>
-										))}
-									</div>
-								</div>
-							</div>
-							<div className="row">
-								<div className = "col-sm-12">
-									<button className="btn btn-primary center-block" onClick={this.createCharacter} type="submit" value="CreateCharacter"><span className="buttonText">Create New Character</span></button>
-								</div>
-							</div>
-						</div>
-						<div className = "col-sm12 col-md-6 col-md-offset-1">
-							<div className = "row">
-							<div className = "panel panel-default">
-								<div className = "panel-body text-center">
-									Available Games:
-								</div>
-							</div>
-							</div>
-							<div className = "row">
-								<div className = "panel panel-default">
-									<div className = "panel-body fixed-panel">
-										{this.state.gameList.map(info => (
-											<div>
-												<div className = "row">
-													<div className = "col-sm-8 top-buffer">
-														{info.game_name}
-													</div>
-													<div className = "col-sm-4 top-buffer">
-														<div className={this.state.gameButtonDisplay}>
-															<div className="btn-toolbar pull-right">
-																<a className="btn btn-primary" onClick={(event) => {event.preventDefault(); this.goBattle(info.game_id)}}><span className="buttonText">Battle</span></a>
-																<a className={info.buttonColor} onClick={() => this.editGame(info.game_id)}><span className="buttonText">Edit</span></a>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div className={info.gameDisplay}>
-													<div className="row">
-														<div className="col-sm-12">
-															<form className="form-horizontal formText">
-																	Game Name<br/>
-																	<input
-																		name="gameName"
-																		id="gameName"
-																		type="text"
-																		placeholder={info.game_name}
-																		value={this.state.gameName}
-																		onChange={this.handleChange}
-																		required
-																	/><br/><br/>
-																<div className="row">
-																	<div className="panel panel-default">
-																		<div className="text-center">
-																			Chosen Characters
-																		</div>
-																		<div className = "panel-body">
-																			<div className = "row">
-																				{this.state.chosenList.map(info => (
-																					<div className = "col-sm-4 text-center">
-																						{info.character_name}
-																					</div>
-																				))}
-																			</div>
-																		</div>
-																	</div>
-																</div>
-																<div className="row">
-																	<div className="panel panel-default">
-																		<div className="panel-body">
-																			{this.state.gameCharList.map(info => (
-																				<div className = "row">
-																					<div className = "col-sm-12 text-center">
-																						<button className="btn btn-primary bottomPadding" onClick={(event) => {event.preventDefault(); this.chooseMe(info)}}><span className="buttonText">{info.character_name}</span></button>
-																					</div>
-																				</div>
-																			))}
-																		</div>
-																	</div>
-																</div>
-																<div className="row">
-																	<div className="col-sm-12">
-																		<button onClick={(event) => {event.preventDefault(); this.deleteGame(info.game_id)}} className="btn btn-primary pull-left" type="submit" value="Delete"><span className="buttonText">Delete</span></button>
-																		<button onClick={this.updateGame} className="btn btn-primary pull-right" type="submit" value="Save"><span className="buttonText">Save</span></button>
-																	</div>
-																</div>
-															</form>
-														</div>
-													</div>
-												</div>
-												<hr />
-											</div>
-										))}
-									</div>
-								</div>
-							</div>
-							<div className = "row">
-								<div className = "col-sm-12">
-									<button className="btn btn-primary center-block" onClick={this.createGame} type="submit" value="CreateGame"><span className="buttonText">Create New Game</span></button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-    	);
+		const { redirect } = this.state;
+		const { userPromise } = this.state;
+		// const { characterRedirect } = this.state;
+		return userPromise ? this.getRender() : (<span>Loading...</span>);
     }
   }
 

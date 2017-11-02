@@ -3,7 +3,8 @@ import "./Dashboard.css";
 import TopNav from "../TopNav/TopNavLoggedIn";
 import API from "../../utils/API.js";
 import Form from "./Form/Form.js";
-
+import ReactDOM from 'react-dom';
+import {BrowserRouter as Router,Route,Link,Redirect,withRouter} from 'react-router-dom';
 
 class CharacterInfo extends Component {
 
@@ -12,14 +13,15 @@ class CharacterInfo extends Component {
 		initBonus: 0,
 		dexterity: 0,
 		hitPoints: 0,
-		conditions: ""
+		conditions: "",
+		redirect: false,
+		userPromise: false
 	}
 
 	
 	// componentDidMount() {
 	// 	this.searchGames();
 	// }
-
 
 	// Whenever anything in the Form is updated, update the state so the search can be done
 	handleInputChange = event => {
@@ -47,32 +49,58 @@ class CharacterInfo extends Component {
 		window.location = "/dashboard";
 	};
 
-    render() {
-      return (
-        <div>
-			<TopNav />
-			<div className="container">
-				<div className="row">
-					<div className = "col-sm-12 col-md-6 col-md-offset-3 gameForm">
-						<div className="panel panel-default">
-							<div className="panel-body">
-								<Form
-									charType="Character Name"
-									charName={this.state.charName}
-									initBonus={this.state.initBonus}
-									dexterity={this.state.dexterity}
-									hitPoints={this.state.hitPoints}
-									conditions={this.state.conditions}
-									handleInputChange={this.handleInputChange}
-									handleFormSubmit={this.handleFormSubmit}
-								/>
+	componentDidMount() {
+		API.userLoggedIn()
+		.then(res => {
+			this.setState({userPromise: true});
+			console.log("Got res from API in Dashboard: ",res);
+			if(res.data.status === "4xx") {
+				this.setState({redirect: true});
+			}
+		})
+		.catch(err => {
+			console.log("Error from API in Dashboard: ",err);
+			this.setState({redirect: true});
+		});
+	}
+
+	getRender() {
+		const { redirect } = this.state;
+		if(redirect) {
+			return <Redirect to="/login-signup"/>;
+		}
+			else {
+				return (
+					<div>
+						<TopNav />
+						<div className="container">
+							<div className="row">
+								<div className = "col-sm-12 col-md-6 col-md-offset-3 gameForm">
+									<div className="panel panel-default">
+										<div className="panel-body">
+											<Form
+												charType="Character Name"
+												charName={this.state.charName}
+												initBonus={this.state.initBonus}
+												dexterity={this.state.dexterity}
+												hitPoints={this.state.hitPoints}
+												conditions={this.state.conditions}
+												handleInputChange={this.handleInputChange}
+												handleFormSubmit={this.handleFormSubmit}
+											/>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-			</div>
-        </div>
-      );
+				);
+			}
+	}
+
+	render() {
+		const { userPromise } = this.state;
+		return userPromise ? this.getRender() : (<span>Loading..</span>);
     }
   }
 

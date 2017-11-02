@@ -1,12 +1,11 @@
 import axios from "axios";
 
 export default {
-
-	// searchGames: function() {
-	// 	return axios.get("/games").then((games) => {
-	// 		return games;
-	// 	});
-	// },
+	searchGames: function() {
+		return axios.get("/games").then((games) => {
+			return games;
+		});
+	},
 
 	createGame: function(gameName) {
 		return axios.post("/games/create", gameName).then((games) => {
@@ -20,14 +19,22 @@ export default {
 		});
 	},
 
+	createMonster: function(charInfo) {
+		console.log("In API CreateMunsta");
+		return axios.post("/characters/createMonster", charInfo).then((data) => {
+			console.log("Monster API data: ", data);
+			return data;
+		});
+	},
+
 	createBoard: function(boardInfo) {
 		return axios.post("/boards/create", boardInfo).then((boards) => {
 			return boards;
 		});
 	},
 
-	getUserCharacters: function(userID) {
-		return axios.post("/characters/user/", userID).then((characters) => {
+	getUserCharacters: function() {
+		return axios.post("/characters/user/").then((characters) => {
 			return characters;
 		});
 	},
@@ -42,6 +49,24 @@ export default {
 		return axios.get("/games/all").then((games) => {
 			return games;
 		});
+	},
+
+	createUser: function(data) {
+		return axios.post("/signup", data);
+	},
+
+	login: function(data) {
+		return axios.post("/signin", data);
+	},
+
+	userLoggedIn: function() {
+		return axios.get("/auth/userid").then((user) => {
+			return user;
+		}).catch(err => console.log("Error in userLoggedIn: ",err));
+	},
+
+	logout: function() {
+		return axios.get("/auth/logout").then((res) => console.log("Logout Response: ",res)).catch(err => console.log("Logout Error: ",err));
 	},
 
 	getBoardCharacters: function(gameID) {

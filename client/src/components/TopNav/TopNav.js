@@ -16,7 +16,7 @@ const TopNav = () => (
 				<div className="col-sm-6 text-right">
 					<Link style={{ color: '#428bca' }} to='/'>Home</Link>
 		 			&nbsp; | &nbsp;
-		 			<Link style={{ color: '#428bca' }} to="/LogReg">Login</Link>
+		 			<Link style={{ color: '#428bca' }} to="/login-signup">Login</Link>
 				</div>
 			</div>
 		</div>

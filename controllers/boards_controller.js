@@ -1,23 +1,21 @@
 // Boards Controller
-
-var express = require("express");
-
-var router = express.Router();
-
-var db = require("../models");
+var sdb = require("../models");
+var exports = module.exports = {};
 
 // Post route to insert into the board table
 // POST to /boards/create
-router.post("/create", function(req, res) {
+exports.create = function(req, res) {
     // add item to board table
     console.log("req.body.charInfo is", req.body.charInfo);
     const newBody = req.body.charInfo.map((char) => {
         return {
             game_id: req.body.gameID,
             character_id: char.character_id,
-            user_id: char.user_id
+            UserId: res.locals.user.id
         }
     });
+
+    sdb.Board.bulkCreate(newBody)
     console.log("I'm goint to add to the board with a newBody of", newBody);
     db.Board.bulkCreate(newBody)
         // pass the result of our call
@@ -25,39 +23,41 @@ router.post("/create", function(req, res) {
             // log the result to our terminal/bash window
             res.json(data);
         }).catch(function(err) {
+            console.log("Error in Bulk Create",err);
             res.json(err);
         });
-});
+};
 
-router.get("/all", function(req, res) {
-    db.Board.findAll({})
+exports.all = function(req, res) {
+    sdb.Board.findAll({})
         .then(function(data) {
             res.json(data);
         }).catch(function(err) {
             res.json(err);
         });
-});
+};
 
-router.post("/characters", function(req, res) {
+exports.characters = function(req, res) {
+    console.log("Boards Characters req.body.gameID: ",req.body.gameID);
     let sqlQuery = "SELECT * FROM characters WHERE character_id IN (SELECT character_id FROM boards WHERE game_id = ";
     sqlQuery += req.body.gameID;
     sqlQuery += ")";
-    db.sequelize.query(sqlQuery)
+    sdb.sequelize.query(sqlQuery)
         .then(function(data){
             res.json(data);})
         .catch(function(err) {
             res.json(err);
         });
-});
+};
 
-router.post("/update", function(req, res) {
+exports.update = function(req, res) {
     console.log("in boards_controllers, gameID is", req.body.game_id);
     console.log("rest of body is", req.body);
     const newBody = req.body.charList.map((char) => {
         return {
             game_id: req.body.game_id,
             character_id: char.character_id,
-            user_id: char.user_id
+            UserId: res.locals.user.id
         }
     });
     console.log("newBody is", newBody);
@@ -66,7 +66,7 @@ router.post("/update", function(req, res) {
             game_id: req.body.game_id
         }
     }).then(function() {
-        db.Board.bulkCreate(newBody)
+        sdb.Board.bulkCreate(newBody)
         // pass the result of our call
         .then(function(data) {
             // log the result to our terminal/bash window
@@ -75,10 +75,10 @@ router.post("/update", function(req, res) {
     }).catch(function(err) {
         res.json(err);
     });
-});
+};
 
-router.post("/delete", function(req, res) {
-    db.Board.destroy({
+exports.delete = function(req, res) {
+    sdb.Board.destroy({
         where: {
             game_id: req.body.game_id
         }
@@ -87,10 +87,10 @@ router.post("/delete", function(req, res) {
     }).catch(function(err) {
         res.json(err);
     });
-});
+};
 
-router.post("/deletechar", function(req, res) {
-    db.Board.destroy({
+exports.deletechar = function(req, res) {
+    sdb.Board.destroy({
         where: {
             character_id: req.body.character_id
         }
@@ -99,6 +99,4 @@ router.post("/deletechar", function(req, res) {
     }).catch(function(err) {
         res.json(err);
     });
-});
-
-module.exports = router;
+};

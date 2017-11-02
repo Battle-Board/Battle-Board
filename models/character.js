@@ -8,10 +8,6 @@ module.exports = function(sequelize, Sequelize) {
             primaryKey: true,
             autoIncrement: true
         },
-        user_id: {
-            type: Sequelize.INTEGER,
-            allowNull: false
-        },
         character_name: {
             type: Sequelize.STRING
         },
@@ -43,13 +39,13 @@ module.exports = function(sequelize, Sequelize) {
         }
     });
 
-    // Character.associate = function(models) {
-    //     Character.belongsTo(models.User, {
-    //         foreignKey: {
-    //             allowNull: false
-    //         }
-    //     });
-    // }
+    Character.associate = function(models) {
+        Character.belongsTo(models.User, {
+            foreignKey: {
+                allowNull: false
+            }
+        });
+    }
 
     return Character;
 }

@@ -2,7 +2,10 @@ import React, { Component } from "react";
 import "./Game.css";
 import TopNav from "../TopNav/TopNavLoggedIn";
 import API from "../../utils/API.js";
+import Button from "./Button.js";
 import {sockets} from "../../utils/sockets";
+import ReactDOM from 'react-dom';
+import {BrowserRouter as Router,Route,Link,Redirect,withRouter} from 'react-router-dom';
 
 class Game extends Component {
     constructor(props) {
@@ -10,7 +13,10 @@ class Game extends Component {
     	this.state = {
 			gameName: '',
 			charList: [],
-			chosenList: []
+			foundChars: true,
+			chosenList: [],
+			redirect: false,
+			userPromise: false
 		};
 		
       this.handleChange = this.handleChange.bind(this);
@@ -36,6 +42,19 @@ class Game extends Component {
 				}
 		})
 		.catch(err => console.log(err));
+
+		API.userLoggedIn()
+		.then(res => {
+			this.setState({userPromise: true});
+			console.log("Got res from API in Dashboard: ",res);
+			if(res.data.status === "4xx") {
+				this.setState({redirect: true});
+			}
+		})
+		.catch(err => {
+			console.log("Error from API in Dashboard: ",err);
+			this.setState({redirect: true});
+		});
 	}
   
     handleChange(event) {
@@ -55,7 +74,7 @@ class Game extends Component {
 					gameID: res.data.game_id,
 					charInfo: this.state.chosenList
 				}
-				API.createBoard(boardInfo);
+				API.createBoard(boardInfo).then(res => console.log("in create board")).catch(err=>console.log("In create Board error: ",err));
 				sockets.sendGameList(res.data);
 				window.location = "/dashboard";
 			});	
@@ -102,9 +121,13 @@ class Game extends Component {
 				this.setState({chosenList: newArray});
 			}
 	}
-  
-    render() {
-      return (
+
+	getRender() {
+	const { redirect } = this.state;
+	if(redirect) {
+		return <Redirect to="/login-signup"/>;
+	}
+	return (
         <div>
 			<TopNav />
 			<div className="container">
@@ -155,7 +178,12 @@ class Game extends Component {
 				</div>
 			</div>
         </div>
-      );
+	  );
+	}
+  
+    render() {
+		const { userPromise } = this.state;
+		return userPromise ? this.getRender() : (<span>Loading...</span>);
     }
   }
 

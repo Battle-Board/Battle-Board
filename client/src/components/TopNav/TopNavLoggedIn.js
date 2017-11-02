@@ -22,7 +22,7 @@ const TopNav = () => (
 		 			&nbsp; | &nbsp;
 		 			<Link style={{ color: '#428bca' }} to="/board">Board</Link>
 					&nbsp; | &nbsp;
-					<Link style={{ color: '#428bca' }} to="/LogReg">Log/Register</Link>
+					<Link style={{ color: '#428bca' }} to="/login-signup">Log/Register</Link>
 				</div>
 			</div>
 		</div>
