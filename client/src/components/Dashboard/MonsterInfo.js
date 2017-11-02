@@ -24,7 +24,7 @@ class MonsterInfo extends Component {
 		});
 	};
   
-	// When the form is submitted, run the search
+	// When the form is submitted, run the insertion into the database
 	handleFormSubmit = event => {
 		// Preventing the default behavior of the form submit (which is to refresh the page)
 		event.preventDefault();
@@ -35,11 +35,21 @@ class MonsterInfo extends Component {
 			hitpoints: this.state.hitPoints,
 			conditions: this.state.conditions,
 			isCharacter: false,
-			user_id: sessionStorage.getItem("userID")
+			user_id: 0
 		};
 
-		API.createCharacter(charInfo);
-		window.location = "/dashboard";
+		API.createCharacter(charInfo)
+		.then(res => {
+			charInfo.character_id = res.data.character_id;
+			let monsterInfo = [charInfo];
+			let boardInfo = {
+				gameID: sessionStorage.getItem("gameID"),
+				charInfo: monsterInfo
+			}
+			console.log("Before saving, I have a boardInfo of", boardInfo);
+			API.createBoard(boardInfo);
+		});
+		window.location = "/board";
 	};
 
     render() {

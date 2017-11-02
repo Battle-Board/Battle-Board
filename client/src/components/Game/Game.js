@@ -50,13 +50,12 @@ class Game extends Component {
 
 		if ((gameName.game_name.trim().length !== 0) && (this.state.chosenList.length > 0)) {
 			API.createGame(gameName).then(res => {
+				sessionStorage.setItem("gameID", res.data.game_id);				
 				let boardInfo = {
 					gameID: res.data.game_id,
 					charInfo: this.state.chosenList
 				}
 				API.createBoard(boardInfo);
-				console.log(res.data);
-				alert("about to go");
 				sockets.sendGameList(res.data);
 				window.location = "/dashboard";
 			});	

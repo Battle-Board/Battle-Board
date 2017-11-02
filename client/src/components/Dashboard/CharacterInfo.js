@@ -29,7 +29,7 @@ class CharacterInfo extends Component {
 		});
 	};
   
-	// When the form is submitted, run the search
+	// When the form is submitted, run the insertion into the database
 	handleFormSubmit = event => {
 		// Preventing the default behavior of the form submit (which is to refresh the page)
 		event.preventDefault();
