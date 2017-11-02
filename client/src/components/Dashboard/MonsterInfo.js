@@ -46,9 +46,10 @@ class MonsterInfo extends Component {
 				gameID: sessionStorage.getItem("gameID"),
 				charInfo: monsterInfo
 			}
-			API.createBoard(boardInfo);
+			API.createBoard(boardInfo).then(res => {
+				window.location = "/board";
+			});
 		});
-		window.location = "/board";
 	};
 
     render() {
